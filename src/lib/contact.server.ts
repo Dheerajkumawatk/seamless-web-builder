@@ -8,10 +8,10 @@ export type Lead = {
   id: string;
   name: string;
   phone: string;
-  email?: string;
+  email?: string | undefined;
   post: string;
-  state?: string;
-  message?: string;
+  state?: string | undefined;
+  message?: string | undefined;
   createdAt: string;
 };
 

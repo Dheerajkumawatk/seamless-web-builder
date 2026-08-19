@@ -173,7 +173,7 @@ function Index() {
         <SectionHeading title="अभियान वेबसाइट डेमो" />
         <div className="mt-9 grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
           <img
-            src={images.demo}
+            src={images["demo"]}
             width={1200}
             height={800}
             loading="lazy"
