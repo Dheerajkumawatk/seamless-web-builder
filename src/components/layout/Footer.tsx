@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Globe, Instagram, Mail, MapPin, Phone, Send, Youtube } from "lucide-react";
 import { nav, services, site } from "@/data/site";
-import { Logo } from "./Logo";
+import { Logo } from "@/components/layout/Logo";
 
 export function Footer() {
   return (

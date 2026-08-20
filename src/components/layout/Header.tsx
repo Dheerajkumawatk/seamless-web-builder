@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Facebook, Instagram, Mail, MapPin, Menu, Phone, Send, X, Youtube } from "lucide-react";
 import { nav, site } from "@/data/site";
-import { Logo } from "./Logo";
+import { Logo } from "@/components/layout/Logo";
 
 export function Header() {
   const [open, setOpen] = useState(false);
