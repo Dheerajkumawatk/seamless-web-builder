@@ -307,6 +307,22 @@
   }
 }
 
+.hero-exact {
+  background: #fff8ee url("@/assets/hero-background.png") center top / cover no-repeat;
+}
+
+.hero-exact::before,
+.hero-exact::after,
+.hero-heritage,
+.hero-crowd,
+.hero-flag {
+  display: none;
+}
+
+@utility website-demo-section {
+  background: #fff8ef url("@/assets/website-demo-background.png") center center / cover no-repeat;
+}
+
 @utility section-title {
   position: relative;
   display: inline-flex;

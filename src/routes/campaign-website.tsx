@@ -36,34 +36,37 @@ function CampaignWebsite() {
         sub="आपकी पहचान, आपका विज़न और आपका काम — सब कुछ एक प्रोफेशनल वेबसाइट पर।"
       />
 
-      <Section>
-        <div className="grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
-          <img
-            src={images["demo"]}
-            width={1200}
-            height={800}
-            loading="lazy"
-            alt="अभियान वेबसाइट का लैपटॉप और मोबाइल डेमो"
-            className="w-full rounded-lg"
-          />
-          <div>
-            <h2 className="text-lg text-maroon">वेबसाइट में शामिल सेक्शन</h2>
-            <ul className="mt-4 space-y-2.5">
-              {websiteSections.map((s) => (
-                <li key={s} className="flex items-center gap-2.5 text-sm text-foreground/85">
-                  <span className="grid h-5 w-5 shrink-0 place-items-center rounded-sm bg-saffron/15">
-                    <Check className="h-3 w-3 text-saffron" />
-                  </span>
-                  {s}
-                </li>
-              ))}
-            </ul>
-            <Link
-              to="/contact"
-              className="mt-6 inline-flex items-center gap-2 rounded-md bg-saffron px-5 py-3 text-sm font-semibold text-saffron-foreground"
-            >
-              अपनी वेबसाइट बनवाएँ <ArrowRight className="h-4 w-4" />
-            </Link>
+      <Section className="website-demo-section" muted>
+        <div className="rounded-lg border border-orange-200 bg-white/45 p-4 shadow-card sm:p-6">
+          <SectionHeading title="अभियान वेबसाइट डेमो" />
+          <div className="mt-7 grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
+            <img
+              src={images["demo"]}
+              width={1200}
+              height={800}
+              loading="lazy"
+              alt="अभियान वेबसाइट का लैपटॉप और मोबाइल डेमो"
+              className="w-full rounded-lg object-contain"
+            />
+            <div>
+              <h2 className="text-lg text-maroon">वेबसाइट में शामिल सेक्शन</h2>
+              <ul className="mt-4 space-y-2.5">
+                {websiteSections.map((s) => (
+                  <li key={s} className="flex items-center gap-2.5 text-sm text-foreground/85">
+                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-sm bg-saffron/15">
+                      <Check className="h-3 w-3 text-saffron" />
+                    </span>
+                    {s}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                to="/contact"
+                className="mt-6 inline-flex items-center gap-2 rounded-md bg-maroon px-5 py-3 text-sm font-semibold text-white"
+              >
+                डेमो वेबसाइट देखें <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </Section>

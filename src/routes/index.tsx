@@ -22,7 +22,7 @@ import {
   websiteSections,
 } from "@/data/site";
 import { images } from "@/data/images";
-import heroLeader from "@/assets/hero-leader.jpg";
+import heroLeader from "@/assets/hero-leader.png";
 import { Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 
@@ -49,11 +49,7 @@ function Index() {
   return (
     <>
       <section className="hero-exact relative overflow-hidden border-b border-orange-100">
-        <div className="hero-heritage hero-heritage-center" />
-        <div className="hero-heritage hero-heritage-right" />
-        <div className="hero-crowd" />
-        <div className="hero-flag" />
-        <div className="mx-auto grid min-h-[595px] max-w-[1720px] items-center gap-0 px-6 pt-4 lg:grid-cols-[0.98fr_1.02fr] lg:px-20">
+        <div className="mx-auto grid min-h-[595px] max-w-[1720px] items-center gap-0 px-6 pt-25 lg:grid-cols-[0.98fr_1.02fr] lg:px-20">
           <div className="relative z-10 max-w-[750px] pb-12">
             <h1 className="font-display text-[42px] leading-[1.08] font-black tracking-normal text-[#1d0908] sm:text-[62px] lg:text-[82px]">
               डिजिटल अभियान से
@@ -198,8 +194,8 @@ function Index() {
         </div>
       </Section>
 
-      <Section muted>
-        <div className="rounded-lg border border-orange-200 bg-white/70 p-4 shadow-card sm:p-6">
+      <Section className="website-demo-section" muted>
+        <div className="rounded-lg border border-orange-300 bg-white/45 p-4 shadow-card sm:p-6">
           <SectionHeading title="अभियान वेबसाइट डेमो" />
           <div className="mt-7 grid items-center gap-8 lg:grid-cols-[1.45fr_.9fr]">
             <img
