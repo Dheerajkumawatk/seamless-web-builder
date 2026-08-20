@@ -192,7 +192,7 @@
   content: "";
   background:
     linear-gradient(180deg, rgba(140, 59, 13, 0.06), rgba(140, 59, 13, 0.36)),
-    url("@/assets/panchayat.jpg") center / cover no-repeat;
+    url("./assets/panchayat.jpg") center / cover no-repeat;
   filter: sepia(0.45) saturate(1.25) contrast(0.95);
   opacity: 0.62;
   clip-path: polygon(25% 12%, 100% 0, 100% 100%, 0 100%, 8% 36%);
@@ -208,7 +208,7 @@
 .hero-heritage {
   background:
     linear-gradient(180deg, rgba(255, 244, 225, 0.36), rgba(237, 116, 21, 0.16)),
-    url("@/assets/zila.jpg") center / cover no-repeat;
+    url("./assets/zila.jpg") center / cover no-repeat;
   filter: sepia(0.7) saturate(1.15);
   mix-blend-mode: multiply;
   opacity: 0.22;
@@ -230,7 +230,7 @@
   height: 420px;
   background-image:
     linear-gradient(180deg, rgba(255, 244, 225, 0.1), rgba(140, 54, 13, 0.55)),
-    url("@/assets/panchayat.jpg");
+    url("./assets/panchayat.jpg");
   opacity: 0.68;
   mask-image: linear-gradient(90deg, transparent 0, #000 28%);
 }
@@ -243,7 +243,7 @@
   height: 168px;
   background:
     linear-gradient(180deg, rgba(255, 250, 240, 0), rgba(255, 230, 204, 0.78)),
-    url("@/assets/rally.jpg") bottom center / cover no-repeat;
+    url("./assets/rally.jpg") bottom center / cover no-repeat;
   filter: sepia(0.65) saturate(0.8);
   opacity: 0.24;
   mask-image: linear-gradient(180deg, transparent 0, #000 30%, #000 100%);
@@ -308,7 +308,7 @@
 }
 
 .hero-exact {
-  background: #fff8ee url("@/assets/hero-background.png") center top / cover no-repeat;
+  background: #fff8ee url("./assets/hero-background.png") center top / cover no-repeat;
 }
 
 .hero-exact::before,
@@ -320,7 +320,7 @@
 }
 
 @utility website-demo-section {
-  background: #fff8ef url("@/assets/website-demo-background.png") center center / cover no-repeat;
+  background: #fff8ef url("./assets/website-demo-background.png") center center / cover no-repeat;
 }
 
 @utility section-title {

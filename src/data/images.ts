@@ -6,10 +6,10 @@ import demo from "@/assets/demo-devices.png";
 import hero from "@/assets/hero-leader.jpg";
 
 export const images: Record<string, string> = {
-  village,
-  panchayat,
-  zila,
-  rally,
-  demo,
-  hero,
+  village: village.src,
+  panchayat: panchayat.src,
+  zila: zila.src,
+  rally: rally.src,
+  demo: demo.src,
+  hero: hero.src,
 };

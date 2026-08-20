@@ -1,27 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { CalendarDays } from "lucide-react";
 import { PageHero, Section } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 import { blogPosts } from "@/data/site";
 import { images } from "@/data/images";
 
-export const Route = createFileRoute("/blog")({
-  head: () => ({
-    meta: [
-      { title: "ब्लॉग — चुनाव और डिजिटल अभियान की जानकारी" },
-      {
-        name: "description",
-        content:
-          "पंचायत चुनाव, व्हाट्सएप बूथ मैनेजमेंट, उम्मीदवार वेबसाइट और सोशल मीडिया रणनीति पर उपयोगी लेख।",
-      },
-      { property: "og:title", content: "ब्लॉग — भारत पहचान" },
-      { property: "og:description", content: "डिजिटल चुनाव अभियान की व्यवहारिक गाइड और टिप्स।" },
-    ],
-  }),
-  component: Blog,
-});
-
-function Blog() {
+export default function Blog() {
   return (
     <>
       <PageHero title="ब्लॉग" sub="चुनाव अभियान, डिजिटल रणनीति और मतदाता संपर्क पर उपयोगी लेख।" />

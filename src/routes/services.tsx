@@ -1,26 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 import { process, services } from "@/data/site";
 
-export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title: "हमारी सेवाएँ — वेबसाइट, सोशल मीडिया, व्हाट्सएप अभियान" },
-      {
-        name: "description",
-        content:
-          "उम्मीदवार वेबसाइट, सोशल मीडिया मैनेजमेंट, व्हाट्सएप अभियान, वीडियो प्रोडक्शन, ग्राफ़िक डिज़ाइन और एनालिटिक्स रिपोर्टिंग।",
-      },
-      { property: "og:title", content: "हमारी सेवाएँ — भारत पहचान" },
-      { property: "og:description", content: "चुनाव अभियान के लिए संपूर्ण डिजिटल सेवाएँ।" },
-    ],
-  }),
-  component: Services,
-});
-
-function Services() {
+export default function Services() {
   return (
     <>
       <PageHero
@@ -50,7 +34,7 @@ function Services() {
                 ))}
               </ul>
               <Link
-                to="/contact"
+                href="/contact"
                 className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-saffron"
               >
                 इस सेवा के बारे में पूछें <ArrowRight className="h-3.5 w-3.5" />

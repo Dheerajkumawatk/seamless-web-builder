@@ -1,25 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { ArrowRight, Check, Smartphone, Gauge, ShieldCheck, Languages } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 import { websiteSections } from "@/data/site";
 import { images } from "@/data/images";
-
-export const Route = createFileRoute("/campaign-website")({
-  head: () => ({
-    meta: [
-      { title: "अभियान वेबसाइट डेमो — उम्मीदवार वेबसाइट" },
-      {
-        name: "description",
-        content:
-          "उम्मीदवार अभियान वेबसाइट का डेमो — परिचय, विकास योजना, गैलरी, शिकायत पोर्टल और मोबाइल फ्रेंडली डिज़ाइन।",
-      },
-      { property: "og:title", content: "अभियान वेबसाइट डेमो — भारत पहचान" },
-      { property: "og:description", content: "3 से 7 दिन में आपकी अभियान वेबसाइट लाइव।" },
-    ],
-  }),
-  component: CampaignWebsite,
-});
 
 const highlights = [
   { icon: Smartphone, title: "मोबाइल फर्स्ट", text: "हर स्क्रीन पर परफ़ेक्ट दिखने वाली वेबसाइट" },
@@ -28,7 +12,7 @@ const highlights = [
   { icon: ShieldCheck, title: "सुरक्षित होस्टिंग", text: "SSL सर्टिफिकेट और रोज़ाना बैकअप" },
 ];
 
-function CampaignWebsite() {
+export default function CampaignWebsite() {
   return (
     <>
       <PageHero
@@ -61,7 +45,7 @@ function CampaignWebsite() {
                 ))}
               </ul>
               <Link
-                to="/contact"
+                href="/contact"
                 className="mt-6 inline-flex items-center gap-2 rounded-md bg-maroon px-5 py-3 text-sm font-semibold text-white"
               >
                 डेमो वेबसाइट देखें <ArrowRight className="h-4 w-4" />

@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export function CtaBand() {
@@ -12,7 +12,7 @@ export function CtaBand() {
           </p>
         </div>
         <Link
-          to="/"
+          href="/"
           className="inline-flex items-center justify-center gap-2 justify-self-center rounded-md bg-saffron px-8 py-3 text-sm font-bold text-white shadow-soft md:justify-self-end"
         >
           फ्री कंसल्टेशन बुक करें <ArrowRight className="h-4 w-4" />

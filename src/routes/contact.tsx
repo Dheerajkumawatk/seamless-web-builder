@@ -1,31 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+"use client";
+
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { MapPin, Phone, Mail, Globe, Send, Loader2, CheckCircle2 } from "lucide-react";
 import { PageHero, Section } from "@/components/site/Section";
 import { site } from "@/data/site";
-import { submitEnquiry } from "@/lib/contact.functions";
-
-export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "संपर्क करें — फ्री कंसल्टेशन बुक करें | भारत पहचान" },
-      {
-        name: "description",
-        content:
-          "अपने चुनाव अभियान के लिए फ्री कंसल्टेशन बुक करें। कॉल, ईमेल या फ़ॉर्म भरकर हमसे जुड़ें।",
-      },
-      { property: "og:title", content: "संपर्क करें — भारत पहचान" },
-      { property: "og:description", content: "फ्री कंसल्टेशन बुक करें और अभियान शुरू करें।" },
-    ],
-  }),
-  component: Contact,
-});
 
 const posts = ["सरपंच", "पंचायत समिति सदस्य", "जिला परिषद सदस्य", "स्वतंत्र उम्मीदवार", "अन्य"];
 
-function Contact() {
-  const send = useServerFn(submitEnquiry);
+export default function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [error, setError] = useState("");
 
@@ -35,16 +17,21 @@ function Contact() {
     setStatus("loading");
     setError("");
     try {
-      await send({
-        data: {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           name: String(fd.get("name") ?? ""),
           phone: String(fd.get("phone") ?? ""),
           email: String(fd.get("email") ?? ""),
           post: String(fd.get("post") ?? ""),
           state: String(fd.get("state") ?? ""),
           message: String(fd.get("message") ?? ""),
-        },
+        }),
       });
+      if (!response.ok) {
+        throw new Error("Failed to submit enquiry");
+      }
       setStatus("done");
       e.currentTarget.reset();
     } catch {

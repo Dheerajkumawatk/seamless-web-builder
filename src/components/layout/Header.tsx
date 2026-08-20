@@ -1,10 +1,14 @@
-import { Link } from "@tanstack/react-router";
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Facebook, Instagram, Mail, MapPin, Menu, Phone, Send, X, Youtube } from "lucide-react";
 import { nav, site } from "@/data/site";
 import { Logo } from "@/components/layout/Logo";
 
 export function Header() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   return (
@@ -40,7 +44,7 @@ export function Header() {
 
       <div className="border-b border-[#eaded6] bg-white/98 backdrop-blur">
         <div className="mx-auto grid h-[104px] max-w-[1720px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 md:px-8 lg:flex lg:justify-between xl:px-14">
-          <Link to="/" className="flex min-w-0 items-center gap-2" onClick={() => setOpen(false)}>
+          <Link href="/" className="flex min-w-0 items-center gap-2" onClick={() => setOpen(false)}>
             <Logo />
           </Link>
 
@@ -48,15 +52,16 @@ export function Header() {
             {nav.map((item) => (
               <Link
                 key={item.label}
-                to={item.to}
-                activeProps={{ className: "text-[#e95a09]" }}
-                className="whitespace-nowrap text-[15px] font-extrabold text-[#4b302b] transition-colors hover:text-[#e95a09]"
+                href={item.to}
+                className={`whitespace-nowrap text-[15px] font-extrabold transition-colors hover:text-[#e95a09] ${
+                  pathname === item.to ? "text-[#e95a09]" : "text-[#4b302b]"
+                }`}
               >
                 {item.label}
               </Link>
             ))}
             <Link
-              to="/"
+              href="/"
               className="ml-2 whitespace-nowrap rounded-lg bg-[#f3630b] px-7 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(243,99,11,.22)] transition-transform hover:scale-[1.03]"
             >
               फ्री कंसल्टेशन बुक करें
@@ -78,16 +83,17 @@ export function Header() {
               {nav.map((item) => (
                 <Link
                   key={item.label}
-                  to={item.to}
+                  href={item.to}
                   onClick={() => setOpen(false)}
-                  activeProps={{ className: "text-saffron" }}
-                  className="border-b border-border/60 py-3 text-sm font-bold text-neutral-800"
+                  className={`border-b border-border/60 py-3 text-sm font-bold ${
+                    pathname === item.to ? "text-saffron" : "text-neutral-800"
+                  }`}
                 >
                   {item.label}
                 </Link>
               ))}
               <Link
-                to="/"
+                href="/"
                 onClick={() => setOpen(false)}
                 className="mt-4 rounded-md bg-saffron px-4 py-3 text-center text-sm font-bold text-white"
               >

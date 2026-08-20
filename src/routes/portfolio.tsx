@@ -1,27 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Quote } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 import { portfolio, testimonials } from "@/data/site";
 import { images } from "@/data/images";
 
-export const Route = createFileRoute("/portfolio")({
-  head: () => ({
-    meta: [
-      { title: "पोर्टफोलियो — हमारे चुनाव अभियान प्रोजेक्ट" },
-      {
-        name: "description",
-        content:
-          "सरपंच, पंचायत समिति और जिला परिषद उम्मीदवारों के लिए किए गए डिजिटल अभियान प्रोजेक्ट और ग्राहकों की राय।",
-      },
-      { property: "og:title", content: "पोर्टफोलियो — भारत पहचान" },
-      { property: "og:description", content: "20+ राज्यों में 100+ उम्मीदवारों के अभियान।" },
-    ],
-  }),
-  component: Portfolio,
-});
-
-function Portfolio() {
+export default function Portfolio() {
   return (
     <>
       <PageHero

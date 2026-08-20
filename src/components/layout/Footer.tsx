@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { Facebook, Globe, Instagram, Mail, MapPin, Phone, Send, Youtube } from "lucide-react";
 import { nav, services, site } from "@/data/site";
 import { Logo } from "@/components/layout/Logo";
@@ -32,7 +32,7 @@ export function Footer() {
           <ul className="mt-7 space-y-3 text-[16px] font-extrabold text-[#5b4d47]">
             {nav.slice(1, 7).map((item) => (
               <li key={item.label}>
-                <Link to={item.to} className="transition-colors hover:text-saffron">
+                <Link href={item.to} className="transition-colors hover:text-saffron">
                   • {item.label}
                 </Link>
               </li>
@@ -45,7 +45,7 @@ export function Footer() {
           <ul className="mt-7 space-y-3 text-[16px] font-extrabold text-[#5b4d47]">
             {services.map((s) => (
               <li key={s.slug}>
-                <Link to="/services" className="transition-colors hover:text-saffron">
+                <Link href="/services" className="transition-colors hover:text-saffron">
                   • {s.title}
                 </Link>
               </li>

@@ -17,7 +17,7 @@ export function Logo({
 
   return (
     <img
-      src={logoImage}
+      src={logoImage.src}
       width={2200}
       height={650}
       alt="भारत पहचान"

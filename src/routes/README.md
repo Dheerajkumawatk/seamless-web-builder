@@ -1,21 +1,17 @@
-# Routes
+# Page Components
 
-TanStack Start uses **file-based routing**. Every `.tsx` file in this directory
-defines a route. Do **not** create `src/pages/`, `src/routes/_app/index.tsx`, or
-`app/layout.tsx` — those are Next.js / Remix conventions. The only root layout
-is `src/routes/__root.tsx`.
+This folder now stores reusable page UI components only.
 
-## Conventions
+Next.js App Router routes live in `src/app/**/page.tsx` and import these
+components so the visual UI can stay unchanged while routing stays Next-native.
 
-| File | URL |
+| App route | UI component |
 | --- | --- |
-| `index.tsx` | `/` |
-| `about.tsx` | `/about` |
-| `users/index.tsx` | `/users` |
-| `users/$id.tsx` | `/users/:id` (dynamic — bare `$`, no curly braces) |
-| `posts/{-$category}.tsx` | `/posts/:category?` (optional segment) |
-| `files/$.tsx` | `/files/*` (splat — read via `_splat` param, never `*`) |
-| `_layout.tsx` | layout route (renders children via `<Outlet />`) |
-| `__root.tsx` | app shell — wraps every page; preserve `<Outlet />` |
-
-`routeTree.gen.ts` is auto-generated. Don't edit it by hand.
+| `/` | `src/routes/index.tsx` |
+| `/about` | `src/routes/about.tsx` |
+| `/services` | `src/routes/services.tsx` |
+| `/campaign-website` | `src/routes/campaign-website.tsx` |
+| `/contact` | `src/routes/contact.tsx` |
+| `/packages` | `src/routes/packages.tsx` |
+| `/portfolio` | `src/routes/portfolio.tsx` |
+| `/blog` | `src/routes/blog.tsx` |

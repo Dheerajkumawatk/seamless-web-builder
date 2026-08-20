@@ -1,25 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Check, Target, Eye, HeartHandshake } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 import { stats, faqs } from "@/data/site";
 import { images } from "@/data/images";
-
-export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "हमारे बारे में — भारत पहचान डिजिटल अभियान" },
-      {
-        name: "description",
-        content:
-          "भारत पहचान एक डिजिटल चुनाव अभियान एजेंसी है जो ग्रामीण और स्थानीय उम्मीदवारों की डिजिटल पहचान बनाती है।",
-      },
-      { property: "og:title", content: "हमारे बारे में — भारत पहचान" },
-      { property: "og:description", content: "हमारा मिशन, विज़न और कार्यशैली।" },
-    ],
-  }),
-  component: About,
-});
 
 const values = [
   {
@@ -35,7 +18,7 @@ const values = [
   },
 ];
 
-function About() {
+export default function About() {
   return (
     <>
       <PageHero

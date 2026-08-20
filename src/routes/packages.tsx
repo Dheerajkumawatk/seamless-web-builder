@@ -1,26 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { Check } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 import { faqs, packages } from "@/data/site";
 
-export const Route = createFileRoute("/packages")({
-  head: () => ({
-    meta: [
-      { title: "पैकेज और कीमत — डिजिटल चुनाव अभियान प्लान" },
-      {
-        name: "description",
-        content:
-          "स्टार्टर, प्रोफेशनल और प्रीमियम पैकेज — हर बजट के अनुसार डिजिटल चुनाव अभियान प्लान।",
-      },
-      { property: "og:title", content: "हमारे पैकेज — भारत पहचान" },
-      { property: "og:description", content: "₹9,999 से शुरू मासिक डिजिटल अभियान पैकेज।" },
-    ],
-  }),
-  component: Packages,
-});
-
-function Packages() {
+export default function Packages() {
   return (
     <>
       <PageHero
@@ -68,7 +52,7 @@ function Packages() {
                   ))}
                 </ul>
                 <Link
-                  to="/contact"
+                  href="/contact"
                   className={`mt-6 block rounded-md py-3 text-center text-sm font-semibold ${
                     p.featured
                       ? "bg-saffron text-saffron-foreground"

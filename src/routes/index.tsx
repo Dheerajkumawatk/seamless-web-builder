@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import Link from "next/link";
 import {
   ArrowRight,
   BarChart3,
@@ -26,26 +26,7 @@ import heroLeader from "@/assets/hero-leader.png";
 import { Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "भारत पहचान - पंचायत चुनाव डिजिटल अभियान एजेंसी" },
-      {
-        name: "description",
-        content:
-          "सरपंच, पंचायत समिति और जिला परिषद उम्मीदवारों के लिए वेबसाइट, सोशल मीडिया, व्हाट्सएप अभियान और वीडियो प्रोडक्शन सेवाएं।",
-      },
-      { property: "og:title", content: "भारत पहचान - डिजिटल चुनाव अभियान" },
-      {
-        property: "og:description",
-        content: "एंड-टू-एंड डिजिटल मार्केटिंग और ब्रांडिंग समाधान चुनाव उम्मीदवारों के लिए।",
-      },
-    ],
-  }),
-  component: Index,
-});
-
-function Index() {
+export default function Index() {
   return (
     <>
       <section className="hero-exact relative overflow-hidden border-b border-orange-100">
@@ -81,13 +62,13 @@ function Index() {
 
             <div className="mt-12 flex flex-col gap-5 sm:flex-row">
               <Link
-                to="/campaign-website"
+                href="/campaign-website"
                 className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#5a060b] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)]"
               >
                 डेमो अभियान देखें <ArrowRight className="h-6 w-6" />
               </Link>
               <Link
-                to="/"
+                href="/"
                 className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#f55a08] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(245,90,8,.25)]"
               >
                 फ्री कंसल्टेशन लें <ArrowRight className="h-6 w-6" />
@@ -97,7 +78,7 @@ function Index() {
 
           <div className="hero-person-slot relative z-10 self-end">
             <img
-              src={heroLeader}
+              src={heroLeader.src}
               width={1100}
               height={920}
               alt="तिरंगे के साथ जनप्रतिनिधि"
@@ -162,7 +143,7 @@ function Index() {
               <p className="mt-2 min-h-12 text-xs leading-relaxed text-neutral-700">{s.short}</p>
               <ServicePreview index={index} />
               <Link
-                to="/services"
+                href="/services"
                 className="mt-auto inline-flex items-center gap-1 text-sm font-bold text-saffron"
               >
                 और आगे <ArrowRight className="h-3.5 w-3.5" />
@@ -199,7 +180,7 @@ function Index() {
           <SectionHeading title="अभियान वेबसाइट डेमो" />
           <div className="mt-7 grid items-center gap-8 lg:grid-cols-[1.45fr_.9fr]">
             <img
-              src={images.demo}
+              src={images["demo"]}
               alt="अभियान वेबसाइट डेमो - लैपटॉप और मोबाइल"
               className="w-full rounded-md object-contain"
             />
@@ -219,7 +200,7 @@ function Index() {
                 ))}
               </ul>
               <Link
-                to="/campaign-website"
+                href="/campaign-website"
                 className="mt-6 inline-flex items-center gap-2 rounded-md bg-maroon px-6 py-3 text-sm font-bold text-white"
               >
                 डेमो वेबसाइट देखें <ArrowRight className="h-4 w-4" />
@@ -264,7 +245,7 @@ function Index() {
                   ))}
                 </ul>
                 <Link
-                  to="/"
+                  href="/"
                   className={`mt-7 block rounded-md py-3 text-center text-sm font-bold text-white ${
                     p.featured ? "bg-red-600" : "bg-maroon"
                   }`}
@@ -300,7 +281,7 @@ function Index() {
         </div>
         <div className="mt-8 text-center">
           <Link
-            to="/portfolio"
+            href="/portfolio"
             className="inline-flex items-center gap-2 rounded-md border border-maroon px-6 py-2.5 text-sm font-bold text-maroon"
           >
             और समीक्षाएं देखें <ArrowRight className="h-4 w-4" />
@@ -315,7 +296,7 @@ function Index() {
 
 function ServicePreview({ index }: { index: number }) {
   if (index === 0) {
-    return <img src={images.demo} alt="" className="my-5 h-20 w-full object-contain" />;
+    return <img src={images["demo"]} alt="" className="my-5 h-20 w-full object-contain" />;
   }
   if (index === 1) {
     return (
@@ -342,7 +323,7 @@ function ServicePreview({ index }: { index: number }) {
     return <Video className="my-6 h-16 w-16 text-neutral-800" />;
   }
   if (index === 4) {
-    return <img src={images.rally} alt="" className="my-5 h-20 w-full rounded object-cover" />;
+    return <img src={images["rally"]} alt="" className="my-5 h-20 w-full rounded object-cover" />;
   }
   return (
     <div className="my-5 w-full rounded-md border bg-white p-3">
