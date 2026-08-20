@@ -1,9 +1,25 @@
 import Link from "next/link";
-import { Facebook, Globe, Instagram, Mail, MapPin, Phone, Send, Youtube } from "lucide-react";
+import {
+  Facebook,
+  Globe,
+  Instagram,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Youtube,
+} from "lucide-react";
 import { nav, services, site } from "@/data/site";
 import { Logo } from "@/components/layout/Logo";
 
 export function Footer() {
+  const socialLinks = [
+    { icon: Facebook, href: site.socialLinks.facebook, label: "Facebook" },
+    { icon: Instagram, href: site.socialLinks.instagram, label: "Instagram" },
+    { icon: Youtube, href: site.socialLinks.youtube, label: "YouTube" },
+    { icon: MessageCircle, href: site.whatsappUrl, label: "WhatsApp" },
+  ];
+
   return (
     <footer className="border-t border-[#e6d8cd] bg-[#fffaf2] text-[#4a342f] shadow-[0_-2px_10px_rgba(94,32,10,.06)]">
       <div className="mx-auto grid max-w-[1720px] gap-10 px-6 py-11 md:grid-cols-2 lg:grid-cols-[1.22fr_.82fr_.98fr_.98fr] lg:px-20">
@@ -14,11 +30,13 @@ export function Footer() {
             प्रदान करते हैं।
           </p>
           <div className="mt-8 flex gap-6">
-            {[Facebook, Instagram, Youtube, Send].map((Icon, i) => (
+            {socialLinks.map(({ icon: Icon, href, label }) => (
               <a
-                key={i}
-                href="#"
-                aria-label="social"
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={label}
                 className="grid h-9 w-9 place-items-center rounded-full border-2 border-[#d8c6ba] bg-white text-[#7a1215] shadow-sm transition-colors hover:border-saffron hover:bg-saffron hover:text-white"
               >
                 <Icon className="h-4 w-4 stroke-[2.4]" />
@@ -78,6 +96,15 @@ export function Footer() {
       </div>
 
       <div className="mx-auto max-w-[1720px] border-t-2 border-[#eaded3] px-6 lg:px-20">
+        <div className="border-b border-[#eaded3] py-5 text-[13px] leading-relaxed font-semibold text-[#665b55]">
+          <p>
+            <span className="font-extrabold text-[#7a1215]">Disclaimer:</span> भारत पहचान एक
+            स्वतंत्र डिजिटल सेवा प्रदाता है, जो ग्राम पंचायत, सरपंच एवं जनप्रतिनिधियों हेतु वेबसाइट
+            निर्माण, डिजिटल प्रोफ़ाइल एवं सूचना-प्रसार सेवाएँ प्रदान करता है। यह किसी सरकार, सरकारी
+            विभाग अथवा किसी राजनीतिक दल, उम्मीदवार या नेता से संबद्ध, संबंधित अथवा समर्थित नहीं है,
+            और न ही किसी चुनाव परिणाम या चुनावी जीत-हार की गारंटी देता है।
+          </p>
+        </div>
         <div className="flex flex-col items-center justify-between gap-3 py-5 text-[14px] font-extrabold text-[#665b55] sm:flex-row">
           <p>© 2024 भारत पहचान. सभी अधिकार सुरक्षित।</p>
           <p className="flex gap-7 text-[#7a1215]">

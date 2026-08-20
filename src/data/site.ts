@@ -19,9 +19,16 @@ import {
 export const site = {
   name: "भारत पहचान",
   tagline: "डिजिटल अभियान, सुरक्षित पहचान",
-  phone: "+91 98765 43210",
+  phone: "+91 76918 06689",
+  whatsapp: "+91 76918 06689",
+  whatsappUrl: "https://wa.me/917691806689",
   email: "info@bharatpehchaan.com",
   website: "www.bharatpehchaan.com",
+  socialLinks: {
+    instagram: "https://www.instagram.com/bharatpahchan/",
+    facebook: "https://www.facebook.com/profile.php?id=61593206296368",
+    youtube: "https://www.youtube.com/@bharatpahchan",
+  },
   address: "जयपुर, राजस्थान, भारत",
   topbar: "भारत के हर गांव, हर वोट के लिए डिजिटल अभियान",
 };
