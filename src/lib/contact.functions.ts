@@ -11,7 +11,7 @@ const leadSchema = z.object({
 });
 
 export const submitEnquiry = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => leadSchema.parse(data))
+  .validator((data: unknown) => leadSchema.parse(data))
   .handler(async ({ data }) => {
     const { createLead } = await import("./contact.server");
     const lead = await createLead({

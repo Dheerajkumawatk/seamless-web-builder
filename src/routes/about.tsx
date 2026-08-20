@@ -22,9 +22,17 @@ export const Route = createFileRoute("/about")({
 });
 
 const values = [
-  { icon: Target, title: "हमारा मिशन", text: "हर उम्मीदवार तक किफ़ायती और प्रभावी डिजिटल अभियान पहुँचाना।" },
+  {
+    icon: Target,
+    title: "हमारा मिशन",
+    text: "हर उम्मीदवार तक किफ़ायती और प्रभावी डिजिटल अभियान पहुँचाना।",
+  },
   { icon: Eye, title: "हमारा विज़न", text: "भारत के हर गाँव में डिजिटल राजनीतिक जागरूकता लाना।" },
-  { icon: HeartHandshake, title: "हमारे मूल्य", text: "पारदर्शिता, समय की पाबंदी और पूरी ज़िम्मेदारी।" },
+  {
+    icon: HeartHandshake,
+    title: "हमारे मूल्य",
+    text: "पारदर्शिता, समय की पाबंदी और पूरी ज़िम्मेदारी।",
+  },
 ];
 
 function About() {

@@ -22,13 +22,7 @@ export const Route = createFileRoute("/contact")({
   component: Contact,
 });
 
-const posts = [
-  "सरपंच",
-  "पंचायत समिति सदस्य",
-  "जिला परिषद सदस्य",
-  "स्वतंत्र उम्मीदवार",
-  "अन्य",
-];
+const posts = ["सरपंच", "पंचायत समिति सदस्य", "जिला परिषद सदस्य", "स्वतंत्र उम्मीदवार", "अन्य"];
 
 function Contact() {
   const send = useServerFn(submitEnquiry);

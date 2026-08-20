@@ -24,10 +24,7 @@ export const Route = createFileRoute("/blog")({
 function Blog() {
   return (
     <>
-      <PageHero
-        title="ब्लॉग"
-        sub="चुनाव अभियान, डिजिटल रणनीति और मतदाता संपर्क पर उपयोगी लेख।"
-      />
+      <PageHero title="ब्लॉग" sub="चुनाव अभियान, डिजिटल रणनीति और मतदाता संपर्क पर उपयोगी लेख।" />
 
       <Section>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
