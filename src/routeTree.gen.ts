@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CampaignWebsiteRouteImport } from './routes/campaign-website'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -37,6 +38,11 @@ const CampaignWebsiteRoute = CampaignWebsiteRouteImport.update({
   path: '/campaign-website',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PackagesRoute = PackagesRouteImport.update({
   id: '/packages',
   path: '/packages',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/campaign-website': typeof CampaignWebsiteRoute
+  '/contact': typeof ContactRoute
   '/packages': typeof PackagesRoute
   '/portfolio': typeof PortfolioRoute
   '/services': typeof ServicesRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/campaign-website': typeof CampaignWebsiteRoute
+  '/contact': typeof ContactRoute
   '/packages': typeof PackagesRoute
   '/portfolio': typeof PortfolioRoute
   '/services': typeof ServicesRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/campaign-website': typeof CampaignWebsiteRoute
+  '/contact': typeof ContactRoute
   '/packages': typeof PackagesRoute
   '/portfolio': typeof PortfolioRoute
   '/services': typeof ServicesRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/campaign-website'
+    | '/contact'
     | '/packages'
     | '/portfolio'
     | '/services'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/campaign-website'
+    | '/contact'
     | '/packages'
     | '/portfolio'
     | '/services'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/campaign-website'
+    | '/contact'
     | '/packages'
     | '/portfolio'
     | '/services'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
   CampaignWebsiteRoute: typeof CampaignWebsiteRoute
+  ContactRoute: typeof ContactRoute
   PackagesRoute: typeof PackagesRoute
   PortfolioRoute: typeof PortfolioRoute
   ServicesRoute: typeof ServicesRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CampaignWebsiteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/packages': {
       id: '/packages'
       path: '/packages'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BlogRoute: BlogRoute,
   CampaignWebsiteRoute: CampaignWebsiteRoute,
+  ContactRoute: ContactRoute,
   PackagesRoute: PackagesRoute,
   PortfolioRoute: PortfolioRoute,
   ServicesRoute: ServicesRoute,
