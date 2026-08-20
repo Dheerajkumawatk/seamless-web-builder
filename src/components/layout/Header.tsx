@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, Phone, Mail, Facebook, Instagram, Youtube, Send } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Menu, Phone, Send, X, Youtube } from "lucide-react";
 import { nav, site } from "@/data/site";
 import { Logo } from "./Logo";
 
@@ -8,30 +8,29 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50">
-      {/* Top bar */}
-      <div className="hidden bg-maroon text-maroon-foreground md:block">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 text-xs">
+    <header className="sticky top-0 z-50 shadow-[0_2px_12px_rgba(76,7,9,.18)]">
+      <div className="hidden border-b border-white/10 bg-[#6d070b] text-white md:block">
+        <div className="mx-auto flex h-[42px] max-w-[1720px] items-center justify-between gap-4 px-8 text-[14px] font-bold xl:px-14">
           <p className="flex min-w-0 items-center gap-2 truncate">
-            <span className="text-gold">◆</span>
+            <MapPin className="h-4 w-4 fill-white/15" />
             {site.topbar}
           </p>
-          <div className="flex shrink-0 items-center gap-5">
+          <div className="flex shrink-0 items-center gap-12">
             <a href={`tel:${site.phone}`} className="flex items-center gap-1.5 hover:text-gold">
-              <Phone className="h-3.5 w-3.5" /> {site.phone}
+              <Phone className="h-4 w-4 fill-white/15" /> {site.phone}
             </a>
             <a href={`mailto:${site.email}`} className="flex items-center gap-1.5 hover:text-gold">
-              <Mail className="h-3.5 w-3.5" /> {site.email}
+              <Mail className="h-4 w-4 fill-white/15" /> {site.email}
             </a>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {[Facebook, Instagram, Youtube, Send].map((Icon, i) => (
                 <a
                   key={i}
                   href="#"
                   aria-label="social"
-                  className="grid h-6 w-6 place-items-center rounded-full bg-maroon-foreground/10 hover:bg-saffron"
+                  className="grid h-7 w-7 place-items-center rounded-full border border-[#d96a24]/65 bg-[#4f0708]/30 text-white hover:bg-saffron"
                 >
-                  <Icon className="h-3 w-3" />
+                  <Icon className="h-3.5 w-3.5" />
                 </a>
               ))}
             </div>
@@ -39,27 +38,26 @@ export function Header() {
         </div>
       </div>
 
-      {/* Main nav */}
-      <div className="border-b border-border bg-card/95 backdrop-blur">
-        <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-3 lg:flex lg:justify-between">
+      <div className="border-b border-[#eaded6] bg-white/98 backdrop-blur">
+        <div className="mx-auto grid h-[104px] max-w-[1720px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 md:px-8 lg:flex lg:justify-between xl:px-14">
           <Link to="/" className="flex min-w-0 items-center gap-2" onClick={() => setOpen(false)}>
             <Logo />
           </Link>
 
-          <nav className="hidden items-center gap-4 lg:flex">
+          <nav className="hidden items-center gap-9 lg:flex">
             {nav.map((item) => (
               <Link
-                key={item.to}
+                key={item.label}
                 to={item.to}
-                activeProps={{ className: "text-saffron" }}
-                className="text-sm font-semibold text-foreground/80 transition-colors hover:text-saffron"
+                activeProps={{ className: "text-[#e95a09]" }}
+                className="whitespace-nowrap text-[15px] font-extrabold text-[#4b302b] transition-colors hover:text-[#e95a09]"
               >
                 {item.label}
               </Link>
             ))}
             <Link
-              to="/contact"
-              className="rounded-md bg-saffron px-4 py-2 text-sm font-semibold text-saffron-foreground shadow-soft transition-transform hover:scale-[1.03]"
+              to="/"
+              className="ml-2 whitespace-nowrap rounded-lg bg-[#f3630b] px-7 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(243,99,11,.22)] transition-transform hover:scale-[1.03]"
             >
               फ्री कंसल्टेशन बुक करें
             </Link>
@@ -68,36 +66,36 @@ export function Header() {
           <button
             aria-label="मेन्यू"
             onClick={() => setOpen((v) => !v)}
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-border text-maroon lg:hidden"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-md border border-border text-maroon lg:hidden"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
 
         {open && (
-          <nav className="border-t border-border bg-card px-4 py-3 lg:hidden">
+          <nav className="border-t border-border bg-white px-4 py-3 lg:hidden">
             <div className="flex flex-col">
               {nav.map((item) => (
                 <Link
-                  key={item.to}
+                  key={item.label}
                   to={item.to}
                   onClick={() => setOpen(false)}
                   activeProps={{ className: "text-saffron" }}
-                  className="border-b border-border/60 py-3 text-sm font-semibold text-foreground/85"
+                  className="border-b border-border/60 py-3 text-sm font-bold text-neutral-800"
                 >
                   {item.label}
                 </Link>
               ))}
               <Link
-                to="/contact"
+                to="/"
                 onClick={() => setOpen(false)}
-                className="mt-4 rounded-md bg-saffron px-4 py-3 text-center text-sm font-semibold text-saffron-foreground"
+                className="mt-4 rounded-md bg-saffron px-4 py-3 text-center text-sm font-bold text-white"
               >
                 फ्री कंसल्टेशन बुक करें
               </Link>
               <a
                 href={`tel:${site.phone}`}
-                className="mt-2 rounded-md border border-border px-4 py-3 text-center text-sm font-semibold text-maroon"
+                className="mt-2 rounded-md border border-border px-4 py-3 text-center text-sm font-bold text-maroon"
               >
                 {site.phone}
               </a>

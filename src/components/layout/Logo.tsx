@@ -1,5 +1,6 @@
 import { site } from "@/data/site";
 
+<<<<<<< Updated upstream
 export function Logo({ light = false }: { light?: boolean }) {
   const [first, ...rest] = site.name.split(" ");
   return (
@@ -41,6 +42,44 @@ export function Logo({ light = false }: { light?: boolean }) {
           className={`mt-1 block truncate text-[10px] tracking-wide ${
             light ? "text-maroon-foreground/70" : "text-muted-foreground"
           }`}
+=======
+export function Logo({
+  light = false,
+  size = "nav",
+}: {
+  light?: boolean;
+  size?: "nav" | "compact" | "footer";
+}) {
+  const isCompact = size === "compact";
+  const isFooter = size === "footer";
+
+  return (
+    <span className="flex min-w-0 items-center gap-3">
+      <span
+        className={`grid shrink-0 place-items-center ${
+          isCompact ? "h-10 w-10" : isFooter ? "h-[50px] w-[50px]" : "h-[58px] w-[58px]"
+        }`}
+      >
+        <Flower2
+          className={`${
+            isCompact ? "h-8 w-8" : isFooter ? "h-11 w-11" : "h-12 w-12"
+          } fill-[#f36b12]/20 text-[#f36b12] stroke-[2.2]`}
+        />
+      </span>
+      <span className="min-w-0">
+        <span
+          className={`block truncate font-display leading-[0.95] font-black ${
+            isCompact ? "text-lg" : isFooter ? "text-[30px]" : "text-[34px]"
+          } ${light ? "text-maroon-foreground" : "text-maroon"}`}
+        >
+          <span className="text-[#f36b12]">भारत</span>{" "}
+          <span className={light ? "text-maroon-foreground" : "text-[#252525]"}>पहचान</span>
+        </span>
+        <span
+          className={`mt-1 block truncate font-bold tracking-normal ${
+            isCompact ? "text-[10px]" : isFooter ? "text-[12px]" : "text-[13px]"
+          } ${light ? "text-maroon-foreground/70" : "text-[#66524a]"}`}
+>>>>>>> Stashed changes
         >
           {site.tagline}
         </span>

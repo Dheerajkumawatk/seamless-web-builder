@@ -1,5 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Quote } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  Check,
+  Facebook,
+  Instagram,
+  MessageCircle,
+  Quote,
+  Twitter,
+  Video,
+  Youtube,
+} from "lucide-react";
 import {
   audiences,
   heroFeatures,
@@ -18,13 +29,13 @@ import { CtaBand } from "@/components/site/CtaBand";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "भारत पहचान — पंचायत चुनाव डिजिटल अभियान एजेंसी" },
+      { title: "भारत पहचान - पंचायत चुनाव डिजिटल अभियान एजेंसी" },
       {
         name: "description",
         content:
-          "सरपंच, पंचायत समिति और जिला परिषद उम्मीदवारों के लिए वेबसाइट, सोशल मीडिया, व्हाट्सएप अभियान और वीडियो प्रोडक्शन सेवाएँ।",
+          "सरपंच, पंचायत समिति और जिला परिषद उम्मीदवारों के लिए वेबसाइट, सोशल मीडिया, व्हाट्सएप अभियान और वीडियो प्रोडक्शन सेवाएं।",
       },
-      { property: "og:title", content: "भारत पहचान — डिजिटल चुनाव अभियान" },
+      { property: "og:title", content: "भारत पहचान - डिजिटल चुनाव अभियान" },
       {
         property: "og:description",
         content: "एंड-टू-एंड डिजिटल मार्केटिंग और ब्रांडिंग समाधान चुनाव उम्मीदवारों के लिए।",
@@ -37,213 +48,229 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <>
-      {/* HERO */}
-      <section className="page-canvas relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 lg:grid-cols-2 lg:py-4">
-          <div className="order-2 lg:order-1">
-            <h1 className="font-display text-3xl leading-tight font-bold text-maroon sm:text-4xl md:text-5xl">
+      <section className="hero-exact relative overflow-hidden border-b border-orange-100">
+        <div className="hero-heritage hero-heritage-center" />
+        <div className="hero-heritage hero-heritage-right" />
+        <div className="hero-crowd" />
+        <div className="hero-flag" />
+        <div className="mx-auto grid min-h-[595px] max-w-[1720px] items-center gap-0 px-6 pt-4 lg:grid-cols-[0.98fr_1.02fr] lg:px-20">
+          <div className="relative z-10 max-w-[750px] pb-12">
+            <h1 className="font-display text-[42px] leading-[1.08] font-black tracking-normal text-[#1d0908] sm:text-[62px] lg:text-[82px]">
               डिजिटल अभियान से
               <br />
-              <span className="text-saffron">बदलें गाँव</span> का भविष्य
+              <span className="text-[#ed2809]">बदलें गाँव</span>{" "}
+              <span className="text-[#4d090f]">का भविष्य</span>
             </h1>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-              सरपंच, पंचायत समिति और जिला परिषद चुनाव के लिए एंड-टू-एंड डिजिटल मार्केटिंग और ब्रांडिंग
-              समाधान।
+            <p className="mt-7 max-w-[650px] text-xl leading-relaxed font-extrabold text-[#321815] sm:text-2xl">
+              सरपंच, पंचायत समिति और जिला परिषद चुनाव के लिए
+              <br className="hidden sm:block" />
+              एंड-टू-एंड डिजिटल मार्केटिंग और ब्रांडिंग समाधान।
             </p>
 
-            <div className="mt-7 grid grid-cols-3 gap-3 sm:grid-cols-6">
+            <div className="mt-12 grid max-w-[850px] grid-cols-3 gap-0 sm:grid-cols-6">
               {heroFeatures.map((f) => (
-                <div key={f.label} className="flex flex-col items-center gap-1.5 text-center">
-                  <span className="grid h-11 w-11 place-items-center rounded-md border border-saffron/35 bg-card">
-                    <f.icon className="h-5 w-5 text-saffron" />
+                <div
+                  key={f.label}
+                  className="border-r border-[#d7b89c] px-4 text-center last:border-r-0"
+                >
+                  <span className="mx-auto grid h-10 w-10 place-items-center text-[#e96c09]">
+                    <f.icon className="h-9 w-9 stroke-[1.8]" />
                   </span>
-                  <span className="text-[10px] leading-tight whitespace-pre-line text-muted-foreground">
+                  <span className="mt-4 block text-[13px] leading-tight font-extrabold whitespace-pre-line text-[#351610]">
                     {f.label}
                   </span>
                 </div>
               ))}
             </div>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-12 flex flex-col gap-5 sm:flex-row">
               <Link
                 to="/campaign-website"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-maroon px-6 py-3 text-sm font-semibold text-maroon-foreground transition-transform hover:scale-[1.03]"
+                className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#5a060b] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)]"
               >
-                डेमो अभियान देखें <ArrowRight className="h-4 w-4" />
+                डेमो अभियान देखें <ArrowRight className="h-6 w-6" />
               </Link>
               <Link
-                to="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-saffron px-6 py-3 text-sm font-semibold text-saffron-foreground shadow-soft transition-transform hover:scale-[1.03]"
+                to="/"
+                className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#f55a08] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(245,90,8,.25)]"
               >
-                फ्री कंसल्टेशन लें <ArrowRight className="h-4 w-4" />
+                फ्री कंसल्टेशन लें <ArrowRight className="h-6 w-6" />
               </Link>
             </div>
           </div>
 
-          <div className="order-1 lg:order-2">
+          <div className="hero-person-slot relative z-10 self-end">
             <img
               src={heroLeader}
-              width={1200}
-              height={1200}
+              width={1100}
+              height={920}
               alt="तिरंगे के साथ जनप्रतिनिधि"
-              className="mx-auto w-full max-w-md rounded-lg object-cover lg:max-w-none"
+              className="hero-person-image"
             />
           </div>
         </div>
 
-        {/* STATS */}
-        <div className="bg-maroon">
-          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-y-6 px-4 py-6 md:grid-cols-4">
+        <div className="relative z-20 bg-maroon">
+          <div className="mx-auto grid max-w-7xl grid-cols-2 px-4 py-6 md:grid-cols-4">
             {stats.map((s, i) => (
               <div
                 key={s.label}
-                className={`px-2 text-center ${i > 0 ? "md:border-l md:border-maroon-foreground/20" : ""}`}
+                className={`flex items-center justify-center gap-4 px-3 text-center md:text-left ${
+                  i > 0 ? "md:border-l md:border-white/25" : ""
+                }`}
               >
-                <p className="font-display text-2xl font-bold text-gold sm:text-3xl">{s.value}</p>
-                <p className="mt-1 text-xs text-maroon-foreground/80 sm:text-sm">{s.label}</p>
+                <s.icon className="hidden h-10 w-10 text-gold sm:block" />
+                <div>
+                  <p className="font-display text-3xl font-bold leading-none text-white">
+                    {s.value}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-white/90">{s.label}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* AUDIENCES */}
       <Section>
         <SectionHeading title="हम किनके लिए काम करते हैं" />
-        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {audiences.map((a) => (
             <article key={a.title} className="card-warm overflow-hidden">
-              <div className="p-4">
-                <h3 className="text-base text-maroon">{a.title}</h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{a.desc}</p>
+              <div className="flex gap-3 p-5">
+                <span
+                  className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${a.iconColor}`}
+                >
+                  <Check className="h-5 w-5 text-white" />
+                </span>
+                <div>
+                  <h3 className="text-base text-maroon">{a.title}</h3>
+                  <p className="mt-1 text-sm leading-snug text-neutral-700">{a.desc}</p>
+                </div>
               </div>
-              <img
-                src={images[a.image]}
-                width={800}
-                height={600}
-                loading="lazy"
-                alt={a.title}
-                className="h-40 w-full object-cover"
-              />
+              <img src={images[a.image]} alt={a.title} className="h-36 w-full object-cover" />
             </article>
           ))}
         </div>
       </Section>
 
-      {/* SERVICES */}
       <Section muted>
-        <SectionHeading title="हमारी सेवाएँ" />
-        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => (
-            <article key={s.slug} className="card-warm flex flex-col p-5">
-              <span className="grid h-11 w-11 place-items-center rounded-md bg-saffron/12 ring-1 ring-saffron/30">
-                <s.icon className="h-5 w-5 text-saffron" />
-              </span>
-              <h3 className="mt-4 text-base text-maroon">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.short}</p>
+        <SectionHeading title="हमारी सेवाएं" />
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+          {services.map((s, index) => (
+            <article
+              key={s.slug}
+              className="card-warm flex min-h-64 flex-col items-center p-5 text-center"
+            >
+              <h3 className="text-base text-maroon">{s.title}</h3>
+              <p className="mt-2 min-h-12 text-xs leading-relaxed text-neutral-700">{s.short}</p>
+              <ServicePreview index={index} />
               <Link
                 to="/services"
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-saffron"
+                className="mt-auto inline-flex items-center gap-1 text-sm font-bold text-saffron"
               >
-                और जानें <ArrowRight className="h-3.5 w-3.5" />
+                और आगे <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </article>
           ))}
         </div>
       </Section>
 
-      {/* PROCESS */}
       <Section>
         <SectionHeading title="हमारा काम करने का तरीका" />
-        <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4 lg:grid-cols-7">
-          {process.map((p) => (
-            <div key={p.num} className="flex flex-col items-center text-center">
-              <span className="grid h-14 w-14 place-items-center rounded-full border border-saffron/40 bg-card">
-                <p.icon className="h-6 w-6 text-saffron" />
+        <div className="mt-10 grid grid-cols-2 gap-y-8 sm:grid-cols-4 lg:grid-cols-7">
+          {process.map((p, i) => (
+            <div key={p.num} className="relative flex flex-col items-center px-2 text-center">
+              {i < process.length - 1 && (
+                <span className="absolute top-9 left-[62%] hidden h-px w-[76%] bg-orange-200 lg:block" />
+              )}
+              <span className="relative z-10 grid h-18 w-18 place-items-center rounded-full border border-orange-200 bg-white text-maroon shadow-sm">
+                <p.icon className="h-8 w-8" />
               </span>
-              <span className="mt-3 font-display text-lg font-bold text-maroon">{p.num}</span>
-              <span className="mt-1 text-xs leading-tight text-muted-foreground">{p.title}</span>
+              <span className="mt-3 font-display text-lg font-bold leading-none text-maroon">
+                {p.num}
+              </span>
+              <span className="mt-1 text-xs leading-tight font-semibold text-neutral-800">
+                {p.title}
+              </span>
             </div>
           ))}
         </div>
       </Section>
 
-      {/* DEMO */}
       <Section muted>
-        <SectionHeading title="अभियान वेबसाइट डेमो" />
-        <div className="mt-9 grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
-          <img
-            src={images["demo"]}
-            width={1200}
-            height={800}
-            loading="lazy"
-            alt="अभियान वेबसाइट डेमो — लैपटॉप और मोबाइल"
-            className="w-full rounded-lg"
-          />
-          <div>
-            <h3 className="text-lg text-maroon">वेबसाइट में शामिल सेक्शन</h3>
-            <ul className="mt-4 space-y-2.5">
-              {websiteSections.map((s) => (
-                <li key={s} className="flex items-center gap-2.5 text-sm text-foreground/85">
-                  <span className="grid h-5 w-5 shrink-0 place-items-center rounded-sm bg-saffron/15">
-                    <Check className="h-3 w-3 text-saffron" />
-                  </span>
-                  {s}
-                </li>
-              ))}
-            </ul>
-            <Link
-              to="/campaign-website"
-              className="mt-6 inline-flex items-center gap-2 rounded-md bg-maroon px-5 py-3 text-sm font-semibold text-maroon-foreground"
-            >
-              डेमो वेबसाइट देखें <ArrowRight className="h-4 w-4" />
-            </Link>
+        <div className="rounded-lg border border-orange-200 bg-white/70 p-4 shadow-card sm:p-6">
+          <SectionHeading title="अभियान वेबसाइट डेमो" />
+          <div className="mt-7 grid items-center gap-8 lg:grid-cols-[1.45fr_.9fr]">
+            <img
+              src={images.demo}
+              alt="अभियान वेबसाइट डेमो - लैपटॉप और मोबाइल"
+              className="w-full rounded-md object-contain"
+            />
+            <div>
+              <h3 className="text-xl text-maroon">वेबसाइट में शामिल सेक्शन</h3>
+              <ul className="mt-4 space-y-2.5">
+                {websiteSections.map((s) => (
+                  <li
+                    key={s}
+                    className="flex items-center gap-2.5 text-sm font-semibold text-neutral-800"
+                  >
+                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-orange-100">
+                      <Check className="h-3 w-3 text-saffron" />
+                    </span>
+                    {s}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                to="/campaign-website"
+                className="mt-6 inline-flex items-center gap-2 rounded-md bg-maroon px-6 py-3 text-sm font-bold text-white"
+              >
+                डेमो वेबसाइट देखें <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </Section>
 
-      {/* PACKAGES */}
       <Section>
         <SectionHeading title="हमारे पैकेज" />
-        <div className="mt-9 grid gap-6 lg:grid-cols-3">
+        <div className="mt-8 grid gap-6 lg:grid-cols-3">
           {packages.map((p) => (
             <article
               key={p.name}
-              className={`relative flex flex-col overflow-hidden rounded-lg border bg-card ${
-                p.featured ? "border-saffron shadow-soft" : "border-border shadow-card"
+              className={`relative flex flex-col overflow-hidden rounded-lg border bg-white shadow-card ${
+                p.featured ? "border-saffron" : "border-orange-200"
               }`}
             >
-              <div
-                className={`p-6 text-center ${p.featured ? "bg-saffron text-saffron-foreground" : ""}`}
-              >
-                <h3 className={`text-lg ${p.featured ? "text-saffron-foreground" : "text-maroon"}`}>
-                  {p.name}
-                </h3>
-                <p
-                  className={`mt-1 text-xs ${p.featured ? "text-saffron-foreground/85" : "text-muted-foreground"}`}
-                >
+              {p.featured && (
+                <span className="absolute -right-9 top-5 rotate-45 bg-white px-10 py-1 text-xs font-bold text-saffron">
+                  लोकप्रिय
+                </span>
+              )}
+              <div className={`px-6 py-6 text-center ${p.featured ? "bg-saffron text-white" : ""}`}>
+                <h3 className={`text-xl ${p.featured ? "text-white" : "text-maroon"}`}>{p.name}</h3>
+                <p className={`mt-1 text-sm ${p.featured ? "text-white/90" : "text-neutral-600"}`}>
                   {p.desc}
                 </p>
               </div>
-              <div className="px-6 pb-6">
-                <p className="text-center font-display text-3xl font-bold text-maroon">
+              <div className="flex flex-1 flex-col px-7 pb-7 pt-5">
+                <p className="text-center font-display text-4xl font-bold text-neutral-950">
                   {p.price}
-                  <span className="text-sm font-normal text-muted-foreground">{p.period}</span>
+                  <span className="text-sm font-normal text-neutral-600">{p.period}</span>
                 </p>
-                <ul className="mt-5 space-y-2.5">
+                <ul className="mt-5 flex-1 space-y-2.5">
                   {p.features.map((f) => (
-                    <li key={f} className="flex gap-2.5 text-sm text-foreground/85">
+                    <li key={f} className="flex gap-2.5 text-sm font-semibold text-neutral-800">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-saffron" />
                       {f}
                     </li>
                   ))}
                 </ul>
                 <Link
-                  to="/contact"
-                  className={`mt-6 block rounded-md py-3 text-center text-sm font-semibold ${
-                    p.featured
-                      ? "bg-saffron text-saffron-foreground"
-                      : "bg-maroon text-maroon-foreground"
+                  to="/"
+                  className={`mt-7 block rounded-md py-3 text-center text-sm font-bold text-white ${
+                    p.featured ? "bg-red-600" : "bg-maroon"
                   }`}
                 >
                   चुनें
@@ -254,17 +281,23 @@ function Index() {
         </div>
       </Section>
 
-      {/* TESTIMONIALS */}
       <Section muted>
         <SectionHeading title="ग्राहकों की राय" />
-        <div className="mt-9 grid gap-5 lg:grid-cols-3">
-          {testimonials.map((t) => (
+        <div className="mt-8 grid gap-6 lg:grid-cols-3">
+          {testimonials.map((t, index) => (
             <article key={t.name} className="card-warm p-6">
-              <Quote className="h-6 w-6 text-saffron/50" />
-              <p className="mt-3 text-sm leading-relaxed text-foreground/85">"{t.quote}"</p>
-              <div className="mt-5">
-                <p className="text-sm font-semibold text-maroon">{t.name}</p>
-                <p className="text-xs text-muted-foreground">{t.role}</p>
+              <div className="flex items-start gap-4">
+                <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-orange-100 text-xl font-bold text-maroon">
+                  {index + 1}
+                </div>
+                <div>
+                  <Quote className="h-5 w-5 text-saffron/60" />
+                  <p className="mt-2 text-sm leading-relaxed font-semibold text-neutral-800">
+                    "{t.quote}"
+                  </p>
+                  <p className="mt-4 text-sm font-bold text-maroon">{t.name}</p>
+                  <p className="text-xs text-neutral-600">{t.role}</p>
+                </div>
               </div>
             </article>
           ))}
@@ -272,14 +305,54 @@ function Index() {
         <div className="mt-8 text-center">
           <Link
             to="/portfolio"
-            className="inline-flex items-center gap-2 rounded-md border border-saffron px-5 py-2.5 text-sm font-semibold text-saffron"
+            className="inline-flex items-center gap-2 rounded-md border border-maroon px-6 py-2.5 text-sm font-bold text-maroon"
           >
-            और समीक्षाएँ देखें <ArrowRight className="h-4 w-4" />
+            और समीक्षाएं देखें <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </Section>
 
       <CtaBand />
     </>
+  );
+}
+
+function ServicePreview({ index }: { index: number }) {
+  if (index === 0) {
+    return <img src={images.demo} alt="" className="my-5 h-20 w-full object-contain" />;
+  }
+  if (index === 1) {
+    return (
+      <div className="my-7 flex justify-center gap-3">
+        {[Facebook, Instagram, Youtube, Twitter].map((Icon, i) => (
+          <span
+            key={i}
+            className="grid h-9 w-9 place-items-center rounded-full bg-blue-600 text-white"
+          >
+            <Icon className="h-5 w-5" />
+          </span>
+        ))}
+      </div>
+    );
+  }
+  if (index === 2) {
+    return (
+      <div className="my-6 rounded-lg bg-emerald-500 px-5 py-4 text-white shadow-card">
+        <MessageCircle className="mx-auto h-10 w-10" />
+      </div>
+    );
+  }
+  if (index === 3) {
+    return <Video className="my-6 h-16 w-16 text-neutral-800" />;
+  }
+  if (index === 4) {
+    return <img src={images.rally} alt="" className="my-5 h-20 w-full rounded object-cover" />;
+  }
+  return (
+    <div className="my-5 w-full rounded-md border bg-white p-3">
+      <BarChart3 className="mx-auto h-12 w-12 text-blue-700" />
+      <div className="mt-2 h-2 rounded bg-blue-100" />
+      <div className="mt-2 h-2 w-3/4 rounded bg-orange-100" />
+    </div>
   );
 }

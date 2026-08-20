@@ -57,7 +57,7 @@
 
 :root {
   --radius: 0.5rem;
-  --background: oklch(0.985 0.008 85);
+  --background: oklch(0.99 0.012 82);
   --foreground: oklch(0.25 0.03 40);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.25 0.03 40);
@@ -76,9 +76,9 @@
   --border: oklch(0.9 0.025 65);
   --input: oklch(0.9 0.025 65);
   --ring: oklch(0.68 0.19 45);
-  --maroon: oklch(0.34 0.13 25);
+  --maroon: oklch(0.28 0.13 25);
   --maroon-foreground: oklch(0.985 0.01 80);
-  --saffron: oklch(0.68 0.19 45);
+  --saffron: oklch(0.69 0.2 44);
   --saffron-foreground: oklch(0.99 0.01 80);
   --gold: oklch(0.78 0.13 75);
   --cream: oklch(0.97 0.02 75);
@@ -148,30 +148,189 @@
     radial-gradient(circle at 88% 8%, oklch(0.9 0.06 40 / 0.3), transparent 40%);
 }
 
+@utility hero-pattern {
+  background-color: var(--background);
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 245, 231, 0.7)),
+    radial-gradient(circle at 18% 24%, rgba(247, 137, 48, 0.18), transparent 34%),
+    radial-gradient(circle at 62% 18%, rgba(128, 18, 21, 0.09), transparent 36%),
+    repeating-linear-gradient(90deg, rgba(128, 18, 21, 0.035) 0 1px, transparent 1px 96px);
+}
+
+@utility hero-exact {
+  min-height: 595px;
+  background:
+    radial-gradient(circle at 13% 12%, rgba(255, 255, 255, 0.94), transparent 18%),
+    radial-gradient(circle at 48% 38%, rgba(244, 139, 48, 0.22), transparent 31%),
+    linear-gradient(
+      90deg,
+      rgba(255, 252, 245, 0.97) 0%,
+      rgba(255, 243, 226, 0.82) 55%,
+      rgba(255, 234, 210, 0.5) 100%
+    ),
+    #fff6e9;
+}
+
+.hero-exact::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.45), transparent 50%),
+    repeating-linear-gradient(90deg, rgba(120, 42, 11, 0.03) 0 1px, transparent 1px 86px);
+  opacity: 0.9;
+}
+
+.hero-exact::after {
+  position: absolute;
+  right: -5%;
+  bottom: -8px;
+  width: 45%;
+  height: 74%;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(180deg, rgba(140, 59, 13, 0.06), rgba(140, 59, 13, 0.36)),
+    url("@/assets/panchayat.jpg") center / cover no-repeat;
+  filter: sepia(0.45) saturate(1.25) contrast(0.95);
+  opacity: 0.62;
+  clip-path: polygon(25% 12%, 100% 0, 100% 100%, 0 100%, 8% 36%);
+}
+
+.hero-heritage,
+.hero-crowd,
+.hero-flag {
+  position: absolute;
+  pointer-events: none;
+}
+
+.hero-heritage {
+  background:
+    linear-gradient(180deg, rgba(255, 244, 225, 0.36), rgba(237, 116, 21, 0.16)),
+    url("@/assets/zila.jpg") center / cover no-repeat;
+  filter: sepia(0.7) saturate(1.15);
+  mix-blend-mode: multiply;
+  opacity: 0.22;
+}
+
+.hero-heritage-center {
+  top: 70px;
+  left: 45%;
+  width: 32%;
+  height: 370px;
+  transform: translateX(-50%);
+  mask-image: radial-gradient(ellipse at center, #000 0 55%, transparent 73%);
+}
+
+.hero-heritage-right {
+  right: 0;
+  bottom: 0;
+  width: 28%;
+  height: 420px;
+  background-image:
+    linear-gradient(180deg, rgba(255, 244, 225, 0.1), rgba(140, 54, 13, 0.55)),
+    url("@/assets/panchayat.jpg");
+  opacity: 0.68;
+  mask-image: linear-gradient(90deg, transparent 0, #000 28%);
+}
+
+.hero-crowd {
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  width: 63%;
+  height: 168px;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 240, 0), rgba(255, 230, 204, 0.78)),
+    url("@/assets/rally.jpg") bottom center / cover no-repeat;
+  filter: sepia(0.65) saturate(0.8);
+  opacity: 0.24;
+  mask-image: linear-gradient(180deg, transparent 0, #000 30%, #000 100%);
+}
+
+.hero-flag {
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 42%;
+  height: 245px;
+  background:
+    radial-gradient(
+      circle at 58% 37%,
+      transparent 0 28px,
+      rgba(18, 45, 102, 0.5) 29px 31px,
+      transparent 32px
+    ),
+    linear-gradient(
+      160deg,
+      transparent 0 23%,
+      rgba(229, 92, 36, 0.82) 24% 44%,
+      rgba(255, 255, 255, 0.72) 45% 60%,
+      rgba(39, 110, 55, 0.72) 61% 81%,
+      transparent 82%
+    );
+  border-bottom-left-radius: 55% 38%;
+  opacity: 0.78;
+  transform: skewX(-8deg);
+}
+
+.hero-person-slot {
+  height: 595px;
+  min-width: 0;
+}
+
+.hero-person-image {
+  display: block;
+  width: min(780px, 58vw);
+  height: 595px;
+  margin-right: -16px;
+  margin-left: auto;
+  object-fit: contain;
+  object-position: right bottom;
+}
+
+@media (max-width: 1023px) {
+  .hero-flag,
+  .hero-heritage-right {
+    opacity: 0.38;
+  }
+
+  .hero-person-slot {
+    height: auto;
+  }
+
+  .hero-person-image {
+    width: min(520px, 92vw);
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
 @utility section-title {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.85rem;
   font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--maroon);
+  color: oklch(0.2 0.02 35);
   &::before,
   &::after {
     content: "";
-    width: 2.5rem;
+    width: 3rem;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--saffron));
+    background: linear-gradient(90deg, transparent, var(--saffron), transparent);
   }
   &::after {
-    background: linear-gradient(90deg, var(--saffron), transparent);
+    background: linear-gradient(90deg, transparent, var(--saffron), transparent);
   }
 }
 
 @utility card-warm {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid oklch(0.9 0.04 62);
   border-radius: var(--radius);
   box-shadow: var(--shadow-card);
   transition:
