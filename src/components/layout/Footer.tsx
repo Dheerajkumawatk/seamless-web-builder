@@ -21,6 +21,7 @@ export function Footer() {
   ];
 
   return (
+    
     <footer className="border-t border-[#e6d8cd] bg-[#fffaf2] text-[#4a342f] shadow-[0_-2px_10px_rgba(94,32,10,.06)]">
       <div className="mx-auto grid max-w-[1720px] gap-10 px-6 py-11 md:grid-cols-2 lg:grid-cols-[1.22fr_.82fr_.98fr_.98fr] lg:px-20">
         <div className="pr-4">
@@ -55,6 +56,11 @@ export function Footer() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href="/vikas-mitra" className="transition-colors hover:text-saffron">
+                • Vikas Mitra Profiles
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -106,7 +112,7 @@ export function Footer() {
           </p>
         </div>
         <div className="flex flex-col items-center justify-between gap-3 py-5 text-[14px] font-extrabold text-[#665b55] sm:flex-row">
-          <p>© 2024 भारत पहचान. सभी अधिकार सुरक्षित।</p>
+          <p>© 2026 भारत पहचान. सभी अधिकार सुरक्षित। Citiline Technologies Private Limited</p>
           <p className="flex gap-7 text-[#7a1215]">
             <span>गोपनीयता नीति</span>
             <span>|</span>
@@ -115,5 +121,6 @@ export function Footer() {
         </div>
       </div>
     </footer>
+
   );
 }
