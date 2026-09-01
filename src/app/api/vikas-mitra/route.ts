@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createVikasMitraProfile, listVikasMitraProfiles } from "@/lib/vikas-mitra.server";
+import { formatVikasMitraId } from "@/lib/profile-id";
 
 const profileSchema = z.object({
   name: z.string().min(2).max(80),
@@ -36,7 +37,7 @@ export async function POST(request: Request) {
       photo: data.photo || undefined,
     });
 
-    return NextResponse.json({ ok: true, id: profile.id });
+    return NextResponse.json({ ok: true, id: formatVikasMitraId(profile.id, profile.createdAt) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Vikas Mitra form submit failed";
     return NextResponse.json({ ok: false, error: message }, { status: 400 });

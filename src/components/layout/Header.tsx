@@ -20,6 +20,8 @@ import {
 import { nav, site } from "@/data/site";
 import { Logo } from "@/components/layout/Logo";
 
+const PHOTO_MAX_CHARS = 2_500_000;
+
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -73,6 +75,51 @@ export function Header() {
     });
   }
 
+  async function preparePhoto(file: File): Promise<string> {
+    const original = await readPhoto(file);
+
+    return new Promise((resolve) => {
+      const image = new Image();
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        if (!context) {
+          resolve(original.length <= PHOTO_MAX_CHARS ? original : "");
+          return;
+        }
+
+        const sizes = [1200, 1000, 800, 640];
+        const qualities = [0.78, 0.7, 0.62];
+        let fallback = "";
+
+        for (const maxSize of sizes) {
+          const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+          const width = Math.max(1, Math.round(image.width * scale));
+          const height = Math.max(1, Math.round(image.height * scale));
+          canvas.width = width;
+          canvas.height = height;
+          context.fillStyle = "#ffffff";
+          context.fillRect(0, 0, width, height);
+          context.drawImage(image, 0, 0, width, height);
+
+          for (const quality of qualities) {
+            const photo = canvas.toDataURL("image/jpeg", quality);
+            fallback = photo;
+            if (photo.length <= PHOTO_MAX_CHARS) {
+              resolve(photo);
+              return;
+            }
+          }
+        }
+
+        resolve(fallback.length <= PHOTO_MAX_CHARS ? fallback : "");
+      };
+      image.onerror = () => resolve(original.length <= PHOTO_MAX_CHARS ? original : "");
+      image.src = original;
+    });
+  }
+
   async function submitVikasMitra(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -80,7 +127,7 @@ export function Header() {
     setVikasStatus("loading");
     setVikasError("");
     const photoFile = data.get("photo");
-    const photo = photoFile instanceof File && photoFile.size > 0 ? await readPhoto(photoFile) : "";
+    const photo = photoFile instanceof File && photoFile.size > 0 ? await preparePhoto(photoFile) : "";
     try {
       const profileResponse = await fetch("/api/vikas-mitra", {
         method: "POST",
@@ -415,7 +462,7 @@ export function Header() {
                   accept="image/*"
                   onChange={async (event) => {
                     const file = event.currentTarget.files?.[0];
-                    setPhotoPreview(file ? await readPhoto(file) : "");
+                    setPhotoPreview(file ? await preparePhoto(file) : "");
                   }}
                   className="w-full rounded-md border border-[#efd5bc] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#321815] file:mr-3 file:rounded-md file:border-0 file:bg-saffron file:px-3 file:py-2 file:text-xs file:font-extrabold file:text-white focus:border-saffron focus:ring-2 focus:ring-saffron/25 focus:outline-none"
                 />

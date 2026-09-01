@@ -63,7 +63,7 @@ export default function Index() {
 
             <div className="mt-12 flex flex-col gap-5 sm:flex-row">
               <Link
-                href="/campaign-website"
+                href="https://faithful-frontent.vercel.app/"
                 className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#5a060b] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)]"
               >
                 डेमो अभियान देखें <ArrowRight className="h-6 w-6" />
@@ -201,7 +201,7 @@ export default function Index() {
                 ))}
               </ul>
               <Link
-                href="/campaign-website"
+                href="https://faithful-frontent.vercel.app/"
                 className="mt-6 inline-flex items-center gap-2 rounded-md bg-maroon px-6 py-3 text-sm font-bold text-white"
               >
                 डेमो वेबसाइट देखें <ArrowRight className="h-4 w-4" />

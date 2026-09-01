@@ -45,7 +45,7 @@ export default function CampaignWebsite() {
                 ))}
               </ul>
               <Link
-                href="/contact"
+                href="https://faithful-frontent.vercel.app/"
                 className="mt-6 inline-flex items-center gap-2 rounded-md bg-maroon px-5 py-3 text-sm font-semibold text-white"
               >
                 डेमो वेबसाइट देखें <ArrowRight className="h-4 w-4" />

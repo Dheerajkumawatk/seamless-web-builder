@@ -19,9 +19,9 @@ import {
 export const site = {
   name: "भारत पहचान",
   tagline: "डिजिटल अभियान, सुरक्षित पहचान",
-  phone: "+91 76918 06689",
-  whatsapp: "+91 76918 06689",
-  whatsappUrl: "https://wa.me/917691806689",
+  phone: "+91 7891131132",
+  whatsapp: "+91 7891131132",
+  whatsappUrl: "https://wa.me/917891131132",
   email: "info@bharatpehchaan.com",
   website: "www.bharatpehchaan.com",
   socialLinks: {

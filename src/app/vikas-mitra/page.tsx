@@ -2,6 +2,7 @@ import Image from "next/image";
 import { MapPin, Phone, UserRound } from "lucide-react";
 import { listVikasMitraProfiles } from "@/lib/vikas-mitra.server";
 import type { VikasMitraProfile } from "@/lib/vikas-mitra.server";
+import { formatVikasMitraId } from "@/lib/profile-id";
 
 export const dynamic = "force-dynamic";
 
@@ -84,6 +85,9 @@ export default async function VikasMitraPage() {
                   )}
                 </div>
                 <div className="p-5">
+                  <p className="text-xs font-black tracking-[0.16em] text-saffron uppercase">
+                    {formatVikasMitraId(profile.id, profile.createdAt)}
+                  </p>
                   <h2 className="font-display text-2xl font-black text-maroon">{profile.name}</h2>
                   <div className="mt-3 space-y-2 text-sm font-semibold text-[#4b302b]">
                     <p className="flex items-center gap-2">

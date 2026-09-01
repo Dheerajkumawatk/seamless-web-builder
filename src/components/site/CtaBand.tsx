@@ -260,7 +260,7 @@ export function CtaBand() {
                 </button>
                 {status === "done" && (
                   <p className="mt-3 flex items-center gap-2 text-sm font-extrabold text-[#1b7650]">
-                    <CheckCircle2 className="h-4 w-4" /> Lead submit ho gayi. Admin panel me aa jayegi.
+                    <CheckCircle2 className="h-4 w-4" /> submit.
                   </p>
                 )}
                 {status === "error" && (

@@ -12,7 +12,14 @@ export async function readLocalRows<T extends { id: string }>(name: string): Pro
   try {
     const file = await filePath(name);
     const content = await readFile(file, "utf8");
-    return JSON.parse(content) as T[];
+    const parsed = JSON.parse(content) as unknown;
+    if (Array.isArray(parsed)) {
+      return parsed as T[];
+    }
+    if (parsed && typeof parsed === "object" && "id" in parsed) {
+      return [parsed as T];
+    }
+    return [];
   } catch {
     return [];
   }

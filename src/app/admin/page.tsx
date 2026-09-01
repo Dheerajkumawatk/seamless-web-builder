@@ -18,6 +18,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { adminEmail, adminPassword } from "@/lib/admin-auth";
+import { formatVikasMitraId } from "@/lib/profile-id";
 
 type Tab = "vikas" | "contacts" | "plans";
 
@@ -331,7 +332,7 @@ function buildApprovalMail(row: Vikas) {
     "Aapka Vikas Mitra profile approve ho gaya hai.",
     "",
     "VIKAS MITRA CARD",
-    `Unique ID: ${row.id}`,
+    `Unique ID: ${formatVikasMitraId(row.id, row.createdAt)}`,
     `Name: ${row.name}`,
     `Mobile: ${row.phone}`,
     `Location: ${row.village}, ${row.tehsil}, ${row.district}`,
@@ -399,6 +400,9 @@ function VikasList({
                   <h3 className="text-xl font-black">{row.name}</h3>
                   <StatusBadge status={row.status} />
                 </div>
+                <p className="mt-2 text-xs font-black tracking-[0.16em] text-orange-600 uppercase">
+                  {formatVikasMitraId(row.id, row.createdAt)}
+                </p>
                 <p className="mt-1 text-sm font-bold text-slate-600">{row.phone} {row.email ? `| ${row.email}` : ""}</p>
                 <p className="mt-2 text-sm text-slate-700">{row.village}, {row.tehsil}, {row.district}</p>
                 <p className="mt-2 text-sm font-semibold text-slate-600">{row.occupation} {row.experience ? `| ${row.experience}` : ""}</p>
