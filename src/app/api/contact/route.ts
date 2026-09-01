@@ -12,15 +12,20 @@ const leadSchema = z.object({
 });
 
 export async function POST(request: Request) {
-  const data = leadSchema.parse(await request.json());
-  const lead = await createLead({
-    name: data.name,
-    phone: data.phone,
-    email: data.email || undefined,
-    post: data.post,
-    state: data.state || undefined,
-    message: data.message || undefined,
-  });
+  try {
+    const data = leadSchema.parse(await request.json());
+    const lead = await createLead({
+      name: data.name,
+      phone: data.phone,
+      email: data.email || undefined,
+      post: data.post,
+      state: data.state || undefined,
+      message: data.message || undefined,
+    });
 
-  return NextResponse.json({ ok: true, id: lead.id });
+    return NextResponse.json({ ok: true, id: lead.id });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Contact form submit failed";
+    return NextResponse.json({ ok: false, error: message }, { status: 400 });
+  }
 }

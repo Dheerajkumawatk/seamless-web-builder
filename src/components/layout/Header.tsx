@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   CheckCircle2,
@@ -25,6 +25,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [vikasOpen, setVikasOpen] = useState(false);
   const [vikasStatus, setVikasStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [vikasError, setVikasError] = useState("");
+  const [vikasSubmittedId, setVikasSubmittedId] = useState("");
   const [photoPreview, setPhotoPreview] = useState("");
   const socialLinks = [
     { icon: Facebook, href: site.socialLinks.facebook, label: "Facebook" },
@@ -35,8 +37,28 @@ export function Header() {
   const field =
     "w-full rounded-md border border-[#efd5bc] bg-white px-3.5 py-3 text-sm font-semibold text-[#321815] outline-none transition focus:border-saffron focus:ring-2 focus:ring-saffron/25";
 
+  useEffect(() => {
+    if (!vikasOpen || vikasStatus !== "done") {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setVikasOpen(false);
+      setVikasStatus("idle");
+      setVikasSubmittedId("");
+    }, 10_000);
+
+    return () => window.clearTimeout(timer);
+  }, [vikasOpen, vikasStatus]);
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
+
   function openVikasForm() {
     setVikasStatus("idle");
+    setVikasError("");
+    setVikasSubmittedId("");
     setPhotoPreview("");
     setVikasOpen(true);
     setOpen(false);
@@ -56,39 +78,10 @@ export function Header() {
     const form = event.currentTarget;
     const data = new FormData(form);
     setVikasStatus("loading");
+    setVikasError("");
     const photoFile = data.get("photo");
     const photo = photoFile instanceof File && photoFile.size > 0 ? await readPhoto(photoFile) : "";
-
-    const details = [
-      `नाम: ${String(data.get("name") ?? "")}`,
-      `मोबाइल: ${String(data.get("phone") ?? "")}`,
-      `ईमेल: ${String(data.get("email") ?? "")}`,
-      `जिला: ${String(data.get("district") ?? "")}`,
-      `तहसील/ब्लॉक: ${String(data.get("tehsil") ?? "")}`,
-      `गांव/शहर: ${String(data.get("village") ?? "")}`,
-      `व्यवसाय/प्रोफेशन: ${String(data.get("occupation") ?? "")}`,
-      `अनुभव: ${String(data.get("experience") ?? "")}`,
-      `संदेश: ${String(data.get("message") ?? "")}`,
-    ].join("\n");
-
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: String(data.get("name") ?? ""),
-          phone: String(data.get("phone") ?? ""),
-          email: String(data.get("email") ?? ""),
-          post: "Vikas Mitra Join",
-          state: String(data.get("district") ?? ""),
-          message: details,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit Vikas Mitra profile");
-      }
-
       const profileResponse = await fetch("/api/vikas-mitra", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -107,14 +100,18 @@ export function Header() {
       });
 
       if (!profileResponse.ok) {
-        throw new Error("Failed to create Vikas Mitra public profile");
+        const errorData = (await profileResponse.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(errorData?.error ?? "Failed to create Vikas Mitra public profile");
       }
 
+      const result = (await profileResponse.json()) as { id?: string };
+      setVikasSubmittedId(result.id ?? "");
       setVikasStatus("done");
       setPhotoPreview("");
       form.reset();
-    } catch {
+    } catch (error) {
       setVikasStatus("error");
+      setVikasError(error instanceof Error ? error.message : "Form submit nahi ho paya. Please try again.");
     }
   }
 
@@ -275,6 +272,29 @@ export function Header() {
               </button>
             </div>
 
+            {vikasStatus === "done" ? (
+              <div className="p-5">
+                <div className="rounded-lg border border-green-200 bg-green-50 p-5 text-center">
+                  <CheckCircle2 className="mx-auto h-12 w-12 text-[#1b7650]" />
+                  <h4 className="mt-3 text-2xl font-black text-[#165f42]">Profile submit ho gayi</h4>
+                  <p className="mx-auto mt-3 max-w-md text-sm font-extrabold leading-relaxed text-[#1b7650]">
+                    24 hr ka wait kro. Admin approval karega tab jakar website me show hoga.
+                    Approval ke baad aapka card ban jayega.
+                  </p>
+                  {vikasSubmittedId && (
+                    <div className="mx-auto mt-4 max-w-sm rounded-md border border-green-200 bg-white px-4 py-3">
+                      <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1b7650]/70">
+                        Unique ID
+                      </p>
+                      <p className="mt-1 break-all text-lg font-black text-maroon">{vikasSubmittedId}</p>
+                    </div>
+                  )}
+                  <p className="mt-4 text-xs font-bold text-[#1b7650]/80">
+                    Ye window 10 sec me automatically close ho jayegi.
+                  </p>
+                </div>
+              </div>
+            ) : (
             <form onSubmit={submitVikasMitra} className="grid gap-4 p-5 sm:grid-cols-2">
               <div>
                 <label
@@ -458,24 +478,14 @@ export function Header() {
                   )}
                   Profile Submit करें
                 </button>
-                {vikasStatus === "done" && (
-                  <div className="mt-3 rounded-md bg-green-50 p-3 text-sm font-extrabold text-[#1b7650]">
-                    <p className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4" />
-                      Profile submit ho gayi. हमारी टीम जल्द संपर्क करेगी।
-                    </p>
-                    <Link href="/vikas-mitra" className="mt-2 inline-block text-maroon underline">
-                      Vikas Mitra profiles देखें
-                    </Link>
-                  </div>
-                )}
                 {vikasStatus === "error" && (
                   <p className="mt-3 text-sm font-bold text-destructive">
-                    Form submit nahi ho paya. कृपया दोबारा प्रयास करें।
+                    {vikasError || "Form submit nahi ho paya. Please try again."}
                   </p>
                 )}
               </div>
             </form>
+            )}
           </div>
         </div>
       )}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { MapPin, Phone, UserRound } from "lucide-react";
 import { listVikasMitraProfiles } from "@/lib/vikas-mitra.server";
+import type { VikasMitraProfile } from "@/lib/vikas-mitra.server";
 
 export const dynamic = "force-dynamic";
 
@@ -27,48 +28,10 @@ function demoPhoto(seed: string, kurta: string, bg: string) {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
-const demoProfiles = [
-  {
-    id: "demo-1",
-    name: "Ramesh Sharma",
-    phone: "+91 98765 43210",
-    district: "Jaipur",
-    tehsil: "Sanganer",
-    village: "Bagru",
-    occupation: "Social Worker",
-    experience: "3-5 years",
-    message: "Gram panchayat aur ward level par digital awareness badhane ke liye active network.",
-    photo: demoPhoto("ramesh", "#8d1619", "#ffd9b5"),
-  },
-  {
-    id: "demo-2",
-    name: "Sunita Choudhary",
-    phone: "+91 87654 32109",
-    district: "Ajmer",
-    tehsil: "Kishangarh",
-    village: "Roopangarh",
-    occupation: "Community Coordinator",
-    experience: "1-2 years",
-    message: "Mahila samooh, youth volunteers aur local campaign support me kaam ka anubhav.",
-    photo: demoPhoto("sunita", "#168454", "#d9f6e9"),
-  },
-  {
-    id: "demo-3",
-    name: "Mahendra Singh",
-    phone: "+91 76543 21098",
-    district: "Jodhpur",
-    tehsil: "Luni",
-    village: "Kakani",
-    occupation: "Digital Promoter",
-    experience: "5+ years",
-    message:
-      "Social media, WhatsApp groups aur field coordination ke through local outreach support.",
-    photo: demoPhoto("mahendra", "#f3630b", "#ffe2c4"),
-  },
-];
+const demoProfiles: VikasMitraProfile[] = [];
 
 export default async function VikasMitraPage() {
-  const profiles = await listVikasMitraProfiles();
+  const profiles = await listVikasMitraProfiles("approved");
   const allProfiles = [...profiles, ...demoProfiles];
 
   return (

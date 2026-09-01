@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { Check } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
+import { PackageQueryButton } from "@/components/site/PackageQueryButton";
 import { faqs, packages } from "@/data/site";
 
 export default function Packages() {
@@ -43,7 +43,7 @@ export default function Packages() {
                   {p.price}
                   <span className="text-sm font-normal text-muted-foreground">{p.period}</span>
                 </p>
-                <ul className="mt-5 space-y-2.5">
+                <ul className="mt-5 flex-1 space-y-2.5">
                   {p.features.map((f) => (
                     <li key={f} className="flex gap-2.5 text-sm text-foreground/85">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-saffron" />
@@ -51,16 +51,7 @@ export default function Packages() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href="/contact"
-                  className={`mt-6 block rounded-md py-3 text-center text-sm font-semibold ${
-                    p.featured
-                      ? "bg-saffron text-saffron-foreground"
-                      : "bg-maroon text-maroon-foreground"
-                  }`}
-                >
-                  चुनें
-                </Link>
+                <PackageQueryButton packageName={p.name} featured={p.featured} />
               </div>
             </article>
           ))}

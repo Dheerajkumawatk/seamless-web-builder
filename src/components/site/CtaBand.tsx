@@ -1,16 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, MessageCircle, Phone, X } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, MessageCircle, Phone, X } from "lucide-react";
 import { site } from "@/data/site";
 
 export function CtaBand() {
   const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [error, setError] = useState("");
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    setStatus("loading");
+    setError("");
 
     const message = [
       "District Partner Program Lead",
@@ -24,13 +28,31 @@ export function CtaBand() {
       `Message: ${String(data.get("message") ?? "")}`,
     ].join("\n");
 
-    window.open(
-      `${site.whatsappUrl}?text=${encodeURIComponent(message)}`,
-      "_blank",
-      "noopener,noreferrer",
-    );
-    form.reset();
-    setOpen(false);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: String(data.get("name") ?? ""),
+          phone: String(data.get("phone") ?? ""),
+          email: String(data.get("email") ?? ""),
+          post: "District Partner Program",
+          state: String(data.get("district") ?? ""),
+          message,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(errorData?.error ?? "District Partner form submit failed");
+      }
+
+      setStatus("done");
+      form.reset();
+    } catch (err) {
+      setStatus("error");
+      setError(err instanceof Error ? err.message : "Form submit nahi ho paya.");
+    }
   }
 
   const field =
@@ -70,7 +92,11 @@ export function CtaBand() {
             <div className="flex flex-col gap-4 lg:items-stretch">
               <button
                 type="button"
-                onClick={() => setOpen(true)}
+                onClick={() => {
+                  setStatus("idle");
+                  setError("");
+                  setOpen(true);
+                }}
                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-saffron px-8 py-5 text-base font-extrabold text-white shadow-[0_16px_28px_rgba(243,99,11,.28)] transition-transform hover:scale-[1.02]"
               >
                 Apply as District Partner <ArrowRight className="h-5 w-5" />
@@ -93,7 +119,7 @@ export function CtaBand() {
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-orange-200 bg-[#fffaf2] px-5 py-4">
               <div>
                 <p className="text-xs font-extrabold tracking-[0.16em] text-saffron uppercase">
-                  WhatsApp Lead
+                  Admin Lead
                 </p>
                 <h3 className="mt-1 font-display text-2xl font-black text-maroon">
                   District Partner Form
@@ -222,11 +248,26 @@ export function CtaBand() {
               <div className="sm:col-span-2">
                 <button
                   type="submit"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#25d366] px-6 py-3.5 text-sm font-extrabold text-white transition-transform hover:scale-[1.01]"
+                  disabled={status === "loading"}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#25d366] px-6 py-3.5 text-sm font-extrabold text-white transition-transform hover:scale-[1.01] disabled:opacity-70"
                 >
-                  <MessageCircle className="h-4 w-4" />
-                  Send Lead on WhatsApp
+                  {status === "loading" ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <MessageCircle className="h-4 w-4" />
+                  )}
+                  Submit Lead
                 </button>
+                {status === "done" && (
+                  <p className="mt-3 flex items-center gap-2 text-sm font-extrabold text-[#1b7650]">
+                    <CheckCircle2 className="h-4 w-4" /> Lead submit ho gayi. Admin panel me aa jayegi.
+                  </p>
+                )}
+                {status === "error" && (
+                  <p className="mt-3 text-sm font-bold text-destructive">
+                    {error || "Form submit nahi ho paya. Please try again."}
+                  </p>
+                )}
               </div>
             </form>
           </div>

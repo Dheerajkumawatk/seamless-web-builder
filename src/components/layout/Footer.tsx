@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Facebook,
   Globe,
@@ -13,12 +16,17 @@ import { nav, services, site } from "@/data/site";
 import { Logo } from "@/components/layout/Logo";
 
 export function Footer() {
+  const pathname = usePathname();
   const socialLinks = [
     { icon: Facebook, href: site.socialLinks.facebook, label: "Facebook" },
     { icon: Instagram, href: site.socialLinks.instagram, label: "Instagram" },
     { icon: Youtube, href: site.socialLinks.youtube, label: "YouTube" },
     { icon: MessageCircle, href: site.whatsappUrl, label: "WhatsApp" },
   ];
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     

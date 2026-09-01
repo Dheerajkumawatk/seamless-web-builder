@@ -16,24 +16,29 @@ const profileSchema = z.object({
 });
 
 export async function GET() {
-  const profiles = await listVikasMitraProfiles();
+  const profiles = await listVikasMitraProfiles("approved");
   return NextResponse.json({ profiles });
 }
 
 export async function POST(request: Request) {
-  const data = profileSchema.parse(await request.json());
-  const profile = await createVikasMitraProfile({
-    name: data.name,
-    phone: data.phone,
-    email: data.email || undefined,
-    district: data.district,
-    tehsil: data.tehsil,
-    village: data.village,
-    occupation: data.occupation || undefined,
-    experience: data.experience || undefined,
-    message: data.message || undefined,
-    photo: data.photo || undefined,
-  });
+  try {
+    const data = profileSchema.parse(await request.json());
+    const profile = await createVikasMitraProfile({
+      name: data.name,
+      phone: data.phone,
+      email: data.email || undefined,
+      district: data.district,
+      tehsil: data.tehsil,
+      village: data.village,
+      occupation: data.occupation || undefined,
+      experience: data.experience || undefined,
+      message: data.message || undefined,
+      photo: data.photo || undefined,
+    });
 
-  return NextResponse.json({ ok: true, id: profile.id });
+    return NextResponse.json({ ok: true, id: profile.id });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Vikas Mitra form submit failed";
+    return NextResponse.json({ ok: false, error: message }, { status: 400 });
+  }
 }

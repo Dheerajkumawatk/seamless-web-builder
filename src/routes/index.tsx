@@ -25,6 +25,7 @@ import { images } from "@/data/images";
 import heroLeader from "@/assets/hero-leader.png";
 import { Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
+import { PackageQueryButton } from "@/components/site/PackageQueryButton";
 
 export default function Index() {
   return (
@@ -244,14 +245,7 @@ export default function Index() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href="/"
-                  className={`mt-7 block rounded-md py-3 text-center text-sm font-bold text-white ${
-                    p.featured ? "bg-red-600" : "bg-maroon"
-                  }`}
-                >
-                  चुनें
-                </Link>
+                <PackageQueryButton packageName={p.name} featured={p.featured} />
               </div>
             </article>
           ))}
