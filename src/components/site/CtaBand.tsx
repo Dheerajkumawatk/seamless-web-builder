@@ -56,12 +56,12 @@ export function CtaBand() {
   }
 
   const field =
-    "w-full rounded-md border border-[#efd5bc] bg-white px-3.5 py-3 text-sm font-semibold text-[#321815] outline-none transition focus:border-saffron focus:ring-2 focus:ring-saffron/25";
+    "w-full rounded-md border border-[#d6e0f1] bg-white px-3.5 py-3 text-sm font-semibold text-[#232a3c] outline-none transition focus:border-saffron focus:ring-2 focus:ring-saffron/25";
 
   return (
     <>
-      <section className="bg-[#fff8ef] px-4 py-10 sm:py-12">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#6d070b_0%,#8d1619_43%,#168454_100%)] px-6 py-8 text-white shadow-[0_22px_54px_rgba(90,6,11,.22)] sm:px-10 lg:px-14 lg:py-11">
+      <section className="bg-[#f4f8ff] px-4 py-10 sm:py-12">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#123a72_0%,#1b4c8a_43%,#168454_100%)] px-6 py-8 text-white shadow-[0_22px_54px_rgba(90,6,11,.22)] sm:px-10 lg:px-14 lg:py-11">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-center">
             <div>
               <p className="text-[12px] font-extrabold tracking-[0.18em] text-white/68 uppercase">
@@ -97,7 +97,7 @@ export function CtaBand() {
                   setError("");
                   setOpen(true);
                 }}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-saffron px-8 py-5 text-base font-extrabold text-white shadow-[0_16px_28px_rgba(243,99,11,.28)] transition-transform hover:scale-[1.02]"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-saffron px-8 py-5 text-base font-extrabold text-white shadow-[0_16px_28px_rgba(21,154,86,.28)] transition-transform hover:scale-[1.02]"
               >
                 Apply as District Partner <ArrowRight className="h-5 w-5" />
               </button>
@@ -114,9 +114,9 @@ export function CtaBand() {
       </section>
 
       {open && (
-        <div className="fixed inset-0 z-[70] grid place-items-center bg-[#1d0908]/70 px-4 py-6 backdrop-blur-sm">
-          <div className="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-lg bg-[#fffaf2] shadow-[0_24px_70px_rgba(29,9,8,.42)]">
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-orange-200 bg-[#fffaf2] px-5 py-4">
+        <div className="fixed inset-0 z-[70] grid place-items-center bg-[#0a1526]/70 px-4 py-6 backdrop-blur-sm">
+          <div className="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-lg bg-[#f7faff] shadow-[0_24px_70px_rgba(29,9,8,.42)]">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-emerald-200 bg-[#f7faff] px-5 py-4">
               <div>
                 <p className="text-xs font-extrabold tracking-[0.16em] text-saffron uppercase">
                   Admin Lead
@@ -129,7 +129,7 @@ export function CtaBand() {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close form"
-                className="grid h-10 w-10 place-items-center rounded-full border border-orange-200 text-maroon hover:bg-orange-50"
+                className="grid h-10 w-10 place-items-center rounded-full border border-emerald-200 text-maroon hover:bg-emerald-50"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -138,7 +138,7 @@ export function CtaBand() {
             <form onSubmit={onSubmit} className="grid gap-4 p-5 sm:grid-cols-2">
               <div>
                 <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                  className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                   htmlFor="partner-name"
                 >
                   Name *
@@ -153,7 +153,7 @@ export function CtaBand() {
               </div>
               <div>
                 <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                  className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                   htmlFor="partner-phone"
                 >
                   Mobile Number *
@@ -169,7 +169,7 @@ export function CtaBand() {
               </div>
               <div>
                 <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                  className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                   htmlFor="partner-email"
                 >
                   Email
@@ -184,7 +184,7 @@ export function CtaBand() {
               </div>
               <div>
                 <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                  className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                   htmlFor="partner-district"
                 >
                   District *
@@ -199,7 +199,7 @@ export function CtaBand() {
               </div>
               <div>
                 <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                  className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                   htmlFor="partner-tehsil"
                 >
                   Tehsil / Block *
@@ -214,7 +214,7 @@ export function CtaBand() {
               </div>
               <div>
                 <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                  className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                   htmlFor="partner-experience"
                 >
                   Experience
@@ -231,7 +231,7 @@ export function CtaBand() {
               </div>
               <div className="sm:col-span-2">
                 <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                  className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                   htmlFor="partner-message"
                 >
                   Message

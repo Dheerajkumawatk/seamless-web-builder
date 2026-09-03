@@ -19,10 +19,10 @@ import {
 export const site = {
   name: "भारत पहचान",
   tagline: "डिजिटल अभियान, सुरक्षित पहचान",
-  phone: "+91 7891131132",
-  whatsapp: "+91 7891131132",
+  phone: "+91 7891-131-132",
+  whatsapp: "+91 7891-131-132",
   whatsappUrl: "https://wa.me/917891131132",
-  email: "info@bharatpehchaan.com",
+  email: "bharatpahchan.helpline@gmail.com",
   website: "www.bharatpehchaan.com",
   socialLinks: {
     instagram: "https://www.instagram.com/bharatpahchan/",
@@ -62,7 +62,7 @@ export const stats = [
 
 export const audiences = [
   {
-    iconColor: "bg-orange-500",
+    iconColor: "bg-teal-500",
     title: "सरपंच उम्मीदवार",
     desc: "ग्राम पंचायत चुनाव के लिए डिजिटल ब्रांडिंग",
     image: "village",

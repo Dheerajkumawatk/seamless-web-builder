@@ -30,16 +30,16 @@ import { PackageQueryButton } from "@/components/site/PackageQueryButton";
 export default function Index() {
   return (
     <>
-      <section className="hero-exact relative overflow-hidden border-b border-orange-100">
+      <section className="hero-exact relative overflow-hidden border-b border-emerald-100">
         <div className="mx-auto grid min-h-[595px] max-w-[1720px] items-center gap-0 px-6 pt-25 lg:grid-cols-[0.98fr_1.02fr] lg:px-20">
           <div className="relative z-10 max-w-[750px] pb-12">
-            <h1 className="font-display text-[42px] leading-[1.08] font-black tracking-normal text-[#1d0908] sm:text-[62px] lg:text-[82px]">
+            <h1 className="font-display text-[42px] leading-[1.08] font-black tracking-normal text-[#0a1526] sm:text-[62px] lg:text-[82px]">
               डिजिटल अभियान से
               <br />
-              <span className="text-[#ed2809]">बदलें गाँव</span>{" "}
-              <span className="text-[#4d090f]">का भविष्य</span>
+              <span className="text-[#0f7a42]">बदलें गाँव</span>{" "}
+              <span className="text-[#0e2f5e]">का भविष्य</span>
             </h1>
-            <p className="mt-7 max-w-[650px] text-xl leading-relaxed font-extrabold text-[#321815] sm:text-2xl">
+            <p className="mt-7 max-w-[650px] text-xl leading-relaxed font-extrabold text-[#232a3c] sm:text-2xl">
               सरपंच, पंचायत समिति और जिला परिषद चुनाव के लिए
               <br className="hidden sm:block" />
               एंड-टू-एंड डिजिटल मार्केटिंग और ब्रांडिंग समाधान।
@@ -49,12 +49,12 @@ export default function Index() {
               {heroFeatures.map((f) => (
                 <div
                   key={f.label}
-                  className="border-r border-[#d7b89c] px-4 text-center last:border-r-0"
+                  className="border-r border-[#b7d8c5] px-4 text-center last:border-r-0"
                 >
-                  <span className="mx-auto grid h-10 w-10 place-items-center text-[#e96c09]">
+                  <span className="mx-auto grid h-10 w-10 place-items-center text-[#0f7a42]">
                     <f.icon className="h-9 w-9 stroke-[1.8]" />
                   </span>
-                  <span className="mt-4 block text-[13px] leading-tight font-extrabold whitespace-pre-line text-[#351610]">
+                  <span className="mt-4 block text-[13px] leading-tight font-extrabold whitespace-pre-line text-[#232a3c]">
                     {f.label}
                   </span>
                 </div>
@@ -64,13 +64,13 @@ export default function Index() {
             <div className="mt-12 flex flex-col gap-5 sm:flex-row">
               <Link
                 href="https://faithful-frontent.vercel.app/"
-                className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#5a060b] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)]"
+                className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#0e2f5e] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)]"
               >
                 डेमो अभियान देखें <ArrowRight className="h-6 w-6" />
               </Link>
               <Link
                 href="/"
-                className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#f55a08] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(245,90,8,.25)]"
+                className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#159a56] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(21,154,86,.25)]"
               >
                 फ्री कंसल्टेशन लें <ArrowRight className="h-6 w-6" />
               </Link>
@@ -160,9 +160,9 @@ export default function Index() {
           {process.map((p, i) => (
             <div key={p.num} className="relative flex flex-col items-center px-2 text-center">
               {i < process.length - 1 && (
-                <span className="absolute top-9 left-[62%] hidden h-px w-[76%] bg-orange-200 lg:block" />
+                <span className="absolute top-9 left-[62%] hidden h-px w-[76%] bg-emerald-200 lg:block" />
               )}
-              <span className="relative z-10 grid h-18 w-18 place-items-center rounded-full border border-orange-200 bg-white text-maroon shadow-sm">
+              <span className="relative z-10 grid h-18 w-18 place-items-center rounded-full border border-emerald-200 bg-white text-maroon shadow-sm">
                 <p.icon className="h-8 w-8" />
               </span>
               <span className="mt-3 font-display text-lg font-bold leading-none text-maroon">
@@ -177,7 +177,7 @@ export default function Index() {
       </Section>
 
       <Section className="website-demo-section" muted>
-        <div className="rounded-lg border border-orange-300 bg-white/45 p-4 shadow-card sm:p-6">
+        <div className="rounded-lg border border-emerald-300 bg-white/45 p-4 shadow-card sm:p-6">
           <SectionHeading title="अभियान वेबसाइट डेमो" />
           <div className="mt-7 grid items-center gap-8 lg:grid-cols-[1.45fr_.9fr]">
             <img
@@ -193,7 +193,7 @@ export default function Index() {
                     key={s}
                     className="flex items-center gap-2.5 text-sm font-semibold text-neutral-800"
                   >
-                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-orange-100">
+                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-100">
                       <Check className="h-3 w-3 text-saffron" />
                     </span>
                     {s}
@@ -218,7 +218,7 @@ export default function Index() {
             <article
               key={p.name}
               className={`relative flex flex-col overflow-hidden rounded-lg border bg-white shadow-card ${
-                p.featured ? "border-saffron" : "border-orange-200"
+                p.featured ? "border-saffron" : "border-emerald-200"
               }`}
             >
               {p.featured && (
@@ -258,7 +258,7 @@ export default function Index() {
           {testimonials.map((t, index) => (
             <article key={t.name} className="card-warm p-6">
               <div className="flex items-start gap-4">
-                <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-orange-100 text-xl font-bold text-maroon">
+                <div className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-emerald-100 text-xl font-bold text-maroon">
                   {index + 1}
                 </div>
                 <div>
@@ -323,7 +323,7 @@ function ServicePreview({ index }: { index: number }) {
     <div className="my-5 w-full rounded-md border bg-white p-3">
       <BarChart3 className="mx-auto h-12 w-12 text-blue-700" />
       <div className="mt-2 h-2 rounded bg-blue-100" />
-      <div className="mt-2 h-2 w-3/4 rounded bg-orange-100" />
+      <div className="mt-2 h-2 w-3/4 rounded bg-emerald-100" />
     </div>
   );
 }

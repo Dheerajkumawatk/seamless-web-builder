@@ -111,22 +111,22 @@ export function buildVikasMitraApprovalEmail(row: ApprovalRow): SendEmailInput {
   ]
     .map(
       ([label, value]) =>
-        `<tr><td style="padding:4px 12px 4px 0;color:#6b5b53;font-weight:bold">${escapeHtml(
+        `<tr><td style="padding:4px 12px 4px 0;color:#5b6376;font-weight:bold">${escapeHtml(
           String(label),
-        )}</td><td style="padding:4px 0;color:#2d2622">${escapeHtml(String(value))}</td></tr>`,
+        )}</td><td style="padding:4px 0;color:#262b39">${escapeHtml(String(value))}</td></tr>`,
     )
     .join("");
 
-  const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#2d2622;line-height:1.6;max-width:560px">
+  const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#262b39;line-height:1.6;max-width:560px">
     <p>नमस्ते <strong>${escapeHtml(row.name)}</strong>,</p>
     <p>बधाई हो! आपका <strong>Vikas Mitra</strong> आवेदन सफलतापूर्वक स्वीकृत (<strong>successfully select</strong>) हो गया है।</p>
-    <div style="margin:18px 0;padding:14px 18px;background:#fff4e6;border:1px solid #f3c79a;border-radius:8px">
-      <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#b25b12;font-weight:bold">आपकी Unique ID</div>
-      <div style="font-size:22px;font-weight:bold;color:#6d070b;margin-top:4px">${escapeHtml(uniqueId)}</div>
+    <div style="margin:18px 0;padding:14px 18px;background:#eaf1fb;border:1px solid #bcd2ec;border-radius:8px">
+      <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#1b4c8a;font-weight:bold">आपकी Unique ID</div>
+      <div style="font-size:22px;font-weight:bold;color:#123a72;margin-top:4px">${escapeHtml(uniqueId)}</div>
     </div>
     <table style="border-collapse:collapse;font-size:14px">${detailRows}</table>
     <p style="margin-top:18px">आपकी प्रोफ़ाइल अब वेबसाइट पर लाइव है। कृपया अपनी Unique ID संभाल कर रखें।</p>
-    <p style="margin-top:18px;color:#6b5b53">— भारत पहचान टीम</p>
+    <p style="margin-top:18px;color:#5b6376">— भारत पहचान टीम</p>
   </div>`;
 
   return { to: row.email ?? "", subject, text, html };

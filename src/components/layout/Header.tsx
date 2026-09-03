@@ -40,9 +40,9 @@ export function Header() {
     { icon: MessageCircle, href: site.whatsappUrl, label: "WhatsApp" },
   ];
   const field =
-    "w-full rounded-md border border-[#efd5bc] bg-white px-3.5 py-3 text-sm font-semibold text-[#321815] outline-none transition focus:border-saffron focus:ring-2 focus:ring-saffron/25";
+    "w-full rounded-md border border-[#d6e0f1] bg-white px-3.5 py-3 text-sm font-semibold text-[#232a3c] outline-none transition focus:border-saffron focus:ring-2 focus:ring-saffron/25";
   const fileField =
-    "w-full rounded-md border border-[#efd5bc] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#321815] file:mr-3 file:rounded-md file:border-0 file:bg-saffron file:px-3 file:py-2 file:text-xs file:font-extrabold file:text-white focus:border-saffron focus:ring-2 focus:ring-saffron/25 focus:outline-none";
+    "w-full rounded-md border border-[#d6e0f1] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#232a3c] file:mr-3 file:rounded-md file:border-0 file:bg-saffron file:px-3 file:py-2 file:text-xs file:font-extrabold file:text-white focus:border-saffron focus:ring-2 focus:ring-saffron/25 focus:outline-none";
 
   useEffect(() => {
     if (!vikasOpen || vikasStatus !== "done") {
@@ -192,8 +192,8 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 shadow-[0_2px_12px_rgba(76,7,9,.18)]">
-        <div className="hidden border-b border-white/10 bg-[#6d070b] text-white md:block">
+      <header className="sticky top-0 z-50 shadow-[0_2px_12px_rgba(18,58,114,.18)]">
+        <div className="hidden border-b border-white/10 bg-[#123a72] text-white md:block">
           <div className="mx-auto flex h-[42px] max-w-[1720px] items-center justify-between gap-4 px-8 text-[14px] font-bold xl:px-14">
             <p className="flex min-w-0 items-center gap-2 truncate">
               <MapPin className="h-4 w-4 fill-white/15" />
@@ -217,7 +217,7 @@ export function Header() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={label}
-                    className="grid h-7 w-7 place-items-center rounded-full border border-[#d96a24]/65 bg-[#4f0708]/30 text-white hover:bg-saffron"
+                    className="grid h-7 w-7 place-items-center rounded-full border border-[#4a9e72]/65 bg-[#0e2f5e]/30 text-white hover:bg-saffron"
                   >
                     <Icon className="h-3.5 w-3.5" />
                   </a>
@@ -227,7 +227,7 @@ export function Header() {
           </div>
         </div>
 
-        <div className="border-b border-[#eaded6] bg-white/98 backdrop-blur">
+        <div className="border-b border-[#dde5f0] bg-white/98 backdrop-blur">
           <div className="mx-auto grid h-[104px] max-w-[1720px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 md:px-8 lg:flex lg:justify-between xl:px-14">
             <Link
               href="/"
@@ -242,8 +242,8 @@ export function Header() {
                 <Link
                   key={item.label}
                   href={item.to}
-                  className={`whitespace-nowrap text-[15px] font-extrabold transition-colors hover:text-[#e95a09] ${
-                    pathname === item.to ? "text-[#e95a09]" : "text-[#4b302b]"
+                  className={`whitespace-nowrap text-[15px] font-extrabold transition-colors hover:text-[#0f7a42] ${
+                    pathname === item.to ? "text-[#0f7a42]" : "text-[#33384a]"
                   }`}
                 >
                   {item.label}
@@ -251,14 +251,14 @@ export function Header() {
               ))}
               <Link
                 href="/"
-                className="ml-1 whitespace-nowrap rounded-lg bg-[#f3630b] px-6 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(243,99,11,.22)] transition-transform hover:scale-[1.03]"
+                className="ml-1 whitespace-nowrap rounded-lg bg-[#159a56] px-6 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(21,154,86,.22)] transition-transform hover:scale-[1.03]"
               >
                 फ्री कंसल्टेशन बुक करें
               </Link>
               <button
                 type="button"
                 onClick={openVikasForm}
-                className="whitespace-nowrap rounded-lg bg-[#6d070b] px-6 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(109,7,11,.18)] transition-transform hover:scale-[1.03] hover:bg-[#801015]"
+                className="whitespace-nowrap rounded-lg bg-[#123a72] px-6 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(18,58,114,.22)] transition-transform hover:scale-[1.03] hover:bg-[#1b4c8a]"
               >
                 Vikas Mitra Join
               </button>
@@ -326,9 +326,9 @@ export function Header() {
       </a>
 
       {vikasOpen && (
-        <div className="fixed inset-0 z-[80] grid place-items-center bg-[#1d0908]/70 px-4 py-6 backdrop-blur-sm">
-          <div className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-[#fffaf2] shadow-[0_24px_70px_rgba(29,9,8,.42)]">
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-orange-200 bg-[#fffaf2] px-5 py-4">
+        <div className="fixed inset-0 z-[80] grid place-items-center bg-[#0a1526]/70 px-4 py-6 backdrop-blur-sm">
+          <div className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-[#f7faff] shadow-[0_24px_70px_rgba(29,9,8,.42)]">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-emerald-200 bg-[#f7faff] px-5 py-4">
               <div>
                 <p className="text-xs font-extrabold tracking-[0.16em] text-saffron uppercase">
                   Profile Registration
@@ -341,7 +341,7 @@ export function Header() {
                 type="button"
                 onClick={() => setVikasOpen(false)}
                 aria-label="Close Vikas Mitra form"
-                className="grid h-10 w-10 place-items-center rounded-full border border-orange-200 text-maroon hover:bg-orange-50"
+                className="grid h-10 w-10 place-items-center rounded-full border border-emerald-200 text-maroon hover:bg-emerald-50"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -377,7 +377,7 @@ export function Header() {
               <form onSubmit={submitVikasMitra} className="grid gap-4 p-5 sm:grid-cols-2">
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-name"
                   >
                     नाम *
@@ -392,7 +392,7 @@ export function Header() {
                 </div>
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-phone"
                   >
                     मोबाइल नंबर *
@@ -408,7 +408,7 @@ export function Header() {
                 </div>
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-email"
                   >
                     ईमेल
@@ -423,7 +423,7 @@ export function Header() {
                 </div>
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-district"
                   >
                     जिला *
@@ -438,7 +438,7 @@ export function Header() {
                 </div>
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-tehsil"
                   >
                     तहसील / ब्लॉक *
@@ -453,7 +453,7 @@ export function Header() {
                 </div>
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-village"
                   >
                     गांव / शहर *
@@ -468,7 +468,7 @@ export function Header() {
                 </div>
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-occupation"
                   >
                     व्यवसाय / प्रोफेशन
@@ -482,7 +482,7 @@ export function Header() {
                 </div>
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-photo"
                   >
                     Profile Photo
@@ -501,7 +501,7 @@ export function Header() {
                 </div>
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-pan"
                   >
                     PAN Card की फोटो
@@ -520,7 +520,7 @@ export function Header() {
                 </div>
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-aadhaar"
                   >
                     Aadhaar Card की फोटो
@@ -539,7 +539,7 @@ export function Header() {
                 </div>
                 <div>
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-experience"
                   >
                     अनुभव
@@ -556,7 +556,7 @@ export function Header() {
                 </div>
                 <div className="sm:col-span-2">
                   <label
-                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-message"
                   >
                     अतिरिक्त जानकारी
@@ -571,8 +571,8 @@ export function Header() {
                 </div>
                 {photoPreview && (
                   <div className="sm:col-span-2">
-                    <p className="mb-2 text-xs font-extrabold text-[#4b302b]">Real Photo Preview</p>
-                    <div className="relative h-56 overflow-hidden rounded-lg border border-orange-200 bg-orange-50">
+                    <p className="mb-2 text-xs font-extrabold text-[#33384a]">Real Photo Preview</p>
+                    <div className="relative h-56 overflow-hidden rounded-lg border border-emerald-200 bg-emerald-50">
                       <img
                         src={photoPreview}
                         alt="Selected Vikas Mitra profile"
@@ -583,8 +583,8 @@ export function Header() {
                 )}
                 {panPreview && (
                   <div>
-                    <p className="mb-2 text-xs font-extrabold text-[#4b302b]">PAN Card Preview</p>
-                    <div className="relative h-44 overflow-hidden rounded-lg border border-orange-200 bg-orange-50">
+                    <p className="mb-2 text-xs font-extrabold text-[#33384a]">PAN Card Preview</p>
+                    <div className="relative h-44 overflow-hidden rounded-lg border border-emerald-200 bg-emerald-50">
                       <img
                         src={panPreview}
                         alt="Selected PAN card"
@@ -595,10 +595,10 @@ export function Header() {
                 )}
                 {aadhaarPreview && (
                   <div>
-                    <p className="mb-2 text-xs font-extrabold text-[#4b302b]">
+                    <p className="mb-2 text-xs font-extrabold text-[#33384a]">
                       Aadhaar Card Preview
                     </p>
-                    <div className="relative h-44 overflow-hidden rounded-lg border border-orange-200 bg-orange-50">
+                    <div className="relative h-44 overflow-hidden rounded-lg border border-emerald-200 bg-emerald-50">
                       <img
                         src={aadhaarPreview}
                         alt="Selected Aadhaar card"
@@ -609,7 +609,7 @@ export function Header() {
                 )}
 
                 <div className="sm:col-span-2">
-                  <label className="flex items-start gap-2.5 text-xs font-bold text-[#4b302b]">
+                  <label className="flex items-start gap-2.5 text-xs font-bold text-[#33384a]">
                     <input
                       type="checkbox"
                       name="agree"
@@ -635,7 +635,7 @@ export function Header() {
                   <button
                     type="submit"
                     disabled={vikasStatus === "loading" || !agree}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-maroon px-6 py-3.5 text-sm font-extrabold text-white transition-colors hover:bg-[#6d070b] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-maroon px-6 py-3.5 text-sm font-extrabold text-white transition-colors hover:bg-[#123a72] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {vikasStatus === "loading" ? (
                       <Loader2 className="h-4 w-4 animate-spin" />

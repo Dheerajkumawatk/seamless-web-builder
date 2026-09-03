@@ -1,4 +1,4 @@
-import logoImage from "@/assets/bharat-pahchan-logo.png";
+import logoImage from "@/assets/bharat-pahchan-logo.jpg";
 
 export function Logo({
   light = false,
@@ -10,18 +10,18 @@ export function Logo({
   void light;
 
   const dimensions = {
-    compact: "h-11 max-w-[160px]",
-    footer: "h-[72px] max-w-[360px]",
-    nav: "h-[74px] max-w-[340px]",
+    compact: "h-12 w-12",
+    footer: "h-24 w-24",
+    nav: "h-20 w-20",
   }[size];
 
   return (
     <img
       src={logoImage.src}
-      width={2200}
-      height={650}
+      width={1254}
+      height={1254}
       alt="भारत पहचान"
-      className={`block w-auto shrink-0 object-contain object-left ${dimensions}`}
+      className={`block shrink-0 rounded-lg object-contain ${dimensions}`}
     />
   );
 }

@@ -1,102 +1,125 @@
 import { LegalDoc } from "@/components/site/LegalDoc";
 
 const content = `
-Bharat Pahchan is an independent digital presence platform/project operated under *Citiline Technologies Private Limited*.
+*BHARATPAHCHAN.COM — DISCLAIMER*
 
-*Channel009* is the News & Media Partner of Bharat Pahchan.
+BharatPahchan.com is a venture of Channel009, a brand owned by *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
 
-## 1. Digital Presence Platform Only
+*Corporate Office:* 301, Dreampoint, PN 1156, Khandela House, Nirwan Marg, Jaipur - 302016, Rajasthan, India.
+*Registered Office:* 715, Mastermind V, Royal Palm Estate, Goregaon (East), Mumbai - 400065, Maharashtra, India.
+*Official Contact / Support / Grievance Email:* bharatpahchan.helpnine@gmail.com
+*Phone:* +91 7375 009 009
 
-Bharat Pahchan is designed to provide individuals, public representatives, candidates and other users with a professional *digital presence and online identity*.
+## 1. General Disclaimer
 
-Our services may include digital profiles, websites, digital branding, social media services, graphics, videos, content and other online services.
+BharatPahchan.com is a privately operated digital identity, profile, discovery, information, directory and related services platform. Content is provided for general information, discovery, recognition, visibility and Platform-service purposes. Although reasonable processes may be used depending on the service, no general website can guarantee that every item from a user, public source or third party is complete, current or error-free.
 
-### Bharat Pahchan does NOT guarantee election victory.
+## 2. No Government Affiliation
 
-The purpose of Bharat Pahchan is to create and improve your *digital presence*. It is not an election-winning service and does not promise votes, political support, public popularity or any particular electoral outcome.
+BharatPahchan.com is not a Government of India, State Government, local-government, UIDAI/Aadhaar, Election Commission, statutory authority or official government identity registry. References to government offices, elected representatives, public servants, public records, schemes, institutions or public authorities are informational and do not by themselves imply affiliation, authorisation or endorsement.
 
-## 2. No Election Guarantee
+## 3. No Official Identity or Statutory Certification
 
-Bharat Pahchan does not guarantee or promise:
+A BharatPahchan profile, search result, listing, badge, claim, verification indicator, featured profile or publication is not a government identity document, Aadhaar substitute, police verification, character certificate, statutory licence, professional registration, background clearance or official recognition unless the Platform expressly states the exact nature of an independently verifiable official credential.
 
-* Election victory
-* Votes or vote share
-* Political support
-* Public popularity
-* Voter response
-* Campaign success
-* Social media reach or engagement
-* Any specific electoral or public result
+## 4. Verification Disclaimer
 
-Election results and public response depend on many factors that are outside Bharat Pahchan's control.
+Where BharatPahchan offers verification, the verification applies only to the checks expressly described for that service and to the information available at the time of review. Verification does not guarantee honesty, character, competence, solvency, legal compliance, future behaviour, every biographical statement or suitability for a particular transaction.
 
-## 3. Information Provided by Users
+## 5. Accuracy, Completeness and Currency
 
-All names, photographs, videos, designations, achievements, biographical details, statements, campaign messages, logos and documents are provided by the customer.
+Information may come from the subject of a profile, an authorised representative, a contributor, a public source, media, professional directories or other lawful sources. Information can change over time or be disputed. Users should independently verify material facts before making consequential decisions. Corrections can be requested through the official grievance contact.
 
-Bharat Pahchan publishes this material on an "as-provided" basis and does not independently verify its accuracy.
+## 6. Public Figures and Public-Source Information
 
-The customer is solely responsible for the correctness, legality and ownership of the content they provide.
+Profiles of public figures, professionals, office holders, achievers or other persons may include information already lawfully available in public sources or supplied for public display. Publication does not mean the subject has personally created or endorsed the profile unless the Platform specifically identifies the profile as claimed or self-submitted.
 
-## 4. No Professional Advice
+## 7. User-Generated and Third-Party Content
 
-Nothing on Bharat Pahchan constitutes legal, electoral, financial or professional advice.
+Opinions, claims, photographs, documents, advertisements, links and other material submitted by users or third parties remain the responsibility of the relevant submitter to the extent provided by law. Moderation, formatting, hosting or publication by CTPL does not automatically amount to adoption or endorsement of every statement.
 
-Customers should obtain independent professional advice for election law, advertising regulations and compliance matters.
+## 8. Correction and Removal
 
-## 5. Election Laws and Compliance
+A person who believes a profile or item is inaccurate, impersonating, privacy-invasive, defamatory, infringing or otherwise unlawful should email bharatpahchan.helpnine@gmail.com with the exact URL/material, explanation, requested action and proportionate supporting evidence. CTPL may verify the request and take action appropriate under applicable law and Platform policy.
 
-Customers using Bharat Pahchan for election-related purposes are responsible for complying with the Model Code of Conduct, Election Commission directions, advertising rules and all other applicable laws.
+## 9. No Professional Advice
 
-Bharat Pahchan does not provide electoral compliance certification unless expressly agreed in writing.
+Unless expressly contracted as a specific professional service delivered through an appropriately qualified professional, content on BharatPahchan is not legal, medical, financial, investment, tax, matrimonial, employment, electoral or other regulated professional advice.
 
-## 6. Third-Party Platforms and Services
+## 10. No Background-Check Guarantee
 
-Some services rely on third-party platforms such as social media networks, hosting providers, APIs and payment gateways.
+BharatPahchan should not be treated as the sole source for employment screening, credit decisions, matrimonial due diligence, criminal-background verification, professional licensing, vendor onboarding or other high-impact decisions. Users should use official or professionally appropriate verification channels for such purposes.
 
-Their performance, availability and policies are outside Bharat Pahchan's control.
+## 11. Political and Electoral Neutrality Disclaimer
 
-## 7. Website Availability
+The existence, prominence or verification of a politician, aspirant, elected representative, political worker or public figure on BharatPahchan does not constitute endorsement by CTPL or Channel009. Paid promotional content, where permitted, should be identified as required by applicable law and Platform policy. BharatPahchan does not guarantee electoral outcome, political influence or government action.
 
-We make reasonable efforts to keep the website and services available, but we do not guarantee uninterrupted or error-free operation.
+## 12. Advertising and Sponsored Content
 
-## 8. External Links
+Advertisements, sponsored profiles and promotions are commercial communications by the relevant advertiser or sponsor. CTPL may conduct moderation but does not independently guarantee every advertiser claim. Users should conduct appropriate due diligence before purchasing, investing, hiring or otherwise acting on an advertisement.
 
-The website may contain links to external sites. Bharat Pahchan is not responsible for the content, security or practices of any third-party site.
+## 13. Third-Party Products and Transactions
 
-## 9. Limitation of Liability
+Where a profile or advertisement refers to a third-party product, service, business, event, opportunity or transaction, CTPL is not automatically a party to the resulting contract. Unless expressly stated, CTPL does not guarantee quality, legality, delivery, refund, solvency or performance of an independent third party.
 
-To the maximum extent permitted by law, Bharat Pahchan and Citiline Technologies Private Limited shall not be liable for any indirect, incidental or consequential loss, loss of votes, loss of election, loss of reputation or loss of opportunity arising from use of the platform.
+## 14. External Links and Embedded Services
 
-## 10. Intellectual Property
+External links, maps, social-media embeds, payment gateways, videos and third-party widgets may be provided for convenience or functionality. Independent third parties control their own content, availability, privacy and security. A link does not by itself amount to endorsement.
 
-The original design, branding and proprietary materials of Bharat Pahchan are protected and may not be copied or reused without permission. Customer-owned content remains the property of the customer.
+## 15. AI and Synthetically Generated Information
 
-## 11. Changes to this Disclaimer
+The Platform may use or host AI-assisted, edited or synthetically generated information where lawful. Such material may contain errors and may require human verification. Users must not treat AI output as conclusive evidence or professional advice. Deceptive impersonation, unlawful deepfakes and misleading synthetic content may be labelled, restricted or removed.
 
-Bharat Pahchan may update this Disclaimer from time to time. The updated version will be published on this page.
+## 16. Intellectual Property
 
-## 12. Governing Law
+Third-party names, photographs, logos, trademarks and copyrighted material remain subject to the rights of their respective owners. Their appearance for identification, reporting, reference, authorised submission or other lawful purpose does not transfer ownership to CTPL. Rights holders may submit a complaint through the official contact.
 
-This Disclaimer is governed by the applicable laws of India, and any dispute is subject to the jurisdiction of the competent courts having applicable jurisdiction.
+## 17. Search Engines and Caching
 
-## 13. Contact
+Public pages may be indexed, cached or reproduced in snippets by independent search engines. CTPL cannot guarantee immediate removal from third-party caches after a page is corrected, restricted or removed from BharatPahchan.
 
-For any questions about this Disclaimer, please contact Bharat Pahchan through the Contact Us page.
+## 18. Cyber Security and Availability
 
-*Bharat Pahchan*
-A Project of *Citiline Technologies Private Limited*
-*News & Media Partner:* Channel009
-*Jaipur, Rajasthan, India*
+Reasonable security and continuity measures may be used, but no online service is guaranteed to be uninterrupted, error-free or immune from cyber incidents, telecommunications failures, cloud outages, malicious attacks or events beyond reasonable control.
 
-*Bharat Pahchan creates digital presence; it does not guarantee election victory.*
+## 19. No Guaranteed Visibility or Commercial Result
+
+A paid profile, verification, promotion or visibility service does not guarantee search-engine ranking, social-media reach, media coverage, public reputation, leads, revenue, employment, professional success, political influence or any action by a third party or authority. CTPL's obligation is limited to the specific deliverables purchased.
+
+## 20. Reliance at User's Risk
+
+Users remain responsible for assessing whether information is appropriate for their intended purpose and for obtaining independent verification or professional advice where the decision carries material legal, financial, safety, health, employment, political or reputational consequences.
+
+## 21. Limitation of Liability
+
+To the maximum extent permitted by law, CTPL and its officers, employees and contractors are not liable for indirect, incidental, special or consequential losses resulting solely from reliance on general Platform information, independent third-party conduct or events beyond reasonable control. Nothing in this Disclaimer excludes liability or statutory rights that cannot lawfully be excluded.
+
+## 22. No Exclusion of Mandatory Rights
+
+Nothing in this Disclaimer overrides an express written service commitment, liability for fraud or wilful misconduct, mandatory consumer protection, data-protection obligations or any other right/remedy that applicable law does not permit CTPL to exclude.
+
+## 23. Law-Enforcement and Legal Process
+
+CTPL may preserve or disclose relevant records when required or permitted by law, including in response to lawful court, regulatory, police or cyber-security requests. Publication of a profile does not shield any user or submitter from legal responsibility for unlawful conduct.
+
+## 24. Changes
+
+This Disclaimer may be updated to reflect changes in services, risk, law or technology. The current version displayed on BharatPahchan.com will apply prospectively, subject to accrued rights and mandatory law.
+
+## 25. Complaints and Contact
+
+For inaccurate information, impersonation, privacy concerns, copyright/trademark complaints, unlawful content, fraud or other legal concerns, email bharatpahchan.helpnine@gmail.com with the exact URL/material and supporting information. Corporate and Registered Office details are stated above.
+
+## 26. Governing Law
+
+This Disclaimer is governed by applicable laws of India, subject to mandatory statutory forums and rights that cannot lawfully be excluded.
 `;
 
 export default function Disclaimer() {
   return (
     <LegalDoc
       title="Disclaimer"
-      summary="Bharat Pahchan provides digital presence services only and does not guarantee election results."
+      summary="BharatPahchan.com is a private platform; content is informational and carries no government or statutory certification."
       lastUpdated="Last Updated: September 2026"
       content={content}
     />

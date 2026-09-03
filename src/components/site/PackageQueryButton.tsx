@@ -42,7 +42,7 @@ export function PackageQueryButton({
   }
 
   const field =
-    "w-full rounded-md border border-orange-200 bg-white px-3.5 py-2.5 text-sm font-semibold text-[#321815] outline-none focus:border-saffron focus:ring-2 focus:ring-saffron/25";
+    "w-full rounded-md border border-emerald-200 bg-white px-3.5 py-2.5 text-sm font-semibold text-[#232a3c] outline-none focus:border-saffron focus:ring-2 focus:ring-saffron/25";
 
   return (
     <>
@@ -60,9 +60,9 @@ export function PackageQueryButton({
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[80] grid place-items-center bg-[#1d0908]/70 px-4 py-6 backdrop-blur-sm">
-          <div className="w-full max-w-xl rounded-lg bg-[#fffaf2] shadow-[0_24px_70px_rgba(29,9,8,.42)]">
-            <div className="flex items-center justify-between border-b border-orange-200 px-5 py-4">
+        <div className="fixed inset-0 z-[80] grid place-items-center bg-[#0a1526]/70 px-4 py-6 backdrop-blur-sm">
+          <div className="w-full max-w-xl rounded-lg bg-[#f7faff] shadow-[0_24px_70px_rgba(29,9,8,.42)]">
+            <div className="flex items-center justify-between border-b border-emerald-200 px-5 py-4">
               <div>
                 <p className="text-xs font-extrabold tracking-[0.16em] text-saffron uppercase">
                   Plan Query
@@ -73,7 +73,7 @@ export function PackageQueryButton({
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close plan query form"
-                className="grid h-10 w-10 place-items-center rounded-full border border-orange-200 text-maroon hover:bg-orange-50"
+                className="grid h-10 w-10 place-items-center rounded-full border border-emerald-200 text-maroon hover:bg-emerald-50"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -81,11 +81,23 @@ export function PackageQueryButton({
 
             <form onSubmit={submit} className="grid gap-4 p-5 sm:grid-cols-2">
               <input name="name" required className={field} placeholder="Name" />
-              <input name="phone" required inputMode="tel" className={field} placeholder="Mobile No" />
+              <input
+                name="phone"
+                required
+                inputMode="tel"
+                className={field}
+                placeholder="Mobile No"
+              />
               <input name="email" required type="email" className={field} placeholder="Email" />
               <input name="city" required className={field} placeholder="City" />
               <input name="state" required className={field} placeholder="State" />
-              <input name="pincode" required inputMode="numeric" className={field} placeholder="Pincode" />
+              <input
+                name="pincode"
+                required
+                inputMode="numeric"
+                className={field}
+                placeholder="Pincode"
+              />
 
               <div className="sm:col-span-2">
                 <button

@@ -1,118 +1,137 @@
 import { LegalDoc } from "@/components/site/LegalDoc";
 
 const content = `
-This Refund Policy applies to all services purchased through *Bharat Pahchan*.
+*BHARATPAHCHAN.COM — REFUND, CANCELLATION & PAYMENT POLICY*
 
-Bharat Pahchan is a digital presence platform/project operated under *Citiline Technologies Private Limited*.
+BharatPahchan.com is a venture of Channel009, a brand owned by *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
 
-## 1. No Refund Policy
+*Corporate Office:* 301, Dreampoint, PN 1156, Khandela House, Nirwan Marg, Jaipur - 302016, Rajasthan, India.
+*Registered Office:* 715, Mastermind V, Royal Palm Estate, Goregaon (East), Mumbai - 400065, Maharashtra, India.
+*Official Contact / Support / Grievance Email:* bharatpahchan.helpnine@gmail.com
+*Phone:* +91 7375 009 009
 
-### All payments made to Bharat Pahchan are strictly non-refundable.
+## 1. Purpose and Scope
 
-Once payment has been successfully made for any Bharat Pahchan service, the amount *will not be refunded under any circumstances*, except where a refund is mandatorily required under applicable law.
+This Policy explains the conditions applicable to cancellations, refunds, duplicate payments, failed transactions, service credits and payment disputes for paid services purchased directly from BharatPahchan.com or CITILINE TECHNOLOGIES PRIVATE LIMITED in connection with BharatPahchan.
 
-This policy applies whether or not the customer subsequently uses the service.
+It applies unless a specific service page, quotation, order form, invoice or separately accepted written agreement contains more specific refund terms. Mandatory rights under the Consumer Protection Act, 2019, applicable e-commerce rules and other law prevail over any inconsistent contractual term.
 
-## 2. Digital Presence Services
+## 2. General Principle
 
-Bharat Pahchan provides digital presence and related services, which may include:
+BharatPahchan provides digital and often customised services. The refund position therefore depends on the nature of the service, whether work has started, whether third-party costs have been incurred, whether digital access or publication has occurred, and whether the service delivered materially differs from what was promised.
 
-* Digital profile creation
-* Personal/public profile
-* Website creation
-* Digital branding
-* Graphic design
-* Video creation/editing
-* Social media services
-* Digital campaign support
-* Content publishing
-* Online promotion
-* Other customized digital services
+## 3. Review Before Payment
 
-These services involve digital resources, development time, design work, content preparation and operational costs.
+Before paying, the customer should review the service description, price, taxes, duration, deliverables, eligibility requirements, documents required, cancellation conditions and any special terms shown at checkout or in the quotation/order form. Customers should seek clarification before payment where any material term is unclear.
 
-Therefore, once a payment has been made, it is considered a confirmed service order.
+## 4. Cancellation Before Work Commences
 
-## 3. No Refund After Payment
+Where a cancellation request is received before material work, verification, onboarding, reservation, publication, advertising placement, custom design, third-party procurement or other performance has commenced, CTPL may approve a full or substantial refund, subject to deduction of lawful and disclosed non-recoverable payment-gateway, banking or third-party charges actually incurred.
 
-Refunds will not be provided because of:
+## 5. Customised Profile / Digital Production Services
 
-* Change of mind
-* Change in personal circumstances
-* Change in election plans
-* Withdrawal from an election
-* Not contesting an election
-* Election date being changed
-* Election being postponed or cancelled
-* Not receiving expected public response
-* Not receiving expected votes
-* Not winning an election
-* Not receiving political support
-* Lower-than-expected website traffic
-* Lower-than-expected social media engagement
-* Customer's failure to provide content
-* Customer's delay in providing required information
-* Customer's failure to use the service
+Where a service requires research, profile preparation, design, content formatting, verification review, custom page creation, media preparation or other customer-specific work, the portion attributable to work already performed and non-recoverable costs may be non-refundable to the extent permitted by law.
 
-## 4. Election Result Disclaimer
+This does not remove a customer's statutory remedy where the service is materially deficient, defective, misdescribed, unlawfully supplied or not performed as contracted.
 
-Bharat Pahchan is *not an election-winning service*.
+## 6. Verification Services
 
-The purpose of Bharat Pahchan is to create and strengthen an individual's *digital presence and online identity*.
+A verification fee, where charged, is for the verification process and not for a guaranteed positive outcome. If verification is rejected because submitted information is false, forged, materially inconsistent, insufficient, unverifiable or does not satisfy disclosed eligibility requirements, the fee may be non-refundable where this condition was disclosed before purchase.
 
-*Bharat Pahchan does not guarantee that a customer will win an election, receive a particular number of votes, gain political support, increase popularity or achieve any particular electoral result.*
+If CTPL is unable to perform the purchased verification for reasons attributable solely to CTPL, an appropriate refund, re-performance or service credit will be offered as required by the circumstances and applicable law.
 
-Therefore, failure to achieve any election-related result shall *not constitute grounds for a refund*.
+## 7. Profile Claim / Priority / Visibility Services
 
-## 5. Customized Work
+Fees for profile claiming, enhanced visibility, priority processing or premium presentation relate only to the stated service. Payment does not purchase ownership of public facts, a government identity, guaranteed search ranking or immunity from lawful correction/removal. Refund eligibility depends on whether the purchased service has materially commenced or been delivered.
 
-For customized digital services, work may begin after payment confirmation.
+## 8. Advertising and Sponsored Promotions
 
-Once design, development, profile creation, content preparation, website setup, digital branding or any other service process has started, the payment shall remain non-refundable.
+If advertising or promotional inventory has not been published or materially prepared/committed, cancellation may be permitted subject to actual work and non-recoverable costs. Once an advertisement, sponsored profile, banner, campaign or promotion has gone live, the amount attributable to delivered publication or consumed inventory is ordinarily non-refundable, except where mandatory law or a proven service deficiency requires otherwise.
 
-## 6. Third-Party Charges
+## 9. Subscription Services
 
-Where third-party services, hosting, software, APIs, payment processing, advertising or other external services are purchased or activated for providing the customer's service, such costs are also non-refundable to the extent permitted by applicable law.
+Where a recurring subscription is offered, the applicable plan page will state billing frequency and cancellation method. Cancellation ordinarily stops future renewal; it does not automatically refund a billing period already supplied or activated unless required by law or expressly stated. If auto-renewal is used, the Platform should provide the disclosures and controls required by applicable law.
 
-## 7. Duplicate Payment
+## 10. Digital Downloads / Immediately Supplied Digital Services
 
-In case of an accidental duplicate payment, the customer should contact us with the relevant transaction details.
+Where a digital product, report, download, access credential or other digital service is supplied immediately and cannot practically be returned, refunds may be restricted after access or delivery, provided this limitation was fairly disclosed and subject to statutory rights for defective, misdescribed or non-supplied content.
 
-Any resolution of a duplicate transaction will be handled after verification and subject to applicable law and payment-provider rules.
+## 11. Duplicate Payment
 
-## 8. Failed Payment
+If the same order is charged more than once and CTPL confirms receipt of a duplicate payment, the duplicate amount will be refunded or adjusted after reconciliation. The customer should provide transaction references for both debits.
 
-If a payment is shown as failed but the amount has been deducted from the customer's bank account, the transaction will be verified.
+## 12. Failed or Pending Transactions
 
-Where the amount has not been successfully received by Bharat Pahchan, the customer may need to contact their bank/payment provider regarding the transaction.
+A bank or payment gateway may show an amount as debited even where CTPL has not received a successful payment confirmation. Such cases are first subject to payment-provider reconciliation. If CTPL later receives the amount without a corresponding valid order, it will be reconciled and refunded or applied as lawfully agreed.
 
-## 9. Service Corrections
+## 13. Incorrect Amount or Wrong Service
 
-Although payments are non-refundable, if there is a genuine technical issue or an error attributable to Bharat Pahchan within the agreed service scope, we may, at our discretion, provide a correction or reasonable service resolution.
+A customer who pays an incorrect amount or selects the wrong service should contact us immediately and before work begins. We may, where operationally possible, adjust the amount toward the correct service. Any refund will account for work already performed and non-recoverable costs, subject to applicable law.
 
-Such correction does not create a general right to a monetary refund.
+## 14. Customer Delay or Non-Cooperation
 
-## 10. Agreement to Refund Policy
+Where delivery is delayed because the customer does not provide required information, documents, approvals, access or responses, such delay alone does not create an automatic right to refund. CTPL may place the service on hold and request the outstanding inputs. If the service is later cancelled, work already performed and committed costs may be deducted where lawful.
 
-By making a payment for Bharat Pahchan services, the customer confirms that they have read, understood and accepted this Refund Policy.
+## 15. Rejection of Unlawful or Non-Compliant Material
 
-## 11. Contact
+CTPL may refuse to publish or continue material that is unlawful, infringing, defamatory, impersonating, fraudulent, deceptive or otherwise prohibited. Refund treatment will depend on the stage of work, whether the customer disclosed the true nature of the material, and applicable law. A customer cannot demand publication of unlawful content merely because payment was made.
 
-For payment-related queries, please contact us through the Contact Us page.
+## 16. Service Deficiency / Non-Delivery
 
-*Bharat Pahchan*
-A Project of *Citiline Technologies Private Limited*
-*News & Media Partner:* Channel009
-*Jaipur, Rajasthan, India*
+If a paid service is not delivered within an expressly committed period for reasons attributable to CTPL, or materially fails to match the agreed description, the customer should first request correction, re-performance or completion. Where the issue cannot reasonably be cured, an appropriate partial or full refund may be provided according to the undelivered portion and applicable consumer law.
 
-*All payments are non-refundable, except where a refund is required under applicable law.*
+## 17. Refund Request Procedure
+
+Send refund or cancellation requests to bharatpahchan.helpnine@gmail.com. Include the customer's name, registered mobile/email, order or invoice number, transaction ID, payment date, amount, service purchased, reason for request, requested resolution and relevant supporting material. Do not send card PINs, OTPs or unnecessary banking credentials.
+
+## 18. Verification of Request
+
+For fraud prevention, CTPL may verify the identity of the requester, payment ownership, order details or authority to act for an organisation before processing a refund. A request may be paused while reasonable verification is pending.
+
+## 19. Assessment and Decision
+
+Refund requests are assessed on the service terms, stage of performance, evidence, amount already consumed, non-recoverable costs, any fault attributable to CTPL or customer, and applicable law. CTPL may offer re-performance, correction, service credit, partial refund or full refund where appropriate.
+
+## 20. Method and Timing of Approved Refund
+
+Approved refunds will ordinarily be initiated to the original payment method unless law, banking limitations or mutual agreement requires another lawful method. CTPL will initiate the refund within the period communicated after approval and within any mandatory statutory period. Final credit time depends on the bank, card network, UPI provider or payment gateway.
+
+## 21. Taxes and Gateway Charges
+
+Tax adjustments and credit notes, where applicable, will be handled according to tax law. Gateway or banking charges will be deducted only where lawful and consistent with the pre-purchase terms or where the charge is genuinely non-recoverable and may legally be passed on.
+
+## 22. Chargebacks and Payment Disputes
+
+Customers are encouraged to contact CTPL before initiating a chargeback so that a genuine billing problem can be investigated. Nothing prevents a customer from lawfully disputing an unauthorised or incorrect transaction.
+
+Fraudulent chargebacks, use of stolen payment instruments, forged refund evidence or deliberate payment abuse may result in account suspension, evidence preservation and lawful recovery or legal action.
+
+## 23. Fraud and Abuse
+
+CTPL may refuse or suspend a refund while investigating reasonable evidence of fraud, identity theft, collusion, duplicate claims, forged documents or abuse of the refund process, subject to applicable law. Genuine consumer complaints will not be treated as abuse merely because they are disputed.
+
+## 24. Consumer Rights
+
+Nothing in this Policy limits a right or remedy that cannot be waived under the Consumer Protection Act, 2019, applicable Consumer Protection (E-Commerce) Rules, or any other mandatory law. Where a statutory right conflicts with this Policy, the statutory right prevails.
+
+## 25. Grievance Escalation
+
+If a refund request is not resolved satisfactorily, the customer may write to the Grievance Officer / Support Contact at bharatpahchan.helpnine@gmail.com with the earlier ticket/order details and reasons for escalation. Statutory consumer remedies remain available.
+
+## 26. Policy Changes
+
+This Policy may be updated prospectively. The policy applicable to a transaction will ordinarily be the version accepted or displayed when the transaction was entered into, except where a later change is required by law or is more favourable to the customer.
+
+## 27. Contact
+
+Refund, cancellation, billing and payment grievances: bharatpahchan.helpnine@gmail.com. Corporate and Registered Office details are stated at the beginning of this Policy.
 `;
 
 export default function RefundPolicy() {
   return (
     <LegalDoc
-      title="Refund Policy"
-      summary="Payment and refund terms for all services purchased through Bharat Pahchan."
+      title="Refund, Cancellation & Payment Policy"
+      summary="Conditions for cancellations, refunds, duplicate or failed payments and payment disputes."
       lastUpdated="Last Updated: September 2026"
       content={content}
     />

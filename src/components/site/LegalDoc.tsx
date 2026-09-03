@@ -24,7 +24,7 @@ type LegalDocProps = {
   content: string;
 };
 
-export function LegalDoc({ title, summary, lastUpdated, content }: LegalDocProps) {
+export function LegalBody({ content }: { content: string }): ReactNode {
   const lines = content.replace(/\r\n/g, "\n").trim().split("\n");
   const blocks: ReactNode[] = [];
   let paragraph: string[] = [];
@@ -115,6 +115,10 @@ export function LegalDoc({ title, summary, lastUpdated, content }: LegalDocProps
   flushParagraph();
   flushList();
 
+  return <>{blocks}</>;
+}
+
+export function LegalDoc({ title, summary, lastUpdated, content }: LegalDocProps) {
   return (
     <>
       <PageHero title={title} sub={summary} />
@@ -123,7 +127,9 @@ export function LegalDoc({ title, summary, lastUpdated, content }: LegalDocProps
           <p className="text-xs font-bold tracking-[0.16em] text-saffron uppercase">
             {lastUpdated}
           </p>
-          <div className="mt-1">{blocks}</div>
+          <div className="mt-1">
+            <LegalBody content={content} />
+          </div>
         </div>
       </Section>
     </>

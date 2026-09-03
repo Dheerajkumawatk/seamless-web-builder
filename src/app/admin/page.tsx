@@ -243,16 +243,16 @@ export default function AdminPage() {
   }
 
   const field =
-    "w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-950 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200";
+    "w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-950 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200";
 
   if (!loggedIn) {
     return (
       <main className="grid min-h-screen place-items-center bg-[#0f172a] px-4">
         <form onSubmit={login} className="w-full max-w-md rounded-lg bg-white p-7 shadow-2xl">
-          <div className="grid h-12 w-12 place-items-center rounded-lg bg-orange-600 text-white">
+          <div className="grid h-12 w-12 place-items-center rounded-lg bg-emerald-600 text-white">
             <ShieldCheck className="h-6 w-6" />
           </div>
-          <p className="mt-5 text-xs font-black tracking-[0.18em] text-orange-600 uppercase">
+          <p className="mt-5 text-xs font-black tracking-[0.18em] text-emerald-700 uppercase">
             Secure Admin
           </p>
           <h1 className="mt-2 text-3xl font-black text-slate-950">Bharat Pehchan Admin</h1>
@@ -277,7 +277,7 @@ export default function AdminPage() {
               required
             />
           </div>
-          <button className="mt-5 w-full rounded-md bg-orange-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-orange-600/20">
+          <button className="mt-5 w-full rounded-md bg-emerald-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-emerald-600/20">
             Login
           </button>
           {message && <p className="mt-3 text-sm font-bold text-red-600">{message}</p>}
@@ -291,7 +291,7 @@ export default function AdminPage() {
       <aside className="border-b border-slate-200 bg-[#111827] text-white lg:sticky lg:top-0 lg:h-screen lg:border-b-0">
         <div className="flex items-center justify-between px-5 py-5 lg:block">
           <div className="flex items-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-lg bg-orange-600">
+            <div className="grid h-11 w-11 place-items-center rounded-lg bg-emerald-600">
               <LayoutDashboard className="h-5 w-5" />
             </div>
             <div>
@@ -314,7 +314,7 @@ export default function AdminPage() {
               onClick={() => setTab(key)}
               className={`flex shrink-0 items-center gap-3 rounded-md px-4 py-3 text-sm font-black transition lg:w-full ${
                 tab === key
-                  ? "bg-orange-600 text-white"
+                  ? "bg-emerald-600 text-white"
                   : "text-slate-300 hover:bg-white/10 hover:text-white"
               }`}
             >
@@ -343,7 +343,7 @@ export default function AdminPage() {
         <header className="border-b border-slate-200 bg-white px-4 py-5 lg:px-8">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div>
-              <p className="text-xs font-black tracking-[0.18em] text-orange-600 uppercase">
+              <p className="text-xs font-black tracking-[0.18em] text-emerald-700 uppercase">
                 Admin Panel
               </p>
               <h1 className="mt-1 text-3xl font-black text-slate-950">
@@ -356,7 +356,7 @@ export default function AdminPage() {
                 <input
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
-                  className="w-full rounded-md border border-slate-300 bg-white py-2.5 pr-3 pl-9 text-sm font-semibold outline-none focus:border-orange-500"
+                  className="w-full rounded-md border border-slate-300 bg-white py-2.5 pr-3 pl-9 text-sm font-semibold outline-none focus:border-emerald-500"
                   placeholder="Search records"
                 />
               </label>
@@ -482,7 +482,7 @@ function Stat({
 }) {
   const tones = {
     slate: "bg-slate-950",
-    orange: "bg-orange-600",
+    orange: "bg-emerald-600",
     green: "bg-emerald-600",
     blue: "bg-blue-600",
   };
@@ -501,7 +501,7 @@ function StatusBadge({ status }: { status: Vikas["status"] }) {
       ? "bg-emerald-50 text-emerald-700 ring-emerald-200"
       : status === "rejected"
         ? "bg-red-50 text-red-700 ring-red-200"
-        : "bg-orange-50 text-orange-700 ring-orange-200";
+        : "bg-emerald-50 text-emerald-700 ring-emerald-200";
   return (
     <span className={`rounded-full px-3 py-1 text-xs font-black uppercase ring-1 ${className}`}>
       {status}
@@ -536,7 +536,7 @@ function VikasList({
                   <h3 className="text-xl font-black">{row.name}</h3>
                   <StatusBadge status={row.status} />
                 </div>
-                <p className="mt-2 text-xs font-black tracking-[0.16em] text-orange-600 uppercase">
+                <p className="mt-2 text-xs font-black tracking-[0.16em] text-emerald-700 uppercase">
                   {formatVikasMitraId(row.id, row.createdAt)}
                 </p>
                 <p className="mt-1 text-sm font-bold text-slate-600">
@@ -690,7 +690,7 @@ function EditModal({
       >
         <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-4">
           <div>
-            <p className="text-xs font-black tracking-[0.18em] text-orange-600 uppercase">
+            <p className="text-xs font-black tracking-[0.18em] text-emerald-700 uppercase">
               Edit Record
             </p>
             <h2 className="text-2xl font-black">Edit {type}</h2>
@@ -730,7 +730,7 @@ function EditModal({
             </label>
           ))}
         </div>
-        <button className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-orange-600 px-5 py-3 text-sm font-black text-white">
+        <button className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-emerald-600 px-5 py-3 text-sm font-black text-white">
           <Save className="h-4 w-4" /> Save Changes
         </button>
       </form>
@@ -750,7 +750,7 @@ function PreviewModal({ row, onClose }: { row: Vikas; onClose: () => void }) {
       <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-lg bg-white p-5 shadow-2xl">
         <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-4">
           <div>
-            <p className="text-xs font-black tracking-[0.18em] text-orange-600 uppercase">
+            <p className="text-xs font-black tracking-[0.18em] text-emerald-700 uppercase">
               Application Preview
             </p>
             <h2 className="text-2xl font-black">{row.name}</h2>

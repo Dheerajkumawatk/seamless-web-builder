@@ -21,7 +21,7 @@ export default function CampaignWebsite() {
       />
 
       <Section className="website-demo-section" muted>
-        <div className="rounded-lg border border-orange-200 bg-white/45 p-4 shadow-card sm:p-6">
+        <div className="rounded-lg border border-emerald-200 bg-white/45 p-4 shadow-card sm:p-6">
           <SectionHeading title="अभियान वेबसाइट डेमो" />
           <div className="mt-7 grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
             <img
