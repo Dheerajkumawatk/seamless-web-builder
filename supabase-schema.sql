@@ -10,10 +10,16 @@ create table if not exists public.vikas_mitra_profiles (
   experience text,
   message text,
   photo text,
+  pan_card text,
+  aadhaar_card text,
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
   rejection_message text,
   created_at timestamptz not null default now()
 );
+
+-- Backfill for existing installs
+alter table public.vikas_mitra_profiles add column if not exists pan_card text;
+alter table public.vikas_mitra_profiles add column if not exists aadhaar_card text;
 
 create table if not exists public.contact_leads (
   id uuid primary key default gen_random_uuid(),

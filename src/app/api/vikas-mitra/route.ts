@@ -14,6 +14,8 @@ const profileSchema = z.object({
   experience: z.string().max(60).optional().or(z.literal("")),
   message: z.string().max(1000).optional().or(z.literal("")),
   photo: z.string().max(2_500_000).optional().or(z.literal("")),
+  panCard: z.string().max(2_500_000).optional().or(z.literal("")),
+  aadhaarCard: z.string().max(2_500_000).optional().or(z.literal("")),
 });
 
 export async function GET() {
@@ -35,6 +37,8 @@ export async function POST(request: Request) {
       experience: data.experience || undefined,
       message: data.message || undefined,
       photo: data.photo || undefined,
+      panCard: data.panCard || undefined,
+      aadhaarCard: data.aadhaarCard || undefined,
     });
 
     return NextResponse.json({ ok: true, id: formatVikasMitraId(profile.id, profile.createdAt) });

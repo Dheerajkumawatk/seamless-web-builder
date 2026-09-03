@@ -4,10 +4,12 @@ import { isAdminRequest } from "@/lib/admin-auth";
 import { listLeads, updateLead } from "@/lib/contact.server";
 import { listPlanQueries, updatePlanQuery } from "@/lib/plan-query.server";
 import { listVikasMitraProfiles, updateVikasMitraProfile } from "@/lib/vikas-mitra.server";
+import { buildVikasMitraApprovalEmail, sendEmail } from "@/lib/email.server";
 
 const vikasSchema = z.object({
   type: z.literal("vikas"),
   id: z.string().uuid(),
+  notify: z.boolean().optional(),
   data: z.object({
     name: z.string().min(2).max(80).optional(),
     phone: z.string().min(8).max(20).optional(),
@@ -19,6 +21,8 @@ const vikasSchema = z.object({
     experience: z.string().max(60).optional().or(z.literal("")),
     message: z.string().max(1000).optional().or(z.literal("")),
     photo: z.string().max(2_500_000).optional().or(z.literal("")),
+    panCard: z.string().max(2_500_000).optional().or(z.literal("")),
+    aadhaarCard: z.string().max(2_500_000).optional().or(z.literal("")),
     status: z.enum(["pending", "approved", "rejected"]).optional(),
     rejectionMessage: z.string().max(500).optional().or(z.literal("")),
   }),
@@ -76,7 +80,16 @@ export async function PATCH(request: Request) {
 
   if (body.type === "vikas") {
     const row = await updateVikasMitraProfile(body.id, body.data);
-    return NextResponse.json({ ok: true, row });
+
+    let email:
+      | { sent: boolean; skipped?: boolean | undefined; error?: string | undefined }
+      | undefined;
+    if (body.notify && row.status === "approved" && row.email) {
+      const result = await sendEmail(buildVikasMitraApprovalEmail(row));
+      email = { sent: result.ok, skipped: result.skipped, error: result.error };
+    }
+
+    return NextResponse.json({ ok: true, row, email });
   }
 
   if (body.type === "contact") {

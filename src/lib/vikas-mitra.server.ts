@@ -13,6 +13,8 @@ export type VikasMitraProfile = {
   experience?: string | undefined;
   message?: string | undefined;
   photo?: string | undefined;
+  panCard?: string | undefined;
+  aadhaarCard?: string | undefined;
   status: "pending" | "approved" | "rejected";
   rejectionMessage?: string | undefined;
   createdAt: string;
@@ -30,6 +32,8 @@ type VikasMitraRow = {
   experience: string | null;
   message: string | null;
   photo: string | null;
+  pan_card: string | null;
+  aadhaar_card: string | null;
   status: "pending" | "approved" | "rejected";
   rejection_message: string | null;
   created_at: string;
@@ -48,6 +52,8 @@ function toProfile(row: VikasMitraRow): VikasMitraProfile {
     experience: row.experience ?? undefined,
     message: row.message ?? undefined,
     photo: row.photo ?? undefined,
+    panCard: row.pan_card ?? undefined,
+    aadhaarCard: row.aadhaar_card ?? undefined,
     status: row.status,
     rejectionMessage: row.rejection_message ?? undefined,
     createdAt: row.created_at,
@@ -69,6 +75,8 @@ export async function createVikasMitraProfile(
       experience: input.experience || null,
       message: input.message || null,
       photo: input.photo || null,
+      pan_card: input.panCard || null,
+      aadhaar_card: input.aadhaarCard || null,
       status: "pending",
     });
 
@@ -115,6 +123,8 @@ export async function updateVikasMitraProfile(
     experience?: string | undefined;
     message?: string | undefined;
     photo?: string | undefined;
+    panCard?: string | undefined;
+    aadhaarCard?: string | undefined;
     status?: VikasMitraProfile["status"] | undefined;
     rejectionMessage?: string | undefined;
   },
@@ -131,9 +141,14 @@ export async function updateVikasMitraProfile(
       ...(input.experience !== undefined ? { experience: input.experience || null } : {}),
       ...(input.message !== undefined ? { message: input.message || null } : {}),
       ...(input.photo !== undefined ? { photo: input.photo || null } : {}),
+      ...(input.panCard !== undefined ? { pan_card: input.panCard || null } : {}),
+      ...(input.aadhaarCard !== undefined ? { aadhaar_card: input.aadhaarCard || null } : {}),
       ...(input.status !== undefined ? { status: input.status } : {}),
       ...(input.rejectionMessage !== undefined
-        ? { rejection_message: input.rejectionMessage || "Your Vikas Mitra profile has been rejected." }
+        ? {
+            rejection_message:
+              input.rejectionMessage || "Your Vikas Mitra profile has been rejected.",
+          }
         : {}),
     });
     return toProfile(row);

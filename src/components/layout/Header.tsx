@@ -30,6 +30,9 @@ export function Header() {
   const [vikasError, setVikasError] = useState("");
   const [vikasSubmittedId, setVikasSubmittedId] = useState("");
   const [photoPreview, setPhotoPreview] = useState("");
+  const [panPreview, setPanPreview] = useState("");
+  const [aadhaarPreview, setAadhaarPreview] = useState("");
+  const [agree, setAgree] = useState(false);
   const socialLinks = [
     { icon: Facebook, href: site.socialLinks.facebook, label: "Facebook" },
     { icon: Instagram, href: site.socialLinks.instagram, label: "Instagram" },
@@ -38,6 +41,8 @@ export function Header() {
   ];
   const field =
     "w-full rounded-md border border-[#efd5bc] bg-white px-3.5 py-3 text-sm font-semibold text-[#321815] outline-none transition focus:border-saffron focus:ring-2 focus:ring-saffron/25";
+  const fileField =
+    "w-full rounded-md border border-[#efd5bc] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#321815] file:mr-3 file:rounded-md file:border-0 file:bg-saffron file:px-3 file:py-2 file:text-xs file:font-extrabold file:text-white focus:border-saffron focus:ring-2 focus:ring-saffron/25 focus:outline-none";
 
   useEffect(() => {
     if (!vikasOpen || vikasStatus !== "done") {
@@ -62,6 +67,9 @@ export function Header() {
     setVikasError("");
     setVikasSubmittedId("");
     setPhotoPreview("");
+    setPanPreview("");
+    setAadhaarPreview("");
+    setAgree(false);
     setVikasOpen(true);
     setOpen(false);
   }
@@ -124,10 +132,21 @@ export function Header() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    if (!agree) {
+      setVikasStatus("error");
+      setVikasError("Pehle privacy policy checkbox ko tick karein.");
+      return;
+    }
     setVikasStatus("loading");
     setVikasError("");
     const photoFile = data.get("photo");
-    const photo = photoFile instanceof File && photoFile.size > 0 ? await preparePhoto(photoFile) : "";
+    const photo =
+      photoFile instanceof File && photoFile.size > 0 ? await preparePhoto(photoFile) : "";
+    const panFile = data.get("panCard");
+    const panCard = panFile instanceof File && panFile.size > 0 ? await preparePhoto(panFile) : "";
+    const aadhaarFile = data.get("aadhaarCard");
+    const aadhaarCard =
+      aadhaarFile instanceof File && aadhaarFile.size > 0 ? await preparePhoto(aadhaarFile) : "";
     try {
       const profileResponse = await fetch("/api/vikas-mitra", {
         method: "POST",
@@ -143,11 +162,15 @@ export function Header() {
           experience: String(data.get("experience") ?? ""),
           message: String(data.get("message") ?? ""),
           photo,
+          panCard,
+          aadhaarCard,
         }),
       });
 
       if (!profileResponse.ok) {
-        const errorData = (await profileResponse.json().catch(() => null)) as { error?: string } | null;
+        const errorData = (await profileResponse.json().catch(() => null)) as {
+          error?: string;
+        } | null;
         throw new Error(errorData?.error ?? "Failed to create Vikas Mitra public profile");
       }
 
@@ -155,10 +178,15 @@ export function Header() {
       setVikasSubmittedId(result.id ?? "");
       setVikasStatus("done");
       setPhotoPreview("");
+      setPanPreview("");
+      setAadhaarPreview("");
+      setAgree(false);
       form.reset();
     } catch (error) {
       setVikasStatus("error");
-      setVikasError(error instanceof Error ? error.message : "Form submit nahi ho paya. Please try again.");
+      setVikasError(
+        error instanceof Error ? error.message : "Form submit nahi ho paya. Please try again.",
+      );
     }
   }
 
@@ -323,7 +351,9 @@ export function Header() {
               <div className="p-5">
                 <div className="rounded-lg border border-green-200 bg-green-50 p-5 text-center">
                   <CheckCircle2 className="mx-auto h-12 w-12 text-[#1b7650]" />
-                  <h4 className="mt-3 text-2xl font-black text-[#165f42]">Profile submit ho gayi</h4>
+                  <h4 className="mt-3 text-2xl font-black text-[#165f42]">
+                    Profile submit ho gayi
+                  </h4>
                   <p className="mx-auto mt-3 max-w-md text-sm font-extrabold leading-relaxed text-[#1b7650]">
                     24 hr ka wait kro. Admin approval karega tab jakar website me show hoga.
                     Approval ke baad aapka card ban jayega.
@@ -333,7 +363,9 @@ export function Header() {
                       <p className="text-xs font-black uppercase tracking-[0.16em] text-[#1b7650]/70">
                         Unique ID
                       </p>
-                      <p className="mt-1 break-all text-lg font-black text-maroon">{vikasSubmittedId}</p>
+                      <p className="mt-1 break-all text-lg font-black text-maroon">
+                        {vikasSubmittedId}
+                      </p>
                     </div>
                   )}
                   <p className="mt-4 text-xs font-bold text-[#1b7650]/80">
@@ -342,196 +374,283 @@ export function Header() {
                 </div>
               </div>
             ) : (
-            <form onSubmit={submitVikasMitra} className="grid gap-4 p-5 sm:grid-cols-2">
-              <div>
-                <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
-                  htmlFor="vikas-name"
-                >
-                  नाम *
-                </label>
-                <input
-                  id="vikas-name"
-                  name="name"
-                  required
-                  className={field}
-                  placeholder="आपका नाम"
-                />
-              </div>
-              <div>
-                <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
-                  htmlFor="vikas-phone"
-                >
-                  मोबाइल नंबर *
-                </label>
-                <input
-                  id="vikas-phone"
-                  name="phone"
-                  required
-                  inputMode="tel"
-                  className={field}
-                  placeholder="+91"
-                />
-              </div>
-              <div>
-                <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
-                  htmlFor="vikas-email"
-                >
-                  ईमेल
-                </label>
-                <input
-                  id="vikas-email"
-                  name="email"
-                  type="email"
-                  className={field}
-                  placeholder="you@example.com"
-                />
-              </div>
-              <div>
-                <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
-                  htmlFor="vikas-district"
-                >
-                  जिला *
-                </label>
-                <input
-                  id="vikas-district"
-                  name="district"
-                  required
-                  className={field}
-                  placeholder="जैसे: जयपुर"
-                />
-              </div>
-              <div>
-                <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
-                  htmlFor="vikas-tehsil"
-                >
-                  तहसील / ब्लॉक *
-                </label>
-                <input
-                  id="vikas-tehsil"
-                  name="tehsil"
-                  required
-                  className={field}
-                  placeholder="तहसील / ब्लॉक"
-                />
-              </div>
-              <div>
-                <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
-                  htmlFor="vikas-village"
-                >
-                  गांव / शहर *
-                </label>
-                <input
-                  id="vikas-village"
-                  name="village"
-                  required
-                  className={field}
-                  placeholder="गांव / शहर"
-                />
-              </div>
-              <div>
-                <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
-                  htmlFor="vikas-occupation"
-                >
-                  व्यवसाय / प्रोफेशन
-                </label>
-                <input
-                  id="vikas-occupation"
-                  name="occupation"
-                  className={field}
-                  placeholder="व्यवसाय / काम"
-                />
-              </div>
-              <div>
-                <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
-                  htmlFor="vikas-photo"
-                >
-                  Profile Photo
-                </label>
-                <input
-                  id="vikas-photo"
-                  name="photo"
-                  type="file"
-                  accept="image/*"
-                  onChange={async (event) => {
-                    const file = event.currentTarget.files?.[0];
-                    setPhotoPreview(file ? await preparePhoto(file) : "");
-                  }}
-                  className="w-full rounded-md border border-[#efd5bc] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#321815] file:mr-3 file:rounded-md file:border-0 file:bg-saffron file:px-3 file:py-2 file:text-xs file:font-extrabold file:text-white focus:border-saffron focus:ring-2 focus:ring-saffron/25 focus:outline-none"
-                />
-              </div>
-              <div>
-                <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
-                  htmlFor="vikas-experience"
-                >
-                  अनुभव
-                </label>
-                <select id="vikas-experience" name="experience" className={field} defaultValue="">
-                  <option value="" disabled>
-                    अनुभव चुनें
-                  </option>
-                  <option value="नया">नया</option>
-                  <option value="1-2 साल">1-2 साल</option>
-                  <option value="3-5 साल">3-5 साल</option>
-                  <option value="5+ साल">5+ साल</option>
-                </select>
-              </div>
-              <div className="sm:col-span-2">
-                <label
-                  className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
-                  htmlFor="vikas-message"
-                >
-                  अतिरिक्त जानकारी
-                </label>
-                <textarea
-                  id="vikas-message"
-                  name="message"
-                  rows={4}
-                  className={field}
-                  placeholder="आप Vikas Mitra क्यों join करना चाहते हैं?"
-                />
-              </div>
-              {photoPreview && (
-                <div className="sm:col-span-2">
-                  <p className="mb-2 text-xs font-extrabold text-[#4b302b]">Real Photo Preview</p>
-                  <div className="relative h-56 overflow-hidden rounded-lg border border-orange-200 bg-orange-50">
-                    <img
-                      src={photoPreview}
-                      alt="Selected Vikas Mitra profile"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
+              <form onSubmit={submitVikasMitra} className="grid gap-4 p-5 sm:grid-cols-2">
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-name"
+                  >
+                    नाम *
+                  </label>
+                  <input
+                    id="vikas-name"
+                    name="name"
+                    required
+                    className={field}
+                    placeholder="आपका नाम"
+                  />
                 </div>
-              )}
-
-              <div className="sm:col-span-2">
-                <button
-                  type="submit"
-                  disabled={vikasStatus === "loading"}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-maroon px-6 py-3.5 text-sm font-extrabold text-white transition-colors hover:bg-[#6d070b] disabled:opacity-70"
-                >
-                  {vikasStatus === "loading" ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <ArrowRight className="h-4 w-4" />
-                  )}
-                  Profile Submit करें
-                </button>
-                {vikasStatus === "error" && (
-                  <p className="mt-3 text-sm font-bold text-destructive">
-                    {vikasError || "Form submit nahi ho paya. Please try again."}
-                  </p>
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-phone"
+                  >
+                    मोबाइल नंबर *
+                  </label>
+                  <input
+                    id="vikas-phone"
+                    name="phone"
+                    required
+                    inputMode="tel"
+                    className={field}
+                    placeholder="+91"
+                  />
+                </div>
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-email"
+                  >
+                    ईमेल
+                  </label>
+                  <input
+                    id="vikas-email"
+                    name="email"
+                    type="email"
+                    className={field}
+                    placeholder="you@example.com"
+                  />
+                </div>
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-district"
+                  >
+                    जिला *
+                  </label>
+                  <input
+                    id="vikas-district"
+                    name="district"
+                    required
+                    className={field}
+                    placeholder="जैसे: जयपुर"
+                  />
+                </div>
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-tehsil"
+                  >
+                    तहसील / ब्लॉक *
+                  </label>
+                  <input
+                    id="vikas-tehsil"
+                    name="tehsil"
+                    required
+                    className={field}
+                    placeholder="तहसील / ब्लॉक"
+                  />
+                </div>
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-village"
+                  >
+                    गांव / शहर *
+                  </label>
+                  <input
+                    id="vikas-village"
+                    name="village"
+                    required
+                    className={field}
+                    placeholder="गांव / शहर"
+                  />
+                </div>
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-occupation"
+                  >
+                    व्यवसाय / प्रोफेशन
+                  </label>
+                  <input
+                    id="vikas-occupation"
+                    name="occupation"
+                    className={field}
+                    placeholder="व्यवसाय / काम"
+                  />
+                </div>
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-photo"
+                  >
+                    Profile Photo
+                  </label>
+                  <input
+                    id="vikas-photo"
+                    name="photo"
+                    type="file"
+                    accept="image/*"
+                    onChange={async (event) => {
+                      const file = event.currentTarget.files?.[0];
+                      setPhotoPreview(file ? await preparePhoto(file) : "");
+                    }}
+                    className={fileField}
+                  />
+                </div>
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-pan"
+                  >
+                    PAN Card की फोटो
+                  </label>
+                  <input
+                    id="vikas-pan"
+                    name="panCard"
+                    type="file"
+                    accept="image/*"
+                    onChange={async (event) => {
+                      const file = event.currentTarget.files?.[0];
+                      setPanPreview(file ? await preparePhoto(file) : "");
+                    }}
+                    className={fileField}
+                  />
+                </div>
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-aadhaar"
+                  >
+                    Aadhaar Card की फोटो
+                  </label>
+                  <input
+                    id="vikas-aadhaar"
+                    name="aadhaarCard"
+                    type="file"
+                    accept="image/*"
+                    onChange={async (event) => {
+                      const file = event.currentTarget.files?.[0];
+                      setAadhaarPreview(file ? await preparePhoto(file) : "");
+                    }}
+                    className={fileField}
+                  />
+                </div>
+                <div>
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-experience"
+                  >
+                    अनुभव
+                  </label>
+                  <select id="vikas-experience" name="experience" className={field} defaultValue="">
+                    <option value="" disabled>
+                      अनुभव चुनें
+                    </option>
+                    <option value="नया">नया</option>
+                    <option value="1-2 साल">1-2 साल</option>
+                    <option value="3-5 साल">3-5 साल</option>
+                    <option value="5+ साल">5+ साल</option>
+                  </select>
+                </div>
+                <div className="sm:col-span-2">
+                  <label
+                    className="mb-1.5 block text-xs font-extrabold text-[#4b302b]"
+                    htmlFor="vikas-message"
+                  >
+                    अतिरिक्त जानकारी
+                  </label>
+                  <textarea
+                    id="vikas-message"
+                    name="message"
+                    rows={4}
+                    className={field}
+                    placeholder="आप Vikas Mitra क्यों join करना चाहते हैं?"
+                  />
+                </div>
+                {photoPreview && (
+                  <div className="sm:col-span-2">
+                    <p className="mb-2 text-xs font-extrabold text-[#4b302b]">Real Photo Preview</p>
+                    <div className="relative h-56 overflow-hidden rounded-lg border border-orange-200 bg-orange-50">
+                      <img
+                        src={photoPreview}
+                        alt="Selected Vikas Mitra profile"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  </div>
                 )}
-              </div>
-            </form>
+                {panPreview && (
+                  <div>
+                    <p className="mb-2 text-xs font-extrabold text-[#4b302b]">PAN Card Preview</p>
+                    <div className="relative h-44 overflow-hidden rounded-lg border border-orange-200 bg-orange-50">
+                      <img
+                        src={panPreview}
+                        alt="Selected PAN card"
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                  </div>
+                )}
+                {aadhaarPreview && (
+                  <div>
+                    <p className="mb-2 text-xs font-extrabold text-[#4b302b]">
+                      Aadhaar Card Preview
+                    </p>
+                    <div className="relative h-44 overflow-hidden rounded-lg border border-orange-200 bg-orange-50">
+                      <img
+                        src={aadhaarPreview}
+                        alt="Selected Aadhaar card"
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="sm:col-span-2">
+                  <label className="flex items-start gap-2.5 text-xs font-bold text-[#4b302b]">
+                    <input
+                      type="checkbox"
+                      name="agree"
+                      checked={agree}
+                      onChange={(event) => setAgree(event.currentTarget.checked)}
+                      className="mt-0.5 h-4 w-4 shrink-0 accent-maroon"
+                    />
+                    <span>
+                      मैं{" "}
+                      <Link
+                        href="/privacy-policy"
+                        target="_blank"
+                        className="font-extrabold text-maroon underline underline-offset-2 hover:text-saffron"
+                      >
+                        प्राइवेसी पॉलिसी
+                      </Link>{" "}
+                      से सहमत हूँ। (फॉर्म सबमिट करने के लिए ज़रूरी है)
+                    </span>
+                  </label>
+                </div>
+
+                <div className="sm:col-span-2">
+                  <button
+                    type="submit"
+                    disabled={vikasStatus === "loading" || !agree}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-maroon px-6 py-3.5 text-sm font-extrabold text-white transition-colors hover:bg-[#6d070b] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {vikasStatus === "loading" ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <ArrowRight className="h-4 w-4" />
+                    )}
+                    Profile Submit करें
+                  </button>
+                  {vikasStatus === "error" && (
+                    <p className="mt-3 text-sm font-bold text-destructive">
+                      {vikasError || "Form submit nahi ho paya. Please try again."}
+                    </p>
+                  )}
+                </div>
+              </form>
             )}
           </div>
         </div>

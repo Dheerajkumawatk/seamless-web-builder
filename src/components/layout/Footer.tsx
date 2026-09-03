@@ -15,6 +15,13 @@ import {
 import { nav, services, site } from "@/data/site";
 import { Logo } from "@/components/layout/Logo";
 
+const legalLinks = [
+  { label: "Privacy Policy", to: "/privacy-policy" },
+  { label: "Refund Policy", to: "/refund-policy" },
+  { label: "Terms & Conditions", to: "/terms-conditions" },
+  { label: "Disclaimer", to: "/disclaimer" },
+];
+
 export function Footer() {
   const pathname = usePathname();
   const socialLinks = [
@@ -29,7 +36,6 @@ export function Footer() {
   }
 
   return (
-    
     <footer className="border-t border-[#e6d8cd] bg-[#fffaf2] text-[#4a342f] shadow-[0_-2px_10px_rgba(94,32,10,.06)]">
       <div className="mx-auto grid max-w-[1720px] gap-10 px-6 py-11 md:grid-cols-2 lg:grid-cols-[1.22fr_.82fr_.98fr_.98fr] lg:px-20">
         <div className="pr-4">
@@ -69,6 +75,13 @@ export function Footer() {
                 • Vikas Mitra Profiles
               </Link>
             </li>
+            {legalLinks.map((item) => (
+              <li key={item.to}>
+                <Link href={item.to} className="transition-colors hover:text-saffron">
+                  • {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -121,14 +134,18 @@ export function Footer() {
         </div>
         <div className="flex flex-col items-center justify-between gap-3 py-5 text-[14px] font-extrabold text-[#665b55] sm:flex-row">
           <p>© 2026 भारत पहचान. सभी अधिकार सुरक्षित। Citiline Technologies Private Limited</p>
-          <p className="flex gap-7 text-[#7a1215]">
-            <span>गोपनीयता नीति</span>
-            <span>|</span>
-            <span>नियम और शर्तें</span>
-          </p>
+          <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[#7a1215]">
+            {legalLinks.map((item, index) => (
+              <span key={item.to} className="flex items-center gap-4">
+                {index > 0 && <span aria-hidden="true">|</span>}
+                <Link href={item.to} className="transition-colors hover:text-saffron">
+                  {item.label}
+                </Link>
+              </span>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>
-
   );
 }
