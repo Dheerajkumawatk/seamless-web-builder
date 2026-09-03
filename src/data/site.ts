@@ -188,7 +188,7 @@ export const packages = [
     name: "स्टार्टर पैकेज",
     desc: "शुरुआत करें मजबूत डिजिटल पहचान के साथ",
     price: "₹49,999",
-    period: "/माह",
+    period: "/6 माह",
     featured: false,
     features: [
       "उम्मीदवार वेबसाइट",
@@ -202,7 +202,7 @@ export const packages = [
     name: "प्रोफेशनल पैकेज",
     desc: "संपूर्ण डिजिटल चुनाव मैनेजमेंट",
     price: "₹99,999",
-    period: "/माह",
+    period: "/6 माह",
     featured: true,
     badge: "लोकप्रिय",
     features: [
@@ -218,7 +218,7 @@ export const packages = [
     name: "प्रीमियम पैकेज",
     desc: "एंड-टू-एंड प्रोफेशनल चुनाव अभियान",
     price: "₹149,999",
-    period: "/माह",
+    period: "/6 माह",
     featured: false,
     features: [
       "सब कुछ प्रोफेशनल पैकेज में शामिल",
