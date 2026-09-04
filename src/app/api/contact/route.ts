@@ -8,6 +8,7 @@ const leadSchema = z.object({
   email: z.string().email().max(120).optional().or(z.literal("")),
   post: z.string().min(1).max(60),
   state: z.string().max(60).optional().or(z.literal("")),
+  city: z.string().max(80).optional().or(z.literal("")),
   message: z.string().max(1000).optional().or(z.literal("")),
 });
 
@@ -20,6 +21,7 @@ export async function POST(request: Request) {
       email: data.email || undefined,
       post: data.post,
       state: data.state || undefined,
+      city: data.city || undefined,
       message: data.message || undefined,
     });
 

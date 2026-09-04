@@ -8,6 +8,7 @@ export type Lead = {
   email?: string | undefined;
   post: string;
   state?: string | undefined;
+  city?: string | undefined;
   message?: string | undefined;
   createdAt: string;
 };
@@ -19,6 +20,7 @@ type LeadRow = {
   email: string | null;
   post: string;
   state: string | null;
+  city?: string | null;
   message: string | null;
   created_at: string;
 };
@@ -31,6 +33,7 @@ function toLead(row: LeadRow): Lead {
     email: row.email ?? undefined,
     post: row.post,
     state: row.state ?? undefined,
+    city: row.city ?? undefined,
     message: row.message ?? undefined,
     createdAt: row.created_at,
   };
@@ -38,16 +41,33 @@ function toLead(row: LeadRow): Lead {
 
 export async function createLead(input: Omit<Lead, "id" | "createdAt">): Promise<Lead> {
   try {
-    const row = await supabaseInsert<LeadRow>("contact_leads", {
+    const payload = {
       name: input.name,
       phone: input.phone,
       email: input.email || null,
       post: input.post,
       state: input.state || null,
+      ...(input.city ? { city: input.city } : {}),
       message: input.message || null,
-    });
+    };
+    const row = await supabaseInsert<LeadRow>("contact_leads", payload);
     return toLead(row);
   } catch (error) {
+    if (input.city) {
+      try {
+        const row = await supabaseInsert<LeadRow>("contact_leads", {
+          name: input.name,
+          phone: input.phone,
+          email: input.email || null,
+          post: input.post,
+          state: input.state || null,
+          message: input.message || null,
+        });
+        return toLead(row);
+      } catch {
+        // Fall through to the local backup store.
+      }
+    }
     console.warn("[contact] Supabase insert failed, using local fallback", error);
     return insertLocalRow<Lead>("contact-leads", input);
   }
@@ -75,20 +95,38 @@ export async function updateLead(
     email?: string | undefined;
     post?: string | undefined;
     state?: string | undefined;
+    city?: string | undefined;
     message?: string | undefined;
   },
 ) {
   try {
-    const row = await supabaseUpdate<LeadRow>("contact_leads", id, {
+    const payload = {
       ...(input.name !== undefined ? { name: input.name } : {}),
       ...(input.phone !== undefined ? { phone: input.phone } : {}),
       ...(input.email !== undefined ? { email: input.email || null } : {}),
       ...(input.post !== undefined ? { post: input.post } : {}),
       ...(input.state !== undefined ? { state: input.state || null } : {}),
+      ...(input.city !== undefined ? { city: input.city || null } : {}),
       ...(input.message !== undefined ? { message: input.message || null } : {}),
-    });
+    };
+    const row = await supabaseUpdate<LeadRow>("contact_leads", id, payload);
     return toLead(row);
   } catch (error) {
+    if (input.city !== undefined) {
+      try {
+        const row = await supabaseUpdate<LeadRow>("contact_leads", id, {
+          ...(input.name !== undefined ? { name: input.name } : {}),
+          ...(input.phone !== undefined ? { phone: input.phone } : {}),
+          ...(input.email !== undefined ? { email: input.email || null } : {}),
+          ...(input.post !== undefined ? { post: input.post } : {}),
+          ...(input.state !== undefined ? { state: input.state || null } : {}),
+          ...(input.message !== undefined ? { message: input.message || null } : {}),
+        });
+        return toLead(row);
+      } catch {
+        // Fall through to the local backup store.
+      }
+    }
     console.warn("[contact] Supabase update failed, using local fallback", error);
     return updateLocalRow<Lead>("contact-leads", id, input);
   }

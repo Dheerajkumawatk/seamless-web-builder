@@ -37,6 +37,7 @@ const leadSchema = z.object({
     email: z.string().email().max(120).optional().or(z.literal("")),
     post: z.string().min(1).max(60).optional(),
     state: z.string().max(60).optional().or(z.literal("")),
+    city: z.string().max(80).optional().or(z.literal("")),
     message: z.string().max(1000).optional().or(z.literal("")),
   }),
 });
@@ -82,8 +83,7 @@ export async function PATCH(request: Request) {
     const row = await updateVikasMitraProfile(body.id, body.data);
 
     let email:
-      | { sent: boolean; skipped?: boolean | undefined; error?: string | undefined }
-      | undefined;
+      { sent: boolean; skipped?: boolean | undefined; error?: string | undefined } | undefined;
     if (body.notify && row.status === "approved" && row.email) {
       const result = await sendEmail(buildVikasMitraApprovalEmail(row));
       email = { sent: result.ok, skipped: result.skipped, error: result.error };

@@ -28,9 +28,13 @@ create table if not exists public.contact_leads (
   email text,
   post text not null,
   state text,
+  city text,
   message text,
   created_at timestamptz not null default now()
 );
+
+-- Backfill for existing installs
+alter table public.contact_leads add column if not exists city text;
 
 create table if not exists public.plan_queries (
   id uuid primary key default gen_random_uuid(),

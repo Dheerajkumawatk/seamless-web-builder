@@ -50,6 +50,7 @@ type ContactLead = {
   email?: string;
   post: string;
   state?: string;
+  city?: string;
   message?: string;
   createdAt: string;
 };
@@ -381,6 +382,7 @@ export default function AdminPage() {
             <Stat label="Pending Approval" value={pendingCount} tone="orange" />
             <Stat label="Approved Profiles" value={approvedCount} tone="green" />
             <Stat label="Plan Queries" value={data.plans.length} tone="blue" />
+            <Stat label="Contact Leads" value={data.contacts.length} tone="blue" />
           </div>
 
           {message && (
@@ -406,7 +408,7 @@ export default function AdminPage() {
                 onEdit={(type, row) => setEditing({ type, row })}
                 title={(row) => `${row.name} - ${row.post}`}
                 detail={(row) =>
-                  `${row.phone} ${row.email ? `| ${row.email}` : ""} ${row.state ? `| ${row.state}` : ""}`
+                  `${row.phone}${row.email ? ` | ${row.email}` : ""}${displayLeadCity(row) ? ` | City: ${displayLeadCity(row)}` : ""}${row.state && row.state !== displayLeadCity(row) ? ` | ${row.state}` : ""}`
                 }
               />
             )}
@@ -675,7 +677,7 @@ function EditModal({
           "aadhaarCard",
         ]
       : type === "contact"
-        ? ["name", "phone", "email", "post", "state", "message"]
+        ? ["name", "phone", "email", "post", "city", "state", "message"]
         : ["packageName", "name", "phone", "email", "city", "state", "pincode"];
   const longFields = ["message", "photo", "panCard", "aadhaarCard"];
 
@@ -736,6 +738,10 @@ function EditModal({
       </form>
     </div>
   );
+}
+
+function displayLeadCity(row: ContactLead) {
+  return row.city || (row.post === "Website Popup Lead" ? row.state : "");
 }
 
 function PreviewModal({ row, onClose }: { row: Vikas; onClose: () => void }) {
