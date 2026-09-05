@@ -266,7 +266,7 @@ export default function AdminPage() {
               onChange={(event) => setEmail(event.target.value)}
               className={field}
               type="email"
-              placeholder="admin@gmail.com"
+              placeholder="Email"
               required
             />
             <input
@@ -274,7 +274,7 @@ export default function AdminPage() {
               onChange={(event) => setPassword(event.target.value)}
               className={field}
               type="password"
-              placeholder="Admin123"
+              placeholder="Password"
               required
             />
           </div>

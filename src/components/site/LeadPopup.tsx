@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckCircle2, Loader2, PhoneCall, Send } from "lucide-react";
+import { CheckCircle2, Loader2, PhoneCall, Send, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const submittedKey = "bharat-lead-popup-submitted";
@@ -9,6 +9,7 @@ const submittedKey = "bharat-lead-popup-submitted";
 export function LeadPopup() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [minimized, setMinimized] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [error, setError] = useState("");
 
@@ -16,9 +17,14 @@ export function LeadPopup() {
     if (pathname?.startsWith("/admin")) return;
     if (window.localStorage.getItem(submittedKey) === "yes") return;
 
-    const timer = window.setTimeout(() => setOpen(true), 10_000);
+    const timer = window.setTimeout(() => setOpen(true), 15_000);
     return () => window.clearTimeout(timer);
   }, [pathname]);
+
+  function onClose() {
+    setOpen(false);
+    setMinimized(true);
+  }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -52,7 +58,10 @@ export function LeadPopup() {
 
       window.localStorage.setItem(submittedKey, "yes");
       setStatus("done");
-      window.setTimeout(() => setOpen(false), 700);
+      window.setTimeout(() => {
+        setOpen(false);
+        setMinimized(false);
+      }, 700);
       form.reset();
     } catch (err) {
       setStatus("error");
@@ -60,7 +69,35 @@ export function LeadPopup() {
     }
   }
 
-  if (!open) return null;
+  if (!open) {
+    if (!minimized) return null;
+
+    return (
+      <div className="fixed inset-x-0 bottom-0 z-[100] flex justify-center px-3 pb-2">
+        <div className="flex items-center gap-1.5 rounded-full border border-emerald-700 bg-emerald-600 py-1.5 pl-3 pr-1.5 shadow-lg">
+          <button
+            type="button"
+            onClick={() => {
+              setMinimized(false);
+              setOpen(true);
+            }}
+            className="flex items-center gap-1.5 text-left text-xs font-bold text-white"
+          >
+            <PhoneCall className="h-3.5 w-3.5 shrink-0" />
+            Enquiry Form
+          </button>
+          <button
+            type="button"
+            onClick={() => setMinimized(false)}
+            aria-label="Enquiry bar band karein"
+            className="shrink-0 rounded-full p-0.5 text-white/80 transition hover:bg-white/10 hover:text-white"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const field =
     "w-full rounded-md border border-slate-300 bg-white px-3.5 py-3 text-sm font-semibold text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200";
@@ -69,8 +106,17 @@ export function LeadPopup() {
     <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/82 px-4 py-6 backdrop-blur-sm">
       <form
         onSubmit={onSubmit}
-        className="w-full max-w-md rounded-lg bg-white p-5 text-slate-950 shadow-2xl sm:p-6"
+        className="relative w-full max-w-md rounded-lg bg-white p-5 text-slate-950 shadow-2xl sm:p-6"
       >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Popup band karein"
+          className="absolute right-3 top-3 rounded-md p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+        >
+          <X className="h-5 w-5" />
+        </button>
+
         <div className="grid h-12 w-12 place-items-center rounded-md bg-emerald-600 text-white">
           <PhoneCall className="h-6 w-6" />
         </div>
