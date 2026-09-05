@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { isAdminRequest } from "@/lib/admin-auth";
-import { listLeads, updateLead } from "@/lib/contact.server";
-import { listPlanQueries, updatePlanQuery } from "@/lib/plan-query.server";
-import { listVikasMitraProfiles, updateVikasMitraProfile } from "@/lib/vikas-mitra.server";
+import { deleteLead, listLeads, updateLead } from "@/lib/contact.server";
+import {
+  deleteVikasMitraProfile,
+  listVikasMitraProfiles,
+  updateVikasMitraProfile,
+} from "@/lib/vikas-mitra.server";
 import { buildVikasMitraApprovalEmail, sendEmail } from "@/lib/email.server";
 
 const vikasSchema = z.object({
@@ -36,40 +39,27 @@ const leadSchema = z.object({
     phone: z.string().min(8).max(20).optional(),
     email: z.string().email().max(120).optional().or(z.literal("")),
     post: z.string().min(1).max(60).optional(),
+    source: z.string().max(40).optional().or(z.literal("")),
     state: z.string().max(60).optional().or(z.literal("")),
     city: z.string().max(80).optional().or(z.literal("")),
     message: z.string().max(1000).optional().or(z.literal("")),
   }),
 });
 
-const planSchema = z.object({
-  type: z.literal("plan"),
-  id: z.string().uuid(),
-  data: z.object({
-    packageName: z.string().min(1).max(120).optional(),
-    name: z.string().min(2).max(80).optional(),
-    phone: z.string().min(8).max(20).optional(),
-    email: z.string().email().max(120).optional(),
-    city: z.string().min(2).max(80).optional(),
-    state: z.string().min(2).max(80).optional(),
-    pincode: z.string().min(4).max(12).optional(),
-  }),
-});
-
-const updateSchema = z.discriminatedUnion("type", [vikasSchema, leadSchema, planSchema]);
+const updateSchema = z.discriminatedUnion("type", [vikasSchema, leadSchema]);
+const deleteSchema = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("vikas"), id: z.string().uuid() }),
+  z.object({ type: z.literal("contact"), id: z.string().uuid() }),
+]);
 
 export async function GET(request: Request) {
   if (!isAdminRequest(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const [vikas, contacts, plans] = await Promise.all([
-    listVikasMitraProfiles(),
-    listLeads(),
-    listPlanQueries(),
-  ]);
+  const [vikas, contacts] = await Promise.all([listVikasMitraProfiles(), listLeads()]);
 
-  return NextResponse.json({ vikas, contacts, plans });
+  return NextResponse.json({ vikas, contacts });
 }
 
 export async function PATCH(request: Request) {
@@ -97,6 +87,21 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ ok: true, row });
   }
 
-  const row = await updatePlanQuery(body.id, body.data);
-  return NextResponse.json({ ok: true, row });
+  return NextResponse.json({ ok: false, error: "Unsupported update type" }, { status: 400 });
+}
+
+export async function DELETE(request: Request) {
+  if (!isAdminRequest(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = deleteSchema.parse(await request.json());
+
+  if (body.type === "vikas") {
+    await deleteVikasMitraProfile(body.id);
+    return NextResponse.json({ ok: true });
+  }
+
+  await deleteLead(body.id);
+  return NextResponse.json({ ok: true });
 }

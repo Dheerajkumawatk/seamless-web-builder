@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   CheckCircle2,
-  ClipboardList,
+  Download,
   Edit3,
   Eye,
   LayoutDashboard,
@@ -15,6 +15,7 @@ import {
   Save,
   Search,
   ShieldCheck,
+  Trash2,
   UsersRound,
   X,
   XCircle,
@@ -22,7 +23,7 @@ import {
 import { adminEmail, adminPassword } from "@/lib/admin-auth";
 import { formatVikasMitraId } from "@/lib/profile-id";
 
-type Tab = "vikas" | "contacts" | "plans";
+type Tab = "vikas" | "contacts";
 
 type Vikas = {
   id: string;
@@ -49,36 +50,23 @@ type ContactLead = {
   phone: string;
   email?: string;
   post: string;
+  source?: string;
   state?: string;
   city?: string;
   message?: string;
   createdAt: string;
 };
 
-type PlanQuery = {
-  id: string;
-  packageName: string;
-  name: string;
-  phone: string;
-  email: string;
-  city: string;
-  state: string;
-  pincode: string;
-  createdAt: string;
-};
-
 type AdminData = {
   vikas: Vikas[];
   contacts: ContactLead[];
-  plans: PlanQuery[];
 };
 
-const emptyData: AdminData = { vikas: [], contacts: [], plans: [] };
+const emptyData: AdminData = { vikas: [], contacts: [] };
 
 const navItems = [
   { key: "vikas" as const, label: "Vikas Mitra", icon: UsersRound },
   { key: "contacts" as const, label: "Contact Details", icon: Mail },
-  { key: "plans" as const, label: "Plan Query", icon: ClipboardList },
 ];
 
 export default function AdminPage() {
@@ -91,7 +79,7 @@ export default function AdminPage() {
   const [message, setMessage] = useState("");
   const [query, setQuery] = useState("");
   const [editing, setEditing] = useState<{
-    type: "vikas" | "contact" | "plan";
+    type: "vikas" | "contact";
     row: Record<string, unknown>;
   } | null>(null);
   const [previewing, setPreviewing] = useState<Vikas | null>(null);
@@ -106,6 +94,9 @@ export default function AdminPage() {
 
   const pendingCount = data.vikas.filter((row) => row.status === "pending").length;
   const approvedCount = data.vikas.filter((row) => row.status === "approved").length;
+  const packageLeadCount = data.contacts.filter(
+    (row) => row.source === "Package Form" || row.post === "Package Query",
+  ).length;
 
   useEffect(() => {
     const saved = window.localStorage.getItem("bharat-admin-auth");
@@ -162,7 +153,7 @@ export default function AdminPage() {
   };
 
   async function updateRow(
-    type: "vikas" | "contact" | "plan",
+    type: "vikas" | "contact",
     id: string,
     rowData: Record<string, unknown>,
     options?: { notify?: boolean; silent?: boolean },
@@ -197,6 +188,48 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function deleteRow(type: "vikas" | "contact", id: string, label: string) {
+    const ok = window.confirm(`${label} delete karna hai? Ye row DB se permanently delete hogi.`);
+    if (!ok) return;
+
+    setLoading(true);
+    setMessage("");
+    try {
+      const response = await fetch("/api/admin/data", {
+        method: "DELETE",
+        headers: {
+          ...authHeaders,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ type, id }),
+      });
+      if (!response.ok) throw new Error("Delete failed");
+      await loadData();
+      setMessage("Record delete ho gaya.");
+    } catch {
+      setMessage("Record delete nahi ho paya.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function exportCurrentTab() {
+    const rows = tab === "vikas" ? filterRows(data.vikas, query) : filterRows(data.contacts, query);
+    if (!rows.length) {
+      setMessage("Export ke liye koi record nahi mila.");
+      return;
+    }
+
+    const csv = toCsv(rows);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `bharat-pehchan-${tab}-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    window.URL.revokeObjectURL(url);
   }
 
   async function approve(row: Vikas) {
@@ -258,7 +291,7 @@ export default function AdminPage() {
           </p>
           <h1 className="mt-2 text-3xl font-black text-slate-950">Bharat Pehchan Admin</h1>
           <p className="mt-2 text-sm font-semibold text-slate-500">
-            Login karke leads, profiles aur plan queries manage karein.
+            Login karke profiles aur website leads manage karein.
           </p>
           <div className="mt-6 space-y-4">
             <input
@@ -362,6 +395,13 @@ export default function AdminPage() {
                 />
               </label>
               <button
+                onClick={exportCurrentTab}
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm font-black"
+              >
+                <Download className="h-4 w-4" />
+                Export CSV
+              </button>
+              <button
                 onClick={loadData}
                 className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm font-black"
               >
@@ -381,7 +421,7 @@ export default function AdminPage() {
             <Stat label="Total Vikas Mitra" value={data.vikas.length} />
             <Stat label="Pending Approval" value={pendingCount} tone="orange" />
             <Stat label="Approved Profiles" value={approvedCount} tone="green" />
-            <Stat label="Plan Queries" value={data.plans.length} tone="blue" />
+            <Stat label="Package Leads" value={packageLeadCount} tone="blue" />
             <Stat label="Contact Leads" value={data.contacts.length} tone="blue" />
           </div>
 
@@ -398,6 +438,7 @@ export default function AdminPage() {
                 onApprove={approve}
                 onReject={reject}
                 onEdit={(row) => setEditing({ type: "vikas", row })}
+                onDelete={(row) => deleteRow("vikas", row.id, row.name)}
                 onPreview={setPreviewing}
               />
             )}
@@ -406,20 +447,10 @@ export default function AdminPage() {
                 rows={filterRows(data.contacts, query)}
                 type="contact"
                 onEdit={(type, row) => setEditing({ type, row })}
-                title={(row) => `${row.name} - ${row.post}`}
+                onDelete={(type, row) => deleteRow(type, row.id, row.name)}
+                title={(row) => `${row.name} - ${leadSourceLabel(row)}`}
                 detail={(row) =>
-                  `${row.phone}${row.email ? ` | ${row.email}` : ""}${displayLeadCity(row) ? ` | City: ${displayLeadCity(row)}` : ""}${row.state && row.state !== displayLeadCity(row) ? ` | ${row.state}` : ""}`
-                }
-              />
-            )}
-            {tab === "plans" && (
-              <SimpleList
-                rows={filterRows(data.plans, query)}
-                type="plan"
-                onEdit={(type, row) => setEditing({ type, row })}
-                title={(row) => `${row.name} - ${row.packageName}`}
-                detail={(row) =>
-                  `${row.phone} | ${row.email} | ${row.city}, ${row.state} - ${row.pincode}`
+                  `${row.post} | ${row.phone}${row.email ? ` | ${row.email}` : ""}${displayLeadCity(row) ? ` | City: ${displayLeadCity(row)}` : ""}${row.state && row.state !== displayLeadCity(row) ? ` | ${row.state}` : ""}`
                 }
               />
             )}
@@ -446,6 +477,16 @@ function filterRows<T extends Record<string, unknown>>(rows: T[], query: string)
   const text = query.trim().toLowerCase();
   if (!text) return rows;
   return rows.filter((row) => Object.values(row).join(" ").toLowerCase().includes(text));
+}
+
+function toCsv(rows: Record<string, unknown>[]) {
+  const columns = Array.from(new Set(rows.flatMap((row) => Object.keys(row))));
+  const escape = (value: unknown) => {
+    const text = value === null || value === undefined ? "" : String(value);
+    return `"${text.replaceAll('"', '""')}"`;
+  };
+  return [columns.join(","), ...rows.map((row) => columns.map((key) => escape(row[key])).join(","))]
+    .join("\n");
 }
 
 function buildApprovalMail(row: Vikas) {
@@ -516,12 +557,14 @@ function VikasList({
   onApprove,
   onReject,
   onEdit,
+  onDelete,
   onPreview,
 }: {
   rows: Vikas[];
   onApprove: (row: Vikas) => void;
   onReject: (row: Vikas) => void;
   onEdit: (row: Record<string, unknown>) => void;
+  onDelete: (row: Vikas) => void;
   onPreview: (row: Vikas) => void;
 }) {
   return (
@@ -572,6 +615,9 @@ function VikasList({
                 <button onClick={() => onEdit(row)} className="action border bg-white">
                   <Edit3 className="h-4 w-4" /> Edit
                 </button>
+                <button onClick={() => onDelete(row)} className="action border bg-white text-red-700">
+                  <Trash2 className="h-4 w-4" /> Delete
+                </button>
                 {row.status === "rejected" && (
                   <a
                     href={`https://wa.me/${row.phone.replace(/\D/g, "")}?text=${encodeURIComponent(row.rejectionMessage ?? "Your Vikas Mitra profile has been rejected.")}`}
@@ -610,12 +656,14 @@ function SimpleList<T extends { id: string; message?: string; createdAt: string 
   title,
   detail,
   onEdit,
+  onDelete,
 }: {
   rows: T[];
-  type: "contact" | "plan";
+  type: "contact";
   title: (row: T) => string;
   detail: (row: T) => string;
-  onEdit: (type: "contact" | "plan", row: Record<string, unknown>) => void;
+  onEdit: (type: "contact", row: Record<string, unknown>) => void;
+  onDelete: (type: "contact", row: T) => void;
 }) {
   return (
     <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -630,9 +678,17 @@ function SimpleList<T extends { id: string; message?: string; createdAt: string 
                   <p className="mt-2 whitespace-pre-wrap text-sm text-slate-600">{row.message}</p>
                 )}
               </div>
-              <button onClick={() => onEdit(type, row)} className="action border bg-white">
-                <Edit3 className="h-4 w-4" /> Edit
-              </button>
+              <div className="flex shrink-0 flex-wrap gap-2">
+                <button onClick={() => onEdit(type, row)} className="action border bg-white">
+                  <Edit3 className="h-4 w-4" /> Edit
+                </button>
+                <button
+                  onClick={() => onDelete(type, row)}
+                  className="action border bg-white text-red-700"
+                >
+                  <Trash2 className="h-4 w-4" /> Delete
+                </button>
+              </div>
             </div>
           </section>
         ))}
@@ -651,7 +707,7 @@ function EditModal({
   onClose,
   onSave,
 }: {
-  type: "vikas" | "contact" | "plan";
+  type: "vikas" | "contact";
   row: Record<string, unknown>;
   fieldClass: string;
   onClose: () => void;
@@ -676,9 +732,7 @@ function EditModal({
           "panCard",
           "aadhaarCard",
         ]
-      : type === "contact"
-        ? ["name", "phone", "email", "post", "city", "state", "message"]
-        : ["packageName", "name", "phone", "email", "city", "state", "pincode"];
+      : ["name", "phone", "email", "post", "source", "city", "state", "message"];
   const longFields = ["message", "photo", "panCard", "aadhaarCard"];
 
   return (
@@ -742,6 +796,13 @@ function EditModal({
 
 function displayLeadCity(row: ContactLead) {
   return row.city || (row.post === "Website Popup Lead" ? row.state : "");
+}
+
+function leadSourceLabel(row: ContactLead) {
+  if (row.source) return row.source;
+  if (row.post === "Website Popup Lead") return "Popup Form";
+  if (row.post === "Package Query") return "Package Form";
+  return "Contact Us Page";
 }
 
 function PreviewModal({ row, onClose }: { row: Vikas; onClose: () => void }) {

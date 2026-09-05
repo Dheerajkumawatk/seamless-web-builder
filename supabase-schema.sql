@@ -27,6 +27,7 @@ create table if not exists public.contact_leads (
   phone text not null,
   email text,
   post text not null,
+  source text,
   state text,
   city text,
   message text,
@@ -35,6 +36,7 @@ create table if not exists public.contact_leads (
 
 -- Backfill for existing installs
 alter table public.contact_leads add column if not exists city text;
+alter table public.contact_leads add column if not exists source text;
 
 create table if not exists public.plan_queries (
   id uuid primary key default gen_random_uuid(),

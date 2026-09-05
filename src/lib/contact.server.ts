@@ -1,5 +1,4 @@
-import { insertLocalRow, mergeRows, readLocalRows, updateLocalRow } from "@/lib/local-store.server";
-import { supabaseInsert, supabaseSelect, supabaseUpdate } from "@/lib/supabase.server";
+import { getContactLeadModel, type ContactLead } from "@/lib/models/contact-lead.server";
 
 export type Lead = {
   id: string;
@@ -7,84 +6,47 @@ export type Lead = {
   phone: string;
   email?: string | undefined;
   post: string;
+  source?: string | undefined;
   state?: string | undefined;
   city?: string | undefined;
   message?: string | undefined;
   createdAt: string;
 };
 
-type LeadRow = {
-  id: string;
-  name: string;
-  phone: string;
-  email: string | null;
-  post: string;
-  state: string | null;
-  city?: string | null;
-  message: string | null;
-  created_at: string;
-};
-
-function toLead(row: LeadRow): Lead {
+function toLead(row: ContactLead): Lead {
   return {
     id: row.id,
     name: row.name,
     phone: row.phone,
     email: row.email ?? undefined,
     post: row.post,
+    source: row.source ?? undefined,
     state: row.state ?? undefined,
     city: row.city ?? undefined,
     message: row.message ?? undefined,
-    createdAt: row.created_at,
+    createdAt: row.createdAt.toISOString(),
   };
 }
 
 export async function createLead(input: Omit<Lead, "id" | "createdAt">): Promise<Lead> {
-  try {
-    const payload = {
-      name: input.name,
-      phone: input.phone,
-      email: input.email || null,
-      post: input.post,
-      state: input.state || null,
-      ...(input.city ? { city: input.city } : {}),
-      message: input.message || null,
-    };
-    const row = await supabaseInsert<LeadRow>("contact_leads", payload);
-    return toLead(row);
-  } catch (error) {
-    if (input.city) {
-      try {
-        const row = await supabaseInsert<LeadRow>("contact_leads", {
-          name: input.name,
-          phone: input.phone,
-          email: input.email || null,
-          post: input.post,
-          state: input.state || null,
-          message: input.message || null,
-        });
-        return toLead(row);
-      } catch {
-        // Fall through to the local backup store.
-      }
-    }
-    console.warn("[contact] Supabase insert failed, using local fallback", error);
-    return insertLocalRow<Lead>("contact-leads", input);
-  }
+  const Model = await getContactLeadModel();
+  const row = await Model.create({
+    name: input.name,
+    phone: input.phone,
+    email: input.email || null,
+    post: input.post,
+    source: input.source || null,
+    state: input.state || null,
+    city: input.city || null,
+    message: input.message || null,
+  });
+  return toLead(row);
 }
 
 export async function listLeads(): Promise<Lead[]> {
-  const localRows = await readLocalRows<Lead>("contact-leads");
-  try {
-    const rows = await supabaseSelect<LeadRow>("contact_leads", {
-      select: "*",
-      order: "created_at.desc",
-    });
-    return mergeRows(rows.map(toLead), localRows);
-  } catch (error) {
-    console.warn("[contact] Supabase list failed, using local fallback", error);
-    return localRows;
-  }
+  const Model = await getContactLeadModel();
+  const rows = await Model.findAll({ order: [["created_at", "DESC"]] });
+  return rows.map(toLead);
 }
 
 export async function updateLead(
@@ -94,40 +56,37 @@ export async function updateLead(
     phone?: string | undefined;
     email?: string | undefined;
     post?: string | undefined;
+    source?: string | undefined;
     state?: string | undefined;
     city?: string | undefined;
     message?: string | undefined;
   },
-) {
-  try {
-    const payload = {
-      ...(input.name !== undefined ? { name: input.name } : {}),
-      ...(input.phone !== undefined ? { phone: input.phone } : {}),
-      ...(input.email !== undefined ? { email: input.email || null } : {}),
-      ...(input.post !== undefined ? { post: input.post } : {}),
-      ...(input.state !== undefined ? { state: input.state || null } : {}),
-      ...(input.city !== undefined ? { city: input.city || null } : {}),
-      ...(input.message !== undefined ? { message: input.message || null } : {}),
-    };
-    const row = await supabaseUpdate<LeadRow>("contact_leads", id, payload);
-    return toLead(row);
-  } catch (error) {
-    if (input.city !== undefined) {
-      try {
-        const row = await supabaseUpdate<LeadRow>("contact_leads", id, {
-          ...(input.name !== undefined ? { name: input.name } : {}),
-          ...(input.phone !== undefined ? { phone: input.phone } : {}),
-          ...(input.email !== undefined ? { email: input.email || null } : {}),
-          ...(input.post !== undefined ? { post: input.post } : {}),
-          ...(input.state !== undefined ? { state: input.state || null } : {}),
-          ...(input.message !== undefined ? { message: input.message || null } : {}),
-        });
-        return toLead(row);
-      } catch {
-        // Fall through to the local backup store.
-      }
-    }
-    console.warn("[contact] Supabase update failed, using local fallback", error);
-    return updateLocalRow<Lead>("contact-leads", id, input);
+): Promise<Lead> {
+  const Model = await getContactLeadModel();
+  const row = await Model.findByPk(id);
+  if (!row) {
+    throw new Error(`Lead ${id} not found`);
+  }
+
+  row.set({
+    ...(input.name !== undefined ? { name: input.name } : {}),
+    ...(input.phone !== undefined ? { phone: input.phone } : {}),
+    ...(input.email !== undefined ? { email: input.email || null } : {}),
+    ...(input.post !== undefined ? { post: input.post } : {}),
+    ...(input.source !== undefined ? { source: input.source || null } : {}),
+    ...(input.state !== undefined ? { state: input.state || null } : {}),
+    ...(input.city !== undefined ? { city: input.city || null } : {}),
+    ...(input.message !== undefined ? { message: input.message || null } : {}),
+  });
+  await row.save();
+
+  return toLead(row);
+}
+
+export async function deleteLead(id: string): Promise<void> {
+  const Model = await getContactLeadModel();
+  const deleted = await Model.destroy({ where: { id } });
+  if (!deleted) {
+    throw new Error(`Lead ${id} not found`);
   }
 }

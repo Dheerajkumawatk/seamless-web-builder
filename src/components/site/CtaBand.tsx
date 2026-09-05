@@ -37,6 +37,7 @@ export function CtaBand() {
           phone: String(data.get("phone") ?? ""),
           email: String(data.get("email") ?? ""),
           post: "District Partner Program",
+          source: "District Partner Form",
           state: String(data.get("district") ?? ""),
           message,
         }),

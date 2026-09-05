@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { createLead } from "@/lib/contact.server";
 
 const leadSchema = z.object({
@@ -7,6 +7,7 @@ const leadSchema = z.object({
   phone: z.string().min(8).max(20),
   email: z.string().email().max(120).optional().or(z.literal("")),
   post: z.string().min(1).max(60),
+  source: z.string().max(40).optional().or(z.literal("")),
   state: z.string().max(60).optional().or(z.literal("")),
   city: z.string().max(80).optional().or(z.literal("")),
   message: z.string().max(1000).optional().or(z.literal("")),
@@ -20,6 +21,7 @@ export async function POST(request: Request) {
       phone: data.phone,
       email: data.email || undefined,
       post: data.post,
+      source: data.source || undefined,
       state: data.state || undefined,
       city: data.city || undefined,
       message: data.message || undefined,
@@ -27,7 +29,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true, id: lead.id });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Contact form submit failed";
+    const message =
+      error instanceof ZodError
+        ? error.message
+        : "Form submit nahi ho paya. Please thodi der baad dobara try karein.";
     return NextResponse.json({ ok: false, error: message }, { status: 400 });
   }
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { CheckCircle2, Loader2, PhoneCall, Send, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-const submittedKey = "bharat-lead-popup-submitted";
+const submittedKey = "bharat-lead-popup-submitted-session";
 
 export function LeadPopup() {
   const pathname = usePathname();
@@ -15,9 +15,9 @@ export function LeadPopup() {
 
   useEffect(() => {
     if (pathname?.startsWith("/admin")) return;
-    if (window.localStorage.getItem(submittedKey) === "yes") return;
+    if (window.sessionStorage.getItem(submittedKey) === "yes") return;
 
-    const timer = window.setTimeout(() => setOpen(true), 15_000);
+    const timer = window.setTimeout(() => setOpen(true), 10_000);
     return () => window.clearTimeout(timer);
   }, [pathname]);
 
@@ -47,6 +47,7 @@ export function LeadPopup() {
           city,
           state: city,
           post: "Website Popup Lead",
+          source: "Popup Form",
           message: city ? `City: ${city}` : "City: Not provided",
         }),
       });
@@ -56,7 +57,7 @@ export function LeadPopup() {
         throw new Error(errorData?.error ?? "Lead submit nahi ho payi.");
       }
 
-      window.localStorage.setItem(submittedKey, "yes");
+      window.sessionStorage.setItem(submittedKey, "yes");
       setStatus("done");
       window.setTimeout(() => {
         setOpen(false);

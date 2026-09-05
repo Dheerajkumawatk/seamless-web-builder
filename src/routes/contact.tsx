@@ -6,7 +6,13 @@ import { PageHero, Section } from "@/components/site/Section";
 import { LegalBody } from "@/components/site/LegalDoc";
 import { site } from "@/data/site";
 
-const posts = ["सरपंच", "पंचायत समिति सदस्य", "जिला परिषद सदस्य", "स्वतंत्र उम्मीदवार", "अन्य"];
+const posts = [
+  { label: "सरपंच", value: "Sarpanch" },
+  { label: "पंचायत समिति सदस्य", value: "Panchayat Samiti Member" },
+  { label: "जिला परिषद सदस्य", value: "Zila Parishad Member" },
+  { label: "स्वतंत्र उम्मीदवार", value: "Independent Candidate" },
+  { label: "अन्य", value: "Other" },
+];
 
 const grievanceContent = `
 *BHARATPAHCHAN.COM — CONTACT US & GRIEVANCE REDRESSAL*
@@ -123,27 +129,37 @@ export default function Contact() {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     setStatus("loading");
     setError("");
+    const state = String(fd.get("state") ?? "").trim();
+    const post = String(fd.get("post") ?? "").trim();
+    const message = String(fd.get("message") ?? "").trim();
+
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: String(fd.get("name") ?? ""),
-          phone: String(fd.get("phone") ?? ""),
-          email: String(fd.get("email") ?? ""),
-          post: String(fd.get("post") ?? ""),
-          state: String(fd.get("state") ?? ""),
-          message: String(fd.get("message") ?? ""),
+          name: String(fd.get("name") ?? "").trim(),
+          phone: String(fd.get("phone") ?? "").trim(),
+          email: String(fd.get("email") ?? "").trim(),
+          post,
+          source: "Contact Us Page",
+          state,
+          city: state,
+          message: message
+            ? `Contact Us Form\nSelected Post: ${post}\n\n${message}`
+            : `Contact Us Form\nSelected Post: ${post}`,
         }),
       });
       if (!response.ok) {
         throw new Error("Failed to submit enquiry");
       }
       setStatus("done");
-      e.currentTarget.reset();
+      setError("");
+      form.reset();
     } catch {
       setStatus("error");
       setError("कुछ गड़बड़ हो गई। कृपया दोबारा प्रयास करें या सीधे कॉल करें।");
@@ -230,8 +246,8 @@ export default function Contact() {
                     चुनें
                   </option>
                   {posts.map((p) => (
-                    <option key={p} value={p}>
-                      {p}
+                    <option key={p.value} value={p.value}>
+                      {p.label}
                     </option>
                   ))}
                 </select>
@@ -278,6 +294,11 @@ export default function Contact() {
               <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-saffron">
                 <CheckCircle2 className="h-4 w-4" /> धन्यवाद! हमारी टीम जल्द ही आपसे संपर्क करेगी।
               </p>
+            )}
+            {status === "done" && (
+              <div className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700">
+                Thank you! Form submit ho gaya. Hamari team jald hi aapse contact karegi.
+              </div>
             )}
             {status === "error" && <p className="mt-4 text-sm text-destructive">{error}</p>}
           </form>

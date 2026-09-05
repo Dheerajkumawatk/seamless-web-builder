@@ -20,8 +20,6 @@ import {
 import { nav, site } from "@/data/site";
 import { Logo } from "@/components/layout/Logo";
 
-const PHOTO_MAX_CHARS = 2_500_000;
-
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -83,51 +81,6 @@ export function Header() {
     });
   }
 
-  async function preparePhoto(file: File): Promise<string> {
-    const original = await readPhoto(file);
-
-    return new Promise((resolve) => {
-      const image = new Image();
-      image.onload = () => {
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-
-        if (!context) {
-          resolve(original.length <= PHOTO_MAX_CHARS ? original : "");
-          return;
-        }
-
-        const sizes = [1200, 1000, 800, 640];
-        const qualities = [0.78, 0.7, 0.62];
-        let fallback = "";
-
-        for (const maxSize of sizes) {
-          const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
-          const width = Math.max(1, Math.round(image.width * scale));
-          const height = Math.max(1, Math.round(image.height * scale));
-          canvas.width = width;
-          canvas.height = height;
-          context.fillStyle = "#ffffff";
-          context.fillRect(0, 0, width, height);
-          context.drawImage(image, 0, 0, width, height);
-
-          for (const quality of qualities) {
-            const photo = canvas.toDataURL("image/jpeg", quality);
-            fallback = photo;
-            if (photo.length <= PHOTO_MAX_CHARS) {
-              resolve(photo);
-              return;
-            }
-          }
-        }
-
-        resolve(fallback.length <= PHOTO_MAX_CHARS ? fallback : "");
-      };
-      image.onerror = () => resolve(original.length <= PHOTO_MAX_CHARS ? original : "");
-      image.src = original;
-    });
-  }
-
   async function submitVikasMitra(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -139,32 +92,10 @@ export function Header() {
     }
     setVikasStatus("loading");
     setVikasError("");
-    const photoFile = data.get("photo");
-    const photo =
-      photoFile instanceof File && photoFile.size > 0 ? await preparePhoto(photoFile) : "";
-    const panFile = data.get("panCard");
-    const panCard = panFile instanceof File && panFile.size > 0 ? await preparePhoto(panFile) : "";
-    const aadhaarFile = data.get("aadhaarCard");
-    const aadhaarCard =
-      aadhaarFile instanceof File && aadhaarFile.size > 0 ? await preparePhoto(aadhaarFile) : "";
     try {
       const profileResponse = await fetch("/api/vikas-mitra", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: String(data.get("name") ?? ""),
-          phone: String(data.get("phone") ?? ""),
-          email: String(data.get("email") ?? ""),
-          district: String(data.get("district") ?? ""),
-          tehsil: String(data.get("tehsil") ?? ""),
-          village: String(data.get("village") ?? ""),
-          occupation: String(data.get("occupation") ?? ""),
-          experience: String(data.get("experience") ?? ""),
-          message: String(data.get("message") ?? ""),
-          photo,
-          panCard,
-          aadhaarCard,
-        }),
+        body: data,
       });
 
       if (!profileResponse.ok) {
@@ -250,7 +181,7 @@ export function Header() {
                 </Link>
               ))}
               <Link
-                href="/"
+                href="/contact"
                 className="ml-1 whitespace-nowrap rounded-lg bg-[#159a56] px-6 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(21,154,86,.22)] transition-transform hover:scale-[1.03]"
               >
                 फ्री कंसल्टेशन बुक करें
@@ -289,7 +220,7 @@ export function Header() {
                   </Link>
                 ))}
                 <Link
-                  href="/"
+                  href="/contact"
                   onClick={() => setOpen(false)}
                   className="mt-4 rounded-md bg-saffron px-4 py-3 text-center text-sm font-bold text-white"
                 >
@@ -494,7 +425,7 @@ export function Header() {
                     accept="image/*"
                     onChange={async (event) => {
                       const file = event.currentTarget.files?.[0];
-                      setPhotoPreview(file ? await preparePhoto(file) : "");
+                      setPhotoPreview(file ? await readPhoto(file) : "");
                     }}
                     className={fileField}
                   />
@@ -513,7 +444,7 @@ export function Header() {
                     accept="image/*"
                     onChange={async (event) => {
                       const file = event.currentTarget.files?.[0];
-                      setPanPreview(file ? await preparePhoto(file) : "");
+                      setPanPreview(file ? await readPhoto(file) : "");
                     }}
                     className={fileField}
                   />
@@ -532,7 +463,7 @@ export function Header() {
                     accept="image/*"
                     onChange={async (event) => {
                       const file = event.currentTarget.files?.[0];
-                      setAadhaarPreview(file ? await preparePhoto(file) : "");
+                      setAadhaarPreview(file ? await readPhoto(file) : "");
                     }}
                     className={fileField}
                   />

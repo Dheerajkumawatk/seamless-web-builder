@@ -1,5 +1,7 @@
-import { insertLocalRow, mergeRows, readLocalRows, updateLocalRow } from "@/lib/local-store.server";
-import { supabaseInsert, supabaseSelect, supabaseUpdate } from "@/lib/supabase.server";
+import {
+  getVikasMitraProfileModel,
+  type VikasMitraProfileModel,
+} from "@/lib/models/vikas-mitra-profile.server";
 
 export type VikasMitraProfile = {
   id: string;
@@ -20,26 +22,7 @@ export type VikasMitraProfile = {
   createdAt: string;
 };
 
-type VikasMitraRow = {
-  id: string;
-  name: string;
-  phone: string;
-  email: string | null;
-  district: string;
-  tehsil: string;
-  village: string;
-  occupation: string | null;
-  experience: string | null;
-  message: string | null;
-  photo: string | null;
-  pan_card: string | null;
-  aadhaar_card: string | null;
-  status: "pending" | "approved" | "rejected";
-  rejection_message: string | null;
-  created_at: string;
-};
-
-function toProfile(row: VikasMitraRow): VikasMitraProfile {
+function toProfile(row: VikasMitraProfileModel): VikasMitraProfile {
   return {
     id: row.id,
     name: row.name,
@@ -52,62 +35,48 @@ function toProfile(row: VikasMitraRow): VikasMitraProfile {
     experience: row.experience ?? undefined,
     message: row.message ?? undefined,
     photo: row.photo ?? undefined,
-    panCard: row.pan_card ?? undefined,
-    aadhaarCard: row.aadhaar_card ?? undefined,
+    panCard: row.panCard ?? undefined,
+    aadhaarCard: row.aadhaarCard ?? undefined,
     status: row.status,
-    rejectionMessage: row.rejection_message ?? undefined,
-    createdAt: row.created_at,
+    rejectionMessage: row.rejectionMessage ?? undefined,
+    createdAt: row.createdAt.toISOString(),
   };
 }
 
 export async function createVikasMitraProfile(
   input: Omit<VikasMitraProfile, "id" | "createdAt" | "status" | "rejectionMessage">,
 ): Promise<VikasMitraProfile> {
-  try {
-    const row = await supabaseInsert<VikasMitraRow>("vikas_mitra_profiles", {
-      name: input.name,
-      phone: input.phone,
-      email: input.email || null,
-      district: input.district,
-      tehsil: input.tehsil,
-      village: input.village,
-      occupation: input.occupation || null,
-      experience: input.experience || null,
-      message: input.message || null,
-      photo: input.photo || null,
-      pan_card: input.panCard || null,
-      aadhaar_card: input.aadhaarCard || null,
-      status: "pending",
-    });
+  const Model = await getVikasMitraProfileModel();
+  const row = await Model.create({
+    name: input.name,
+    phone: input.phone,
+    email: input.email || null,
+    district: input.district,
+    tehsil: input.tehsil,
+    village: input.village,
+    occupation: input.occupation || null,
+    experience: input.experience || null,
+    message: input.message || null,
+    photo: input.photo || null,
+    panCard: input.panCard || null,
+    aadhaarCard: input.aadhaarCard || null,
+    status: "pending",
+    rejectionMessage: null,
+  });
 
-    return toProfile(row);
-  } catch (error) {
-    console.warn("[vikas-mitra] Supabase insert failed, using local fallback", error);
-    return insertLocalRow<VikasMitraProfile>("vikas-mitra", {
-      ...input,
-      status: "pending",
-      rejectionMessage: undefined,
-    });
-  }
+  return toProfile(row);
 }
 
 export async function listVikasMitraProfiles(
   status?: VikasMitraProfile["status"],
 ): Promise<VikasMitraProfile[]> {
-  const localRows = await readLocalRows<VikasMitraProfile>("vikas-mitra");
-  const filteredLocalRows = status ? localRows.filter((row) => row.status === status) : localRows;
-
-  try {
-    const rows = await supabaseSelect<VikasMitraRow>("vikas_mitra_profiles", {
-      select: "*",
-      order: "created_at.desc",
-      status: status ? `eq.${status}` : undefined,
-    });
-    return mergeRows(rows.map(toProfile), filteredLocalRows);
-  } catch (error) {
-    console.warn("[vikas-mitra] Supabase list failed, using local fallback", error);
-    return filteredLocalRows;
-  }
+  const Model = await getVikasMitraProfileModel();
+  const rows = await Model.findAll(
+    status
+      ? { where: { status }, order: [["created_at", "DESC"]] }
+      : { order: [["created_at", "DESC"]] },
+  );
+  return rows.map(toProfile);
 }
 
 export async function updateVikasMitraProfile(
@@ -129,31 +98,41 @@ export async function updateVikasMitraProfile(
     rejectionMessage?: string | undefined;
   },
 ): Promise<VikasMitraProfile> {
-  try {
-    const row = await supabaseUpdate<VikasMitraRow>("vikas_mitra_profiles", id, {
-      ...(input.name !== undefined ? { name: input.name } : {}),
-      ...(input.phone !== undefined ? { phone: input.phone } : {}),
-      ...(input.email !== undefined ? { email: input.email || null } : {}),
-      ...(input.district !== undefined ? { district: input.district } : {}),
-      ...(input.tehsil !== undefined ? { tehsil: input.tehsil } : {}),
-      ...(input.village !== undefined ? { village: input.village } : {}),
-      ...(input.occupation !== undefined ? { occupation: input.occupation || null } : {}),
-      ...(input.experience !== undefined ? { experience: input.experience || null } : {}),
-      ...(input.message !== undefined ? { message: input.message || null } : {}),
-      ...(input.photo !== undefined ? { photo: input.photo || null } : {}),
-      ...(input.panCard !== undefined ? { pan_card: input.panCard || null } : {}),
-      ...(input.aadhaarCard !== undefined ? { aadhaar_card: input.aadhaarCard || null } : {}),
-      ...(input.status !== undefined ? { status: input.status } : {}),
-      ...(input.rejectionMessage !== undefined
-        ? {
-            rejection_message:
-              input.rejectionMessage || "Your Vikas Mitra profile has been rejected.",
-          }
-        : {}),
-    });
-    return toProfile(row);
-  } catch (error) {
-    console.warn("[vikas-mitra] Supabase update failed, using local fallback", error);
-    return updateLocalRow<VikasMitraProfile>("vikas-mitra", id, input);
+  const Model = await getVikasMitraProfileModel();
+  const row = await Model.findByPk(id);
+  if (!row) {
+    throw new Error(`Vikas Mitra profile ${id} not found`);
+  }
+
+  row.set({
+    ...(input.name !== undefined ? { name: input.name } : {}),
+    ...(input.phone !== undefined ? { phone: input.phone } : {}),
+    ...(input.email !== undefined ? { email: input.email || null } : {}),
+    ...(input.district !== undefined ? { district: input.district } : {}),
+    ...(input.tehsil !== undefined ? { tehsil: input.tehsil } : {}),
+    ...(input.village !== undefined ? { village: input.village } : {}),
+    ...(input.occupation !== undefined ? { occupation: input.occupation || null } : {}),
+    ...(input.experience !== undefined ? { experience: input.experience || null } : {}),
+    ...(input.message !== undefined ? { message: input.message || null } : {}),
+    ...(input.photo !== undefined ? { photo: input.photo || null } : {}),
+    ...(input.panCard !== undefined ? { panCard: input.panCard || null } : {}),
+    ...(input.aadhaarCard !== undefined ? { aadhaarCard: input.aadhaarCard || null } : {}),
+    ...(input.status !== undefined ? { status: input.status } : {}),
+    ...(input.rejectionMessage !== undefined
+      ? {
+          rejectionMessage:
+            input.rejectionMessage || "Your Vikas Mitra profile has been rejected.",
+        }
+      : {}),
+  });
+  await row.save();
+  return toProfile(row);
+}
+
+export async function deleteVikasMitraProfile(id: string): Promise<void> {
+  const Model = await getVikasMitraProfileModel();
+  const deleted = await Model.destroy({ where: { id } });
+  if (!deleted) {
+    throw new Error(`Vikas Mitra profile ${id} not found`);
   }
 }

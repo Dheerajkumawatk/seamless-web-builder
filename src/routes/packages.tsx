@@ -9,7 +9,6 @@ export default function Packages() {
     <>
       <PageHero
         title="हमारे पैकेज"
-        sub="हर बजट और हर स्तर के चुनाव के लिए पारदर्शी कीमत वाले प्लान।"
       />
 
       <Section>
@@ -18,40 +17,47 @@ export default function Packages() {
             <article
               key={p.name}
               className={`relative flex flex-col overflow-hidden rounded-lg border bg-card ${
-                p.featured ? "border-saffron shadow-soft" : "border-border shadow-card"
+                p.featured ? packageTheme(p.theme).borderFeatured : "border-border shadow-card"
               }`}
             >
               {p.featured && (
-                <span className="absolute top-4 -right-9 rotate-45 bg-maroon px-10 py-1 text-[11px] font-semibold text-maroon-foreground">
+                <span className={`absolute top-4 -right-9 rotate-45 px-10 py-1 text-[11px] font-semibold text-white ${packageTheme(p.theme).badge}`}>
                   {p.badge}
                 </span>
               )}
               <div
-                className={`p-6 text-center ${p.featured ? "bg-saffron text-saffron-foreground" : ""}`}
+                className={`p-6 text-center ${p.featured ? `${packageTheme(p.theme).headBg} text-white` : ""}`}
               >
-                <h2 className={`text-lg ${p.featured ? "text-saffron-foreground" : "text-maroon"}`}>
+                <h2 className={`text-lg ${p.featured ? "text-white" : packageTheme(p.theme).title}`}>
                   {p.name}
                 </h2>
-                <p
-                  className={`mt-1 text-xs ${p.featured ? "text-saffron-foreground/85" : "text-muted-foreground"}`}
-                >
-                  {p.desc}
-                </p>
+                {p.desc && (
+                  <p
+                    className={`mt-1 text-xs ${p.featured ? "text-white/85" : "text-muted-foreground"}`}
+                  >
+                    {p.desc}
+                  </p>
+                )}
               </div>
               <div className="flex flex-1 flex-col px-6 pb-6">
-                <p className="text-center font-display text-3xl font-bold text-maroon">
+                <p className={`text-center font-display text-3xl font-bold ${packageTheme(p.theme).price}`}>
                   {p.price}
                   <span className="text-sm font-normal text-muted-foreground">{p.period}</span>
                 </p>
                 <ul className="mt-5 flex-1 space-y-2.5">
                   {p.features.map((f) => (
                     <li key={f} className="flex gap-2.5 text-sm text-foreground/85">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-saffron" />
+                      <Check className={`mt-0.5 h-4 w-4 shrink-0 ${packageTheme(p.theme).check}`} />
                       {f}
                     </li>
                   ))}
                 </ul>
-                <PackageQueryButton packageName={p.name} featured={p.featured} />
+                <PackageQueryButton
+                  packageName={p.name}
+                  featured={p.featured}
+                  tone={p.theme}
+                  ctaLabel={p.ctaLabel}
+                />
               </div>
             </article>
           ))}
@@ -76,4 +82,59 @@ export default function Packages() {
       <CtaBand />
     </>
   );
+}
+
+function packageTheme(theme: string) {
+  const themes = {
+    green: {
+      title: "text-[#0b9b45]",
+      price: "text-[#0b9b45]",
+      check: "text-[#20a34a]",
+      badge: "bg-[#20a34a]",
+      headBg: "bg-[#20a34a]",
+      borderFeatured: "border-[#ff5b20] shadow-soft",
+    },
+    blue: {
+      title: "text-[#2867c9]",
+      price: "text-[#2867c9]",
+      check: "text-[#2867c9]",
+      badge: "bg-[#2867c9]",
+      headBg: "bg-[#2867c9]",
+      borderFeatured: "border-[#2867c9] shadow-soft",
+    },
+    purple: {
+      title: "text-[#7f3fbd]",
+      price: "text-[#7f3fbd]",
+      check: "text-[#7f3fbd]",
+      badge: "bg-[#7f3fbd]",
+      headBg: "bg-[#7f3fbd]",
+      borderFeatured: "border-[#7f3fbd] shadow-soft",
+    },
+    orange: {
+      title: "text-[#ff5b20]",
+      price: "text-[#ff5b20]",
+      check: "text-[#ff5b20]",
+      badge: "bg-[#ff5b20]",
+      headBg: "bg-[#ff5b20]",
+      borderFeatured: "border-[#ff5b20] shadow-soft",
+    },
+    navy: {
+      title: "text-[#102b6f]",
+      price: "text-[#102b6f]",
+      check: "text-[#102b6f]",
+      badge: "bg-[#102b6f]",
+      headBg: "bg-[#102b6f]",
+      borderFeatured: "border-[#102b6f] shadow-soft",
+    },
+    red: {
+      title: "text-[#ef3a30]",
+      price: "text-[#ef3a30]",
+      check: "text-[#ef3a30]",
+      badge: "bg-[#ef3a30]",
+      headBg: "bg-[#ef3a30]",
+      borderFeatured: "border-[#ef3a30] shadow-soft",
+    },
+  };
+
+  return themes[theme as keyof typeof themes] ?? themes.navy;
 }

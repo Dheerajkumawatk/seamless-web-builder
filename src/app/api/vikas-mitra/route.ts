@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createVikasMitraProfile, listVikasMitraProfiles } from "@/lib/vikas-mitra.server";
 import { formatVikasMitraId } from "@/lib/profile-id";
+import { uploadImageToCloudinary } from "@/lib/cloudinary.server";
 
 const profileSchema = z.object({
   name: z.string().min(2).max(80),
@@ -13,10 +14,9 @@ const profileSchema = z.object({
   occupation: z.string().max(100).optional().or(z.literal("")),
   experience: z.string().max(60).optional().or(z.literal("")),
   message: z.string().max(1000).optional().or(z.literal("")),
-  photo: z.string().max(2_500_000).optional().or(z.literal("")),
-  panCard: z.string().max(2_500_000).optional().or(z.literal("")),
-  aadhaarCard: z.string().max(2_500_000).optional().or(z.literal("")),
 });
+
+export const runtime = "nodejs";
 
 export async function GET() {
   const profiles = await listVikasMitraProfiles("approved");
@@ -25,7 +25,33 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const data = profileSchema.parse(await request.json());
+    const form = await request.formData();
+    const data = profileSchema.parse({
+      name: String(form.get("name") ?? ""),
+      phone: String(form.get("phone") ?? ""),
+      email: String(form.get("email") ?? ""),
+      district: String(form.get("district") ?? ""),
+      tehsil: String(form.get("tehsil") ?? ""),
+      village: String(form.get("village") ?? ""),
+      occupation: String(form.get("occupation") ?? ""),
+      experience: String(form.get("experience") ?? ""),
+      message: String(form.get("message") ?? ""),
+    });
+    const photoFile = form.get("photo");
+    const panCardFile = form.get("panCard");
+    const aadhaarCardFile = form.get("aadhaarCard");
+    const photo =
+      photoFile instanceof File && photoFile.size > 0
+        ? await uploadImageToCloudinary(photoFile, "bharat-pahchan/vikas-mitra/profile")
+        : "";
+    const panCard =
+      panCardFile instanceof File && panCardFile.size > 0
+        ? await uploadImageToCloudinary(panCardFile, "bharat-pahchan/vikas-mitra/pan")
+        : "";
+    const aadhaarCard =
+      aadhaarCardFile instanceof File && aadhaarCardFile.size > 0
+        ? await uploadImageToCloudinary(aadhaarCardFile, "bharat-pahchan/vikas-mitra/aadhaar")
+        : "";
     const profile = await createVikasMitraProfile({
       name: data.name,
       phone: data.phone,
@@ -36,9 +62,9 @@ export async function POST(request: Request) {
       occupation: data.occupation || undefined,
       experience: data.experience || undefined,
       message: data.message || undefined,
-      photo: data.photo || undefined,
-      panCard: data.panCard || undefined,
-      aadhaarCard: data.aadhaarCard || undefined,
+      photo: photo || undefined,
+      panCard: panCard || undefined,
+      aadhaarCard: aadhaarCard || undefined,
     });
 
     return NextResponse.json({ ok: true, id: formatVikasMitraId(profile.id, profile.createdAt) });

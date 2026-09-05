@@ -212,7 +212,9 @@ export default function Index() {
       </Section>
 
       <Section>
-        <SectionHeading title="हमारे पैकेज" />
+        <div className="text-center">
+          <h2 className="font-display text-3xl font-bold text-maroon">हमारे पैकेज</h2>
+        </div>
         <div className="mt-8 grid gap-6 lg:grid-cols-3">
           {packages.map((p) => (
             <article
@@ -222,30 +224,37 @@ export default function Index() {
               }`}
             >
               {p.featured && (
-                <span className="absolute -right-9 top-5 rotate-45 bg-white px-10 py-1 text-xs font-bold text-saffron">
-                  लोकप्रिय
+                <span className={`absolute -right-9 top-5 rotate-45 px-10 py-1 text-xs font-bold text-white ${homePackageTheme(p.theme).badge}`}>
+                  {p.badge}
                 </span>
               )}
-              <div className={`px-6 py-6 text-center ${p.featured ? "bg-saffron text-white" : ""}`}>
-                <h3 className={`text-xl ${p.featured ? "text-white" : "text-maroon"}`}>{p.name}</h3>
-                <p className={`mt-1 text-sm ${p.featured ? "text-white/90" : "text-neutral-600"}`}>
-                  {p.desc}
-                </p>
+              <div className={`px-6 py-6 text-center ${p.featured ? `${homePackageTheme(p.theme).headBg} text-white` : ""}`}>
+                <h3 className={`text-xl ${p.featured ? "text-white" : homePackageTheme(p.theme).title}`}>{p.name}</h3>
+                {p.desc && (
+                  <p className={`mt-1 text-sm ${p.featured ? "text-white/90" : "text-neutral-600"}`}>
+                    {p.desc}
+                  </p>
+                )}
               </div>
               <div className="flex flex-1 flex-col px-7 pb-7 pt-5">
-                <p className="text-center font-display text-4xl font-bold text-neutral-950">
+                <p className={`text-center font-display text-4xl font-bold ${homePackageTheme(p.theme).price}`}>
                   {p.price}
                   <span className="text-sm font-normal text-neutral-600">{p.period}</span>
                 </p>
                 <ul className="mt-5 flex-1 space-y-2.5">
                   {p.features.map((f) => (
                     <li key={f} className="flex gap-2.5 text-sm font-semibold text-neutral-800">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-saffron" />
+                      <Check className={`mt-0.5 h-4 w-4 shrink-0 ${homePackageTheme(p.theme).check}`} />
                       {f}
                     </li>
                   ))}
                 </ul>
-                <PackageQueryButton packageName={p.name} featured={p.featured} />
+                <PackageQueryButton
+                  packageName={p.name}
+                  featured={p.featured}
+                  tone={p.theme}
+                  ctaLabel={p.ctaLabel}
+                />
               </div>
             </article>
           ))}
@@ -286,6 +295,55 @@ export default function Index() {
       <CtaBand />
     </>
   );
+}
+
+function homePackageTheme(theme: string) {
+  const themes = {
+    green: {
+      title: "text-[#0b9b45]",
+      price: "text-[#0b9b45]",
+      check: "text-[#20a34a]",
+      badge: "bg-[#20a34a]",
+      headBg: "bg-[#20a34a]",
+    },
+    blue: {
+      title: "text-[#2867c9]",
+      price: "text-[#2867c9]",
+      check: "text-[#2867c9]",
+      badge: "bg-[#2867c9]",
+      headBg: "bg-[#2867c9]",
+    },
+    purple: {
+      title: "text-[#7f3fbd]",
+      price: "text-[#7f3fbd]",
+      check: "text-[#7f3fbd]",
+      badge: "bg-[#7f3fbd]",
+      headBg: "bg-[#7f3fbd]",
+    },
+    orange: {
+      title: "text-[#ff5b20]",
+      price: "text-[#ff5b20]",
+      check: "text-[#ff5b20]",
+      badge: "bg-[#ff5b20]",
+      headBg: "bg-[#ff5b20]",
+    },
+    navy: {
+      title: "text-[#102b6f]",
+      price: "text-[#102b6f]",
+      check: "text-[#102b6f]",
+      badge: "bg-[#102b6f]",
+      headBg: "bg-[#102b6f]",
+    },
+    red: {
+      title: "text-[#ef3a30]",
+      price: "text-[#ef3a30]",
+      check: "text-[#ef3a30]",
+      badge: "bg-[#ef3a30]",
+      headBg: "bg-[#ef3a30]",
+    },
+  };
+
+  return themes[theme as keyof typeof themes] ?? themes.navy;
 }
 
 function ServicePreview({ index }: { index: number }) {
