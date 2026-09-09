@@ -11,6 +11,8 @@ import {
   LogOut,
   Mail,
   MessageCircle,
+  Newspaper,
+  Plus,
   RefreshCw,
   Save,
   Search,
@@ -23,7 +25,7 @@ import {
 import { adminEmail, adminPassword } from "@/lib/admin-auth";
 import { formatVikasMitraId } from "@/lib/profile-id";
 
-type Tab = "vikas" | "contacts";
+type Tab = "vikas" | "contacts" | "blogs";
 
 type Vikas = {
   id: string;
@@ -57,16 +59,34 @@ type ContactLead = {
   createdAt: string;
 };
 
+type BlogPost = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  publishDate: string;
+  category: string;
+  image: string;
+  imageAltText: string;
+  content: string;
+  seoTitle: string;
+  metaDescription: string;
+  createdAt: string;
+};
+
 type AdminData = {
   vikas: Vikas[];
   contacts: ContactLead[];
+  blogs: BlogPost[];
 };
 
-const emptyData: AdminData = { vikas: [], contacts: [] };
+const emptyData: AdminData = { vikas: [], contacts: [], blogs: [] };
 
 const navItems = [
   { key: "vikas" as const, label: "Vikas Mitra", icon: UsersRound },
   { key: "contacts" as const, label: "Contact Details", icon: Mail },
+  { key: "blogs" as const, label: "Blogs", icon: Newspaper },
 ];
 
 export default function AdminPage() {
@@ -79,7 +99,7 @@ export default function AdminPage() {
   const [message, setMessage] = useState("");
   const [query, setQuery] = useState("");
   const [editing, setEditing] = useState<{
-    type: "vikas" | "contact";
+    type: "vikas" | "contact" | "blog";
     row: Record<string, unknown>;
   } | null>(null);
   const [previewing, setPreviewing] = useState<Vikas | null>(null);
@@ -153,7 +173,7 @@ export default function AdminPage() {
   };
 
   async function updateRow(
-    type: "vikas" | "contact",
+    type: "vikas" | "contact" | "blog",
     id: string,
     rowData: Record<string, unknown>,
     options?: { notify?: boolean; silent?: boolean },
@@ -190,7 +210,53 @@ export default function AdminPage() {
     }
   }
 
-  async function deleteRow(type: "vikas" | "contact", id: string, label: string) {
+  async function createBlog() {
+    setLoading(true);
+    setMessage("");
+    try {
+      const publishDate = new Date().toLocaleDateString("hi-IN", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+      const response = await fetch("/api/admin/data", {
+        method: "POST",
+        headers: {
+          ...authHeaders,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "blog",
+          data: {
+            title: "नया ब्लॉग",
+            slug: "",
+            excerpt: "इस ब्लॉग का छोटा विवरण यहां लिखें।",
+            date: publishDate,
+            publishDate,
+            category: "अपडेट",
+            image: "village",
+            imageAltText: "नया ब्लॉग",
+            content: "यहां पूरा ब्लॉग कंटेंट लिखें।",
+            seoTitle: "नया ब्लॉग",
+            metaDescription: "इस ब्लॉग की मेटा डिस्क्रिप्शन यहां लिखें।",
+          },
+        }),
+      });
+      if (!response.ok) throw new Error("Blog create failed");
+      const result = (await response.json()) as { row?: BlogPost };
+      await loadData();
+      if (result.row) {
+        setEditing({ type: "blog", row: result.row });
+      }
+      setMessage("New blog add ho gaya. Edit karke content update karein.");
+    } catch {
+      setMessage("Blog add nahi ho paya.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function deleteRow(type: "vikas" | "contact" | "blog", id: string, label: string) {
     const ok = window.confirm(`${label} delete karna hai? Ye row DB se permanently delete hogi.`);
     if (!ok) return;
 
@@ -216,7 +282,12 @@ export default function AdminPage() {
   }
 
   function exportCurrentTab() {
-    const rows = tab === "vikas" ? filterRows(data.vikas, query) : filterRows(data.contacts, query);
+    const rows =
+      tab === "vikas"
+        ? filterRows(data.vikas, query)
+        : tab === "contacts"
+          ? filterRows(data.contacts, query)
+          : filterRows(data.blogs, query);
     if (!rows.length) {
       setMessage("Export ke liye koi record nahi mila.");
       return;
@@ -394,6 +465,15 @@ export default function AdminPage() {
                   placeholder="Search records"
                 />
               </label>
+              {tab === "blogs" && (
+                <button
+                  onClick={createBlog}
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-emerald-600 px-4 py-2.5 text-sm font-black text-white"
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Blog
+                </button>
+              )}
               <button
                 onClick={exportCurrentTab}
                 className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm font-black"
@@ -423,6 +503,7 @@ export default function AdminPage() {
             <Stat label="Approved Profiles" value={approvedCount} tone="green" />
             <Stat label="Package Leads" value={packageLeadCount} tone="blue" />
             <Stat label="Contact Leads" value={data.contacts.length} tone="blue" />
+            <Stat label="Blogs" value={data.blogs.length} tone="green" />
           </div>
 
           {message && (
@@ -452,6 +533,13 @@ export default function AdminPage() {
                 detail={(row) =>
                   `${row.post} | ${row.phone}${row.email ? ` | ${row.email}` : ""}${displayLeadCity(row) ? ` | City: ${displayLeadCity(row)}` : ""}${row.state && row.state !== displayLeadCity(row) ? ` | ${row.state}` : ""}`
                 }
+              />
+            )}
+            {tab === "blogs" && (
+              <BlogList
+                rows={filterRows(data.blogs, query)}
+                onEdit={(row) => setEditing({ type: "blog", row })}
+                onDelete={(row) => deleteRow("blog", row.id, row.title)}
               />
             )}
           </div>
@@ -487,6 +575,15 @@ function toCsv(rows: Record<string, unknown>[]) {
   };
   return [columns.join(","), ...rows.map((row) => columns.map((key) => escape(row[key])).join(","))]
     .join("\n");
+}
+
+function readFileAsDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ""));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
 }
 
 function buildApprovalMail(row: Vikas) {
@@ -700,6 +797,64 @@ function SimpleList<T extends { id: string; message?: string; createdAt: string 
   );
 }
 
+function BlogList({
+  rows,
+  onEdit,
+  onDelete,
+}: {
+  rows: BlogPost[];
+  onEdit: (row: Record<string, unknown>) => void;
+  onDelete: (row: BlogPost) => void;
+}) {
+  return (
+    <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+        <h2 className="text-lg font-black">Website Blogs</h2>
+        <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">
+          {rows.length} posts
+        </span>
+      </div>
+      <div className="divide-y divide-slate-200">
+        {rows.map((row) => (
+          <section key={row.id} className="p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-sm bg-emerald-50 px-2 py-1 text-xs font-black text-emerald-700">
+                    {row.category}
+                  </span>
+                  <span className="text-xs font-bold text-slate-500">
+                    Publish: {row.publishDate || row.date}
+                  </span>
+                </div>
+                <h3 className="mt-2 text-xl font-black text-slate-950">{row.title}</h3>
+                <p className="mt-1 text-sm font-bold text-slate-500">/{row.slug}</p>
+                <p className="mt-2 max-w-4xl text-sm leading-relaxed text-slate-600">
+                  {row.excerpt}
+                </p>
+                <p className="mt-2 text-xs font-bold text-slate-400">
+                  SEO: {row.seoTitle || row.title}
+                </p>
+              </div>
+              <div className="flex shrink-0 flex-wrap gap-2">
+                <button onClick={() => onEdit(row)} className="action border bg-white">
+                  <Edit3 className="h-4 w-4" /> Edit
+                </button>
+                <button onClick={() => onDelete(row)} className="action border bg-white text-red-700">
+                  <Trash2 className="h-4 w-4" /> Delete
+                </button>
+              </div>
+            </div>
+          </section>
+        ))}
+        {rows.length === 0 && (
+          <p className="p-8 text-center text-sm font-bold text-slate-500">No blogs found.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function EditModal({
   type,
   row,
@@ -707,7 +862,7 @@ function EditModal({
   onClose,
   onSave,
 }: {
-  type: "vikas" | "contact";
+  type: "vikas" | "contact" | "blog";
   row: Record<string, unknown>;
   fieldClass: string;
   onClose: () => void;
@@ -732,15 +887,47 @@ function EditModal({
           "panCard",
           "aadhaarCard",
         ]
-      : ["name", "phone", "email", "post", "source", "city", "state", "message"];
-  const longFields = ["message", "photo", "panCard", "aadhaarCard"];
+      : type === "contact"
+        ? ["name", "phone", "email", "post", "source", "city", "state", "message"]
+        : [
+            "title",
+            "slug",
+            "excerpt",
+            "image",
+            "imageAltText",
+            "content",
+            "seoTitle",
+            "metaDescription",
+            "publishDate",
+          ];
+  const longFields = ["message", "photo", "panCard", "aadhaarCard", "excerpt", "content", "metaDescription"];
+  const labels: Record<string, string> = {
+    title: "Blog title",
+    slug: "URL slug",
+    excerpt: "Short description",
+    image: "Upload image",
+    imageAltText: "Image alt text",
+    content: "Blog content",
+    seoTitle: "SEO title",
+    metaDescription: "Meta description",
+    publishDate: "Publish date",
+  };
+
+  async function handleBlogImageUpload(file: File) {
+    const dataUrl = await readFileAsDataUrl(file);
+    setForm((current) => ({
+      ...current,
+      image: dataUrl,
+      imageAltText: current["imageAltText"] || file.name.replace(/\.[^.]+$/, ""),
+    }));
+  }
 
   return (
     <div className="fixed inset-0 z-[90] grid place-items-center bg-slate-950/70 px-4">
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          onSave(String(row["id"]), form);
+          onSave(String(row["id"]), type === "blog" ? { ...form, date: form["publishDate"] ?? "" } : form);
         }}
         className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-5 shadow-2xl"
       >
@@ -763,9 +950,36 @@ function EditModal({
           {fields.map((field) => (
             <label key={field} className={longFields.includes(field) ? "sm:col-span-2" : ""}>
               <span className="mb-1 block text-xs font-black uppercase text-slate-500">
-                {field}
+                {labels[field] ?? field}
               </span>
-              {longFields.includes(field) ? (
+              {type === "blog" && field === "image" ? (
+                <div className="space-y-3">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      if (file) void handleBlogImageUpload(file);
+                    }}
+                    className={fieldClass}
+                  />
+                  {form[field] && (
+                    <img
+                      src={form[field]}
+                      alt={form["imageAltText"] || "Blog image preview"}
+                      className="h-36 w-full rounded-md border border-slate-200 object-cover"
+                    />
+                  )}
+                  <input
+                    value={form[field] ?? ""}
+                    onChange={(event) =>
+                      setForm((current) => ({ ...current, [field]: event.target.value }))
+                    }
+                    className={fieldClass}
+                    placeholder="Image key, image URL, ya uploaded data URL"
+                  />
+                </div>
+              ) : longFields.includes(field) ? (
                 <textarea
                   value={form[field] ?? ""}
                   onChange={(event) =>

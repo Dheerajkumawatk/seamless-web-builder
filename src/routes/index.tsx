@@ -26,6 +26,7 @@ import heroLeader from "@/assets/hero-leader.png";
 import { Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
 import { PackageQueryButton } from "@/components/site/PackageQueryButton";
+import { Channel009News } from "@/components/site/Channel009News";
 
 export default function Index() {
   return (
@@ -129,6 +130,68 @@ export default function Index() {
               <img src={images[a.image]} alt={a.title} className="h-36 w-full object-cover" />
             </article>
           ))}
+        </div>
+      </Section>
+
+      <Section className="border-y border-[#dbe8dd] bg-[#f6fbf8]">
+        <div className="grid items-center gap-9 lg:grid-cols-[1.05fr_.95fr]">
+          <div className="grid gap-4 sm:grid-cols-[1.15fr_.85fr]">
+            <img
+              src={images["rally"]}
+              alt="डिजिटल चुनाव अभियान और जनसंपर्क"
+              className="h-72 w-full rounded-lg object-cover shadow-card sm:h-[420px]"
+            />
+            <div className="grid gap-4">
+              <img
+                src={images["village"]}
+                alt="गांव स्तर पर डिजिटल पहुंच"
+                className="h-34 w-full rounded-lg object-cover shadow-card sm:h-[202px]"
+              />
+              <img
+                src={images["demo"]}
+                alt="उम्मीदवार वेबसाइट और मोबाइल डेमो"
+                className="h-34 w-full rounded-lg border border-emerald-100 bg-white object-contain p-3 shadow-card sm:h-[202px]"
+              />
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-black tracking-[0.2em] text-[#159a56] uppercase">
+              Digital Campaign System
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black leading-tight text-[#0e2f5e] sm:text-4xl">
+              गांव से वोटर तक आपकी बात साफ, तेज और भरोसेमंद तरीके से पहुंचे
+            </h2>
+            <p className="mt-5 text-lg leading-relaxed font-semibold text-[#4b5364]">
+              भारत पहचान आपके प्रचार को वेबसाइट, सोशल मीडिया, व्हाट्सएप और क्रिएटिव कंटेंट के
+              साथ एक ही दिशा में चलाता है, ताकि मतदाता तक आपका संदेश सही समय पर पहुंचे।
+            </p>
+
+            <div className="mt-7 grid gap-3">
+              {[
+                "उम्मीदवार की मजबूत ऑनलाइन पहचान",
+                "गांव और वार्ड स्तर पर लक्षित प्रचार",
+                "पोस्टर, वीडियो और व्हाट्सएप अपडेट का नियमित प्लान",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-3 rounded-lg border border-[#dbe8dd] bg-white px-4 py-3 shadow-sm"
+                >
+                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#159a56] text-white">
+                    <Check className="h-4 w-4" />
+                  </span>
+                  <span className="text-sm font-extrabold text-[#1f2532]">{item}</span>
+                </div>
+              ))}
+            </div>
+
+            <Link
+              href="/contact"
+              className="mt-8 inline-flex items-center gap-2 rounded-lg bg-[#0e2f5e] px-6 py-3.5 text-sm font-black text-white shadow-[0_10px_22px_rgba(18,58,114,.22)]"
+            >
+              अपना अभियान शुरू करें <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </Section>
 
@@ -292,6 +355,7 @@ export default function Index() {
         </div>
       </Section>
 
+      <Channel009News />
       <CtaBand />
     </>
   );

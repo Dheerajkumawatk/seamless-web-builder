@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  CalendarDays,
   Facebook,
   Globe,
   Instagram,
@@ -12,7 +14,8 @@ import {
   Phone,
   Youtube,
 } from "lucide-react";
-import { nav, services, site } from "@/data/site";
+import { blogPosts, nav, services, site } from "@/data/site";
+import { images } from "@/data/images";
 import { Logo } from "@/components/layout/Logo";
 
 const legalLinks = [
@@ -21,6 +24,18 @@ const legalLinks = [
   { label: "Terms & Conditions", to: "/terms-conditions" },
   { label: "Disclaimer", to: "/disclaimer" },
 ];
+
+type FooterBlogPost = {
+  id?: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  publishDate?: string;
+  category: string;
+  image: string;
+  imageAltText?: string;
+};
 
 export function Footer() {
   const pathname = usePathname();
@@ -36,7 +51,9 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t border-[#dbe3ef] bg-[#f7faff] text-[#33384a] shadow-[0_-2px_10px_rgba(18,58,114,.06)]">
+    <>
+      <BlogFooterSection />
+      <footer className="border-t border-[#dbe3ef] bg-[#f7faff] text-[#33384a] shadow-[0_-2px_10px_rgba(18,58,114,.06)]">
       <div className="mx-auto grid max-w-[1720px] gap-10 px-6 py-11 md:grid-cols-2 lg:grid-cols-[1.22fr_.82fr_.98fr_.98fr] lg:px-20">
         <div className="pr-4">
           <Logo size="footer" />
@@ -146,6 +163,97 @@ export function Footer() {
           </nav>
         </div>
       </div>
-    </footer>
+      </footer>
+    </>
   );
+}
+
+function BlogFooterSection() {
+  const [posts, setPosts] = useState<FooterBlogPost[]>([...blogPosts]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadBlogs() {
+      try {
+        const response = await fetch("/api/blogs");
+        if (!response.ok) return;
+        const data = (await response.json()) as { blogs?: FooterBlogPost[] };
+        if (active && data.blogs?.length) {
+          setPosts(data.blogs);
+        }
+      } catch {
+        setPosts([...blogPosts]);
+      }
+    }
+
+    void loadBlogs();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return (
+    <section className="bg-[#eef5ff] py-12 sm:py-14">
+      <div className="mx-auto max-w-[1720px] px-6 lg:px-20">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-black tracking-[0.18em] text-[#159a56] uppercase">
+              Latest Blog
+            </p>
+            <h2 className="mt-2 font-display text-3xl font-black text-[#15437f]">
+              ब्लॉग अपडेट
+            </h2>
+          </div>
+          <Link
+            href="/blog"
+            className="inline-flex items-center justify-center rounded-full border border-[#c3d2e6] bg-white px-5 py-3 text-sm font-extrabold text-[#15437f] shadow-sm transition-colors hover:border-saffron hover:text-saffron"
+          >
+            सभी ब्लॉग देखें
+          </Link>
+        </div>
+
+        <div className="mt-7 grid gap-5 md:grid-cols-3">
+          {posts.slice(0, 3).map((post) => (
+            <Link
+              key={post.id ?? post.slug}
+              href="/blog"
+              className="group flex min-h-[330px] flex-col overflow-hidden rounded-lg border border-[#dbe3ef] bg-white shadow-card transition-colors hover:border-saffron"
+            >
+              <img
+                src={resolveBlogImage(post.image)}
+                alt={post.imageAltText || post.title}
+                className="aspect-[16/9] w-full bg-[#dbe8f7] object-cover transition duration-300 group-hover:scale-[1.03]"
+              />
+              <div className="flex flex-1 flex-col p-5">
+                <div className="flex flex-wrap items-center gap-3 text-[11px] font-extrabold text-[#7a8496]">
+                  <span className="rounded-sm bg-saffron/12 px-2 py-1 text-saffron">
+                    {post.category}
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <CalendarDays className="h-3.5 w-3.5" />
+                    {post.publishDate || post.date}
+                  </span>
+                </div>
+                <h3 className="mt-3 text-lg leading-snug font-black text-[#15437f]">
+                  {post.title}
+                </h3>
+                <p className="mt-2 line-clamp-2 text-sm leading-relaxed font-semibold text-[#5b6376]">
+                  {post.excerpt}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function resolveBlogImage(image: string) {
+  if (image.startsWith("data:") || image.startsWith("http://") || image.startsWith("https://")) {
+    return image;
+  }
+
+  return images[image] ?? images["village"];
 }

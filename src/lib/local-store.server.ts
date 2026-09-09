@@ -60,6 +60,18 @@ export async function updateLocalRow<T extends { id: string }>(
   return updated;
 }
 
+export async function deleteLocalRow<T extends { id: string }>(
+  name: string,
+  id: string,
+): Promise<void> {
+  const rows = await readLocalRows<T>(name);
+  const nextRows = rows.filter((row) => row.id !== id);
+  if (nextRows.length === rows.length) {
+    throw new Error(`Local ${name} row not found`);
+  }
+  await writeLocalRows(name, nextRows);
+}
+
 export function mergeRows<T extends { id: string }>(primary: T[], fallback: T[]) {
   const seen = new Set(primary.map((row) => row.id));
   return [...primary, ...fallback.filter((row) => !seen.has(row.id))];

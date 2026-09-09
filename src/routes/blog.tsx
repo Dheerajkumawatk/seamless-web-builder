@@ -1,10 +1,14 @@
 import { CalendarDays } from "lucide-react";
 import { PageHero, Section } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
-import { blogPosts } from "@/data/site";
+import { listBlogPosts } from "@/lib/blog.server";
 import { images } from "@/data/images";
 
-export default function Blog() {
+export const dynamic = "force-dynamic";
+
+export default async function Blog() {
+  const blogPosts = await listBlogPosts();
+
   return (
     <>
       <PageHero title="ब्लॉग" sub="चुनाव अभियान, डिजिटल रणनीति और मतदाता संपर्क पर उपयोगी लेख।" />
@@ -14,11 +18,11 @@ export default function Blog() {
           {blogPosts.map((post) => (
             <article key={post.slug} className="card-warm flex flex-col overflow-hidden">
               <img
-                src={images[post.image]}
+                src={resolveBlogImage(post.image)}
                 width={800}
                 height={600}
                 loading="lazy"
-                alt={post.title}
+                alt={post.imageAltText || post.title}
                 className="h-44 w-full object-cover"
               />
               <div className="flex flex-1 flex-col p-5">
@@ -41,4 +45,12 @@ export default function Blog() {
       <CtaBand />
     </>
   );
+}
+
+function resolveBlogImage(image: string) {
+  if (image.startsWith("data:") || image.startsWith("http://") || image.startsWith("https://")) {
+    return image;
+  }
+
+  return images[image] ?? images["village"];
 }

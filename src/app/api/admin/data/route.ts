@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { isAdminRequest } from "@/lib/admin-auth";
+import { createBlogPost, deleteBlogPost, listBlogPosts, updateBlogPost } from "@/lib/blog.server";
 import { deleteLead, listLeads, updateLead } from "@/lib/contact.server";
 import {
   deleteVikasMitraProfile,
@@ -46,10 +47,36 @@ const leadSchema = z.object({
   }),
 });
 
-const updateSchema = z.discriminatedUnion("type", [vikasSchema, leadSchema]);
+const blogDataSchema = z.object({
+  title: z.string().min(2).max(160),
+  slug: z.string().max(180).optional().or(z.literal("")),
+  excerpt: z.string().min(2).max(500),
+  date: z.string().min(2).max(80),
+  publishDate: z.string().min(2).max(80),
+  category: z.string().min(1).max(80),
+  image: z.string().min(1).max(2_500_000),
+  imageAltText: z.string().min(1).max(180),
+  content: z.string().min(2).max(20_000),
+  seoTitle: z.string().min(2).max(180),
+  metaDescription: z.string().min(2).max(300),
+});
+
+const blogUpdateSchema = z.object({
+  type: z.literal("blog"),
+  id: z.string().min(1),
+  data: blogDataSchema.partial(),
+});
+
+const createSchema = z.object({
+  type: z.literal("blog"),
+  data: blogDataSchema,
+});
+
+const updateSchema = z.discriminatedUnion("type", [vikasSchema, leadSchema, blogUpdateSchema]);
 const deleteSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("vikas"), id: z.string().uuid() }),
   z.object({ type: z.literal("contact"), id: z.string().uuid() }),
+  z.object({ type: z.literal("blog"), id: z.string().min(1) }),
 ]);
 
 export async function GET(request: Request) {
@@ -57,9 +84,23 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const [vikas, contacts] = await Promise.all([listVikasMitraProfiles(), listLeads()]);
+  const [vikas, contacts, blogs] = await Promise.all([
+    listVikasMitraProfiles(),
+    listLeads(),
+    listBlogPosts(),
+  ]);
 
-  return NextResponse.json({ vikas, contacts });
+  return NextResponse.json({ vikas, contacts, blogs });
+}
+
+export async function POST(request: Request) {
+  if (!isAdminRequest(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = createSchema.parse(await request.json());
+  const row = await createBlogPost(body.data);
+  return NextResponse.json({ ok: true, row });
 }
 
 export async function PATCH(request: Request) {
@@ -87,6 +128,11 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ ok: true, row });
   }
 
+  if (body.type === "blog") {
+    const row = await updateBlogPost(body.id, body.data);
+    return NextResponse.json({ ok: true, row });
+  }
+
   return NextResponse.json({ ok: false, error: "Unsupported update type" }, { status: 400 });
 }
 
@@ -102,6 +148,11 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  await deleteLead(body.id);
+  if (body.type === "contact") {
+    await deleteLead(body.id);
+    return NextResponse.json({ ok: true });
+  }
+
+  await deleteBlogPost(body.id);
   return NextResponse.json({ ok: true });
 }
