@@ -134,25 +134,13 @@ export default function Index() {
       </Section>
 
       <Section className="border-y border-[#dbe8dd] bg-[#f6fbf8]">
-        <div className="grid items-center gap-9 lg:grid-cols-[1.05fr_.95fr]">
-          <div className="grid gap-4 sm:grid-cols-[1.15fr_.85fr]">
+        <div className="grid items-center gap-9 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
             <img
-              src={images["rally"]}
-              alt="डिजिटल चुनाव अभियान और जनसंपर्क"
-              className="h-72 w-full rounded-lg object-cover shadow-card sm:h-[420px]"
+              src={images["testimonials2"]}
+              alt="मतदान के बाद स्याही लगी उंगली"
+              className="h-72 w-full rounded-lg bg-white object-contain shadow-card sm:h-[420px] lg:max-w-[470px]"
             />
-            <div className="grid gap-4">
-              <img
-                src={images["village"]}
-                alt="गांव स्तर पर डिजिटल पहुंच"
-                className="h-34 w-full rounded-lg object-cover shadow-card sm:h-[202px]"
-              />
-              <img
-                src={images["demo"]}
-                alt="उम्मीदवार वेबसाइट और मोबाइल डेमो"
-                className="h-34 w-full rounded-lg border border-emerald-100 bg-white object-contain p-3 shadow-card sm:h-[202px]"
-              />
-            </div>
           </div>
 
           <div>
