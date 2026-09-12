@@ -12,7 +12,7 @@ export function Logo({
   const dimensions = {
     compact: "h-12 w-12",
     footer: "h-24 w-24",
-    nav: "h-20 w-20",
+    nav: "h-16 w-16 md:h-20 md:w-20",
   }[size];
 
   return (

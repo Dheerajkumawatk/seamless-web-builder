@@ -9,7 +9,11 @@ import {
   listVikasMitraProfiles,
   updateVikasMitraProfile,
 } from "@/lib/vikas-mitra.server";
-import { buildVikasMitraApprovalEmail, sendEmail } from "@/lib/email.server";
+import {
+  buildVikasMitraApprovalEmail,
+  buildVikasMitraRejectionEmail,
+  sendEmail,
+} from "@/lib/email.server";
 
 const vikasSchema = z.object({
   type: z.literal("vikas"),
@@ -142,8 +146,13 @@ export async function PATCH(request: Request) {
 
     let email:
       { sent: boolean; skipped?: boolean | undefined; error?: string | undefined } | undefined;
-    if (body.notify && row.status === "approved" && row.email) {
+    if (body.notify && row.email && row.status === "approved") {
       const result = await sendEmail(buildVikasMitraApprovalEmail(row));
+      email = { sent: result.ok, skipped: result.skipped, error: result.error };
+    }
+
+    if (body.notify && row.email && row.status === "rejected") {
+      const result = await sendEmail(buildVikasMitraRejectionEmail(row));
       email = { sent: result.ok, skipped: result.skipped, error: result.error };
     }
 

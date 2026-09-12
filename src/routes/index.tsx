@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { images } from "@/data/images";
 import { audiences, packages, site, trustCapabilities, websiteSections } from "@/data/site";
-import heroBackground from "@/assets/bharatpahchan-hero-background.png";
+import mobileSliderBackground from "@/assets/bharatpahchan-mobile-slider.png";
 import channel009Logo from "@/assets/channel009-logo.png";
 import { MobileContactBar } from "@/components/site/MobileContactBar";
 import { PackageQueryButton } from "@/components/site/PackageQueryButton";
@@ -85,41 +85,49 @@ export default function Index() {
 
   return (
     <>
-      <section className="relative min-h-[620px] overflow-hidden border-b border-emerald-100 bg-[#f8dfbf]">
+      <section className="relative min-h-[382px] overflow-hidden border-b border-emerald-100 bg-[#f8dfbf] sm:min-h-[620px]">
         <img
-          src={heroBackground.src}
-          width={2560}
-          height={1024}
+          src={mobileSliderBackground.src}
+          width={1152}
+          height={1408}
           alt="BharatPahchan digital campaign background"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 hidden h-full w-full object-cover object-center sm:block"
+          fetchPriority="high"
+        />
+        <img
+          src={mobileSliderBackground.src}
+          width={1152}
+          height={1408}
+          alt="BharatPahchan digital campaign background"
+          className="absolute inset-x-0 top-0 h-[108%] w-full object-cover object-top sm:hidden"
           fetchPriority="high"
         />
 
-        <div className="relative z-10 mx-auto flex min-h-[620px] max-w-[1720px] items-center px-6 py-20 lg:px-20">
-          <div className="max-w-[760px]">
-            <h1 className="font-display text-[40px] leading-[1.08] font-black tracking-normal text-[#0a1526] [text-shadow:0_3px_12px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:text-[58px] lg:text-[76px]">
+        <div className="relative z-10 mx-auto flex min-h-[382px] max-w-[1720px] items-start px-4 pt-11 pb-6 sm:min-h-[620px] sm:items-center sm:px-6 sm:py-20 lg:px-20">
+          <div className="max-w-[84%] sm:max-w-[760px]">
+            <h1 className="font-display text-[32px] leading-[1.06] font-black tracking-normal text-[#0a1526] [text-shadow:0_3px_12px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:text-[58px] sm:leading-[1.08] lg:text-[76px]">
               पंचायत चुनाव की तैयारी कर रहे हैं?
               <br />
               <span className="text-[#0f7a42]">अपनी डिजिटल पहचान</span>{" "}
               <span className="text-[#0e2f5e]">आज से मजबूत बनाइए।</span>
             </h1>
-            <p className="mt-7 max-w-[650px] text-xl leading-relaxed font-extrabold text-[#232a3c] [text-shadow:0_2px_10px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:text-2xl">
+            <p className="mt-3 max-w-[320px] text-[15px] leading-snug font-extrabold text-[#232a3c] [text-shadow:0_2px_10px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:mt-7 sm:max-w-[650px] sm:text-2xl sm:leading-relaxed">
               उम्मीदवार वेबसाइट, सोशल मीडिया, वीडियो-ग्राफिक्स, डिजिटल आउटरीच और अभियान प्रबंधन — एक
               ही जगह।
             </p>
 
-            <div className="mt-10 flex flex-col gap-5 sm:flex-row">
+            <div className="mt-5 flex max-w-[340px] flex-row gap-2 sm:mt-10 sm:max-w-none sm:gap-5">
               <Link
                 href="/#demo-form"
-                className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#0e2f5e] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)]"
+                className="inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#0e2f5e] px-2 py-3 text-center text-[11px] leading-tight font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)] sm:min-w-[270px] sm:flex-none sm:gap-4 sm:px-9 sm:py-5 sm:text-xl"
               >
-                मेरे नाम से डेमो बनाइए <ArrowRight className="h-6 w-6" />
+                मेरे नाम से डेमो बनाइए <ArrowRight className="h-4 w-4 shrink-0 sm:h-6 sm:w-6" />
               </Link>
               <a
                 href={`tel:${site.phone}`}
-                className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#159a56] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(21,154,86,.25)]"
+                className="inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#159a56] px-2 py-3 text-center text-[11px] leading-tight font-extrabold text-white shadow-[0_14px_26px_rgba(21,154,86,.25)] sm:min-w-[270px] sm:flex-none sm:gap-4 sm:px-9 sm:py-5 sm:text-xl"
               >
-                अभी बात करें <Phone className="h-6 w-6" />
+                अभी बात करें <Phone className="h-4 w-4 shrink-0 sm:h-6 sm:w-6" />
               </a>
             </div>
           </div>
@@ -309,22 +317,28 @@ export default function Index() {
         </div>
       </Section>
 
-      <Section>
-        <div className="text-center">
-          <h2 className="font-display text-3xl font-bold text-maroon">पैकेज और कीमत</h2>
+      <Section className="relative overflow-hidden bg-[#fff4e1] [background-image:linear-gradient(135deg,rgba(189,55,31,.08)_0_14%,transparent_14%_28%,rgba(15,122,102,.07)_28%_42%,transparent_42%)]">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-2 bg-[repeating-linear-gradient(90deg,#b72b24_0_26px,#f2a12b_26px_52px,#0f7a66_52px_78px,#173b6d_78px_104px)]" />
+        <div className="relative text-center">
+          <p className="mb-2 text-xs font-black tracking-[0.22em] text-[#0f7a66] uppercase">
+            Rajasthani Digital Plans
+          </p>
+          <h2 className="font-display text-2xl font-bold text-[#8f1f1b] sm:text-3xl">
+            पैकेज और कीमत
+          </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
             कीमत और अवधि मौजूदा पैकेज डेटा से ली गई है। दैनिक भुगतान का दावा नहीं किया गया है।
           </p>
         </div>
-        <div className="mt-8 grid gap-6 lg:grid-cols-3">
+        <div className="relative mt-7 grid gap-4 sm:mt-8 sm:gap-6 lg:grid-cols-3">
           {packages.map((p) => {
             const daily = dailyEquivalent(p.price, p.period);
 
             return (
               <article
                 key={p.name}
-                className={`relative flex flex-col overflow-hidden rounded-lg border bg-white shadow-card ${
-                  p.featured ? "border-saffron" : "border-emerald-200"
+                className={`relative flex flex-col overflow-hidden rounded-lg border bg-white/95 shadow-[0_18px_35px_rgba(91,43,18,.12)] ${
+                  p.featured ? "border-[#f2a12b]" : "border-[#ead3a9]"
                 }`}
               >
                 {p.featured && (
@@ -335,7 +349,9 @@ export default function Index() {
                   </span>
                 )}
                 <div
-                  className={`px-6 py-6 text-center ${p.featured ? `${homePackageTheme(p.theme).headBg} text-white` : ""}`}
+                  className={`px-5 py-5 text-center sm:px-6 sm:py-6 ${
+                    p.featured ? `${homePackageTheme(p.theme).headBg} text-white` : "bg-[#fffaf1]"
+                  }`}
                 >
                   <h3
                     className={`text-xl ${p.featured ? "text-white" : homePackageTheme(p.theme).title}`}
@@ -350,8 +366,8 @@ export default function Index() {
                     </p>
                   )}
                 </div>
-                <div className="flex flex-1 flex-col px-7 pt-5 pb-7">
-                  <div className="rounded-lg bg-[#f7faff] p-4 text-center">
+                <div className="flex flex-1 flex-col px-5 pt-5 pb-6 sm:px-7 sm:pb-7">
+                  <div className="rounded-lg border border-[#f0dfbd] bg-[#fff8ec] p-4 text-center">
                     <p className="text-xs font-black tracking-[0.16em] text-[#596173] uppercase">
                       कुल पैकेज कीमत
                     </p>

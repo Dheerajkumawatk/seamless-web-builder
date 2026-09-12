@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createVikasMitraProfile, listVikasMitraProfiles } from "@/lib/vikas-mitra.server";
+import { buildVikasMitraSubmitEmail, sendEmail } from "@/lib/email.server";
 import { formatVikasMitraId } from "@/lib/profile-id";
 import { uploadImageToCloudinary } from "@/lib/cloudinary.server";
 
@@ -66,6 +67,10 @@ export async function POST(request: Request) {
       panCard: panCard || undefined,
       aadhaarCard: aadhaarCard || undefined,
     });
+
+    if (profile.email) {
+      await sendEmail(buildVikasMitraSubmitEmail(profile));
+    }
 
     return NextResponse.json({ ok: true, id: formatVikasMitraId(profile.id, profile.createdAt) });
   } catch (error) {

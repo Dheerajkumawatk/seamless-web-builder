@@ -1,7 +1,7 @@
 import { formatVikasMitraId } from "@/lib/profile-id";
 
 const resendApiKey = process.env["RESEND_API_KEY"];
-const emailFrom = process.env["EMAIL_FROM"] ?? "Bharat Pehchan <onboarding@resend.dev>";
+const emailFrom = process.env["EMAIL_FROM"] ?? "Bharat Pehchan <bharatpahchan.helpline@gmail.com>";
 
 export type SendEmailInput = {
   to: string;
@@ -14,6 +14,20 @@ export type SendEmailResult = {
   ok: boolean;
   skipped?: boolean;
   error?: string;
+};
+
+type VikasMitraMailRow = {
+  id: string;
+  name: string;
+  phone: string;
+  email?: string | undefined;
+  district: string;
+  tehsil: string;
+  village: string;
+  occupation?: string | undefined;
+  experience?: string | undefined;
+  rejectionMessage?: string | undefined;
+  createdAt: string;
 };
 
 export async function sendEmail({
@@ -64,21 +78,40 @@ function escapeHtml(value: string) {
     .replace(/'/g, "&#39;");
 }
 
-type ApprovalRow = {
-  id: string;
-  name: string;
-  phone: string;
-  email?: string | undefined;
-  district: string;
-  tehsil: string;
-  village: string;
-  occupation?: string | undefined;
-  experience?: string | undefined;
-  createdAt: string;
-};
-
-export function buildVikasMitraApprovalEmail(row: ApprovalRow): SendEmailInput {
+export function buildVikasMitraSubmitEmail(row: VikasMitraMailRow): SendEmailInput {
   const uniqueId = formatVikasMitraId(row.id, row.createdAt);
+  const subject = `Vikas Mitra form submit ho gaya - ${uniqueId}`;
+  const text = [
+    `Namaste ${row.name},`,
+    "",
+    "Aapka Vikas Mitra join form submit ho gaya hai.",
+    "Admin review ke baad approval ya rejection ka update isi email par bheja jayega.",
+    "",
+    `Application ID: ${uniqueId}`,
+    `Name: ${row.name}`,
+    `Mobile: ${row.phone}`,
+    `Location: ${row.village}, ${row.tehsil}, ${row.district}`,
+    "",
+    "Bharat Pehchan Team",
+  ].join("\n");
+
+  const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#262b39;line-height:1.6;max-width:560px">
+    <p>Namaste <strong>${escapeHtml(row.name)}</strong>,</p>
+    <p>Aapka <strong>Vikas Mitra join form</strong> submit ho gaya hai. Admin review ke baad approval ya rejection ka update isi email par bheja jayega.</p>
+    <div style="margin:18px 0;padding:14px 18px;background:#eaf1fb;border:1px solid #bcd2ec;border-radius:8px">
+      <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#1b4c8a;font-weight:bold">Application ID</div>
+      <div style="font-size:22px;font-weight:bold;color:#123a72;margin-top:4px">${escapeHtml(uniqueId)}</div>
+    </div>
+    <p><strong>Mobile:</strong> ${escapeHtml(row.phone)}<br/><strong>Location:</strong> ${escapeHtml(`${row.village}, ${row.tehsil}, ${row.district}`)}</p>
+    <p style="margin-top:18px;color:#5b6376">Bharat Pehchan Team</p>
+  </div>`;
+
+  return { to: row.email ?? "", subject, text, html };
+}
+
+export function buildVikasMitraApprovalEmail(row: VikasMitraMailRow): SendEmailInput {
+  const uniqueId = formatVikasMitraId(row.id, row.createdAt);
+  const cardUrl = getPublicUrl(`/vikas-mitra/id-card/${row.id}`);
   const subject = `बधाई हो! आप Vikas Mitra select हो गए — Unique ID ${uniqueId}`;
 
   const text = [
@@ -94,6 +127,7 @@ export function buildVikasMitraApprovalEmail(row: ApprovalRow): SendEmailInput {
     `स्थान: ${row.village}, ${row.tehsil}, ${row.district}`,
     row.occupation ? `व्यवसाय: ${row.occupation}` : "",
     row.experience ? `अनुभव: ${row.experience}` : "",
+    cardUrl ? `ID Card PDF: ${cardUrl}` : "",
     "",
     "आपकी प्रोफ़ाइल अब वेबसाइट पर लाइव है। कृपया अपनी Unique ID संभाल कर रखें।",
     "",
@@ -125,9 +159,61 @@ export function buildVikasMitraApprovalEmail(row: ApprovalRow): SendEmailInput {
       <div style="font-size:22px;font-weight:bold;color:#123a72;margin-top:4px">${escapeHtml(uniqueId)}</div>
     </div>
     <table style="border-collapse:collapse;font-size:14px">${detailRows}</table>
+    ${
+      cardUrl
+        ? `<p style="margin-top:18px"><a href="${escapeHtml(cardUrl)}" style="display:inline-block;background:#123a72;color:#fff;text-decoration:none;font-weight:bold;padding:10px 14px;border-radius:8px">ID Card PDF खोलें</a></p>`
+        : ""
+    }
     <p style="margin-top:18px">आपकी प्रोफ़ाइल अब वेबसाइट पर लाइव है। कृपया अपनी Unique ID संभाल कर रखें।</p>
     <p style="margin-top:18px;color:#5b6376">— भारत पहचान टीम</p>
   </div>`;
 
   return { to: row.email ?? "", subject, text, html };
+}
+
+export function buildVikasMitraRejectionEmail(row: VikasMitraMailRow): SendEmailInput {
+  const uniqueId = formatVikasMitraId(row.id, row.createdAt);
+  const reason = row.rejectionMessage || "Your Vikas Mitra profile has been rejected.";
+  const subject = `Vikas Mitra application rejected - ${uniqueId}`;
+  const text = [
+    `Namaste ${row.name},`,
+    "",
+    "Aapka Vikas Mitra application approve nahi ho paya.",
+    "",
+    `Application ID: ${uniqueId}`,
+    `Reason: ${reason}`,
+    "",
+    "Agar aapko lagta hai details update karni hain, Bharat Pehchan team se contact karein.",
+    "",
+    "Bharat Pehchan Team",
+  ].join("\n");
+
+  const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#262b39;line-height:1.6;max-width:560px">
+    <p>Namaste <strong>${escapeHtml(row.name)}</strong>,</p>
+    <p>Aapka <strong>Vikas Mitra application</strong> approve nahi ho paya.</p>
+    <div style="margin:18px 0;padding:14px 18px;background:#fff1f2;border:1px solid #fecdd3;border-radius:8px">
+      <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#be123c;font-weight:bold">Application ID</div>
+      <div style="font-size:20px;font-weight:bold;color:#881337;margin-top:4px">${escapeHtml(uniqueId)}</div>
+      <div style="margin-top:10px;color:#7f1d1d"><strong>Reason:</strong> ${escapeHtml(reason)}</div>
+    </div>
+    <p>Agar aapko lagta hai details update karni hain, Bharat Pehchan team se contact karein.</p>
+    <p style="margin-top:18px;color:#5b6376">Bharat Pehchan Team</p>
+  </div>`;
+
+  return { to: row.email ?? "", subject, text, html };
+}
+
+function getPublicUrl(path: string) {
+  const base =
+    process.env["NEXT_PUBLIC_SITE_URL"] ||
+    process.env["SITE_URL"] ||
+    process.env["VERCEL_PROJECT_PRODUCTION_URL"] ||
+    process.env["VERCEL_URL"];
+
+  if (!base) {
+    return "";
+  }
+
+  const normalizedBase = base.startsWith("http") ? base : `https://${base}`;
+  return `${normalizedBase.replace(/\/$/, "")}${path}`;
 }

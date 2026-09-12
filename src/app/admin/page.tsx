@@ -368,7 +368,32 @@ export default function AdminPage() {
     const rejectionMessage =
       window.prompt("Reject message", "Your Vikas Mitra profile has been rejected.") ??
       "Your Vikas Mitra profile has been rejected.";
-    await updateRow("vikas", row.id, { status: "rejected", rejectionMessage });
+    const result = await updateRow(
+      "vikas",
+      row.id,
+      { status: "rejected", rejectionMessage },
+      { notify: Boolean(row.email), silent: true },
+    );
+
+    if (!result?.ok) {
+      return;
+    }
+
+    if (!row.email) {
+      setMessage(
+        "Reject ho gaya. Client ka email nahi diya gaya tha, isliye auto-mail nahi bheja.",
+      );
+      return;
+    }
+
+    if (result.email?.sent) {
+      setMessage(`Reject ho gaya. Rejection email ${row.email} par bhej diya gaya.`);
+      return;
+    }
+
+    setMessage(
+      `Reject ho gaya, par email bhejne me dikkat aayi${result.email?.error ? `: ${result.email.error}` : ""}.`,
+    );
   }
 
   const field =
@@ -680,6 +705,10 @@ function readFileAsDataUrl(file: File) {
 
 function buildApprovalMail(row: Vikas) {
   const subject = `Vikas Mitra Approval Card - ${row.name}`;
+  const cardUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/vikas-mitra/id-card/${row.id}`
+      : `/vikas-mitra/id-card/${row.id}`;
   const body = [
     `Namaste ${row.name},`,
     "",
@@ -692,6 +721,7 @@ function buildApprovalMail(row: Vikas) {
     `Location: ${row.village}, ${row.tehsil}, ${row.district}`,
     row.occupation ? `Profession: ${row.occupation}` : "",
     row.experience ? `Experience: ${row.experience}` : "",
+    `ID Card PDF: ${cardUrl}`,
     "",
     "Aapki profile website par show hone lagi hai.",
     "",
@@ -833,6 +863,16 @@ function VikasList({
                     className="action border bg-white"
                   >
                     <Mail className="h-4 w-4" /> Email Card
+                  </a>
+                )}
+                {row.status === "approved" && (
+                  <a
+                    href={`/vikas-mitra/id-card/${row.id}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="action border bg-white"
+                  >
+                    <Download className="h-4 w-4" /> ID Card PDF
                   </a>
                 )}
               </div>
