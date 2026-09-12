@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { MapPin, Phone, Mail, Globe, Send, Loader2, CheckCircle2 } from "lucide-react";
@@ -10,27 +10,27 @@ const posts = [
   { label: "सरपंच", value: "Sarpanch" },
   { label: "पंचायत समिति सदस्य", value: "Panchayat Samiti Member" },
   { label: "जिला परिषद सदस्य", value: "Zila Parishad Member" },
-  { label: "स्वतंत्र उम्मीदवार", value: "Independent Candidate" },
+  { label: "अन्य स्थानीय चुनाव उम्मीदवार", value: "Other Local Election Candidate" },
   { label: "अन्य", value: "Other" },
 ];
 
 const grievanceContent = `
 *BHARATPAHCHAN.COM — CONTACT US & GRIEVANCE REDRESSAL*
 
-BharatPahchan.com is a venture of Channel009, a brand owned by *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
+BharatPahchan.com is a venture of *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
 
 *Corporate Office:* 301, Dreampoint, PN 1156, Khandela House, Nirwan Marg, Jaipur - 302016, Rajasthan, India.
 *Registered Office:* 715, Mastermind V, Royal Palm Estate, Goregaon (East), Mumbai - 400065, Maharashtra, India.
-*Official Contact / Support / Grievance Email:* bharatpahchan.helpnine@gmail.com
-*Phone:* +91 7375 009 009
+*Official Contact / Support / Grievance Email:* bharatpahchan.helpline@gmail.com
+*Phone:* +91 7891-131-132
 
 ## 1. About BharatPahchan
 
-BharatPahchan.com is a venture of Channel009, a brand owned by CITILINE TECHNOLOGIES PRIVATE LIMITED. The Platform provides private digital identity, profile, discovery, information, verification, visibility and related digital services. BharatPahchan is not a government website or official government identity registry.
+BharatPahchan.com is a venture of CITILINE TECHNOLOGIES PRIVATE LIMITED. The Platform provides private digital identity, profile, discovery, information, verification, visibility and related digital services. BharatPahchan is not a government website or official government identity registry.
 
 ## 2. General Contact
 
-For general enquiries, support, account assistance, profile questions, business enquiries and other communications, use the official email: bharatpahchan.helpnine@gmail.com. Phone: +91 7375 009 009.
+For general enquiries, support, account assistance, profile questions, business enquiries and other communications, use the official email: bharatpahchan.helpline@gmail.com. Phone: +91 7891-131-132.
 
 ## 3. Corporate Office
 
@@ -42,7 +42,7 @@ CITILINE TECHNOLOGIES PRIVATE LIMITED, 715, Mastermind V, Royal Palm Estate, Gor
 
 ## 5. Grievance Officer / Privacy Contact
 
-Designation: Grievance Officer / Privacy Contact, BharatPahchan.com, CITILINE TECHNOLOGIES PRIVATE LIMITED. Email: bharatpahchan.helpnine@gmail.com.
+Designation: Grievance Officer / Privacy Contact, BharatPahchan.com, CITILINE TECHNOLOGIES PRIVATE LIMITED. Email: bharatpahchan.helpline@gmail.com.
 
 Until a named individual is formally designated and published by the Company, communications addressed to this designation at the official email will be routed internally to the authorised person responsible for handling the matter.
 
@@ -82,7 +82,7 @@ For billing or refund matters, provide the order/invoice number, transaction ID,
 
 ## 14. Security Vulnerability Reports
 
-If you discover a suspected security vulnerability, report it privately to bharatpahchan.helpnine@gmail.com with sufficient technical detail to reproduce and assess the issue. Do not exploit the vulnerability, access data beyond what is necessary to demonstrate it, disrupt services, demand payment through threats, or publicly disclose sensitive details before CTPL has had a reasonable opportunity to investigate.
+If you discover a suspected security vulnerability, report it privately to bharatpahchan.helpline@gmail.com with sufficient technical detail to reproduce and assess the issue. Do not exploit the vulnerability, access data beyond what is necessary to demonstrate it, disrupt services, demand payment through threats, or publicly disclose sensitive details before CTPL has had a reasonable opportunity to investigate.
 
 ## 15. Law-Enforcement / Court / Regulatory Requests
 
@@ -116,7 +116,7 @@ Use of the BharatPahchan grievance mechanism does not prevent a person from appr
 
 ## 22. Official Communication Channel
 
-For the present website launch, bharatpahchan.helpnine@gmail.com is the official consolidated contact for support, privacy, grievances, legal complaints, refunds and profile matters. If CTPL later introduces dedicated departmental addresses, the website will be updated accordingly.
+For the present website launch, bharatpahchan.helpline@gmail.com is the official consolidated contact for support, privacy, grievances, legal complaints, refunds and profile matters. If CTPL later introduces dedicated departmental addresses, the website will be updated accordingly.
 
 ## 23. Governing Law
 
@@ -149,6 +149,10 @@ export default function Contact() {
           source: "Contact Us Page",
           state,
           city: state,
+          pageUrl: window.location.href,
+          utmSource: new URLSearchParams(window.location.search).get("utm_source") || "",
+          utmMedium: new URLSearchParams(window.location.search).get("utm_medium") || "",
+          utmCampaign: new URLSearchParams(window.location.search).get("utm_campaign") || "",
           message: message
             ? `Contact Us Form\nSelected Post: ${post}\n\n${message}`
             : `Contact Us Form\nSelected Post: ${post}`,
@@ -173,7 +177,7 @@ export default function Contact() {
     <>
       <PageHero
         title="संपर्क करें"
-        sub="फ्री कंसल्टेशन के लिए फ़ॉर्म भरें — हमारी टीम 24 घंटे के भीतर संपर्क करेगी।"
+        sub="डेमो, पैकेज या डिजिटल अभियान जानकारी के लिए फ़ॉर्म भरें — हमारी टीम आपसे संपर्क करेगी।"
       />
 
       <Section>
@@ -204,7 +208,7 @@ export default function Contact() {
           </div>
 
           <form onSubmit={onSubmit} className="card-warm p-6">
-            <h2 className="text-lg text-maroon">फ्री कंसल्टेशन फ़ॉर्म</h2>
+            <h2 className="text-lg text-maroon">Enquiry Form</h2>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="mb-1.5 block text-xs font-semibold" htmlFor="name">

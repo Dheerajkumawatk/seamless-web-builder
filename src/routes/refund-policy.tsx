@@ -1,14 +1,14 @@
-import { LegalDoc } from "@/components/site/LegalDoc";
+﻿import { LegalDoc } from "@/components/site/LegalDoc";
 
 const content = `
 *BHARATPAHCHAN.COM — REFUND, CANCELLATION & PAYMENT POLICY*
 
-BharatPahchan.com is a venture of Channel009, a brand owned by *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
+BharatPahchan.com is a venture of *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
 
 *Corporate Office:* 301, Dreampoint, PN 1156, Khandela House, Nirwan Marg, Jaipur - 302016, Rajasthan, India.
 *Registered Office:* 715, Mastermind V, Royal Palm Estate, Goregaon (East), Mumbai - 400065, Maharashtra, India.
-*Official Contact / Support / Grievance Email:* bharatpahchan.helpnine@gmail.com
-*Phone:* +91 7375 009 009
+*Official Contact / Support / Grievance Email:* bharatpahchan.helpline@gmail.com
+*Phone:* +91 7891-131-132
 
 ## 1. Purpose and Scope
 
@@ -82,7 +82,7 @@ If a paid service is not delivered within an expressly committed period for reas
 
 ## 17. Refund Request Procedure
 
-Send refund or cancellation requests to bharatpahchan.helpnine@gmail.com. Include the customer's name, registered mobile/email, order or invoice number, transaction ID, payment date, amount, service purchased, reason for request, requested resolution and relevant supporting material. Do not send card PINs, OTPs or unnecessary banking credentials.
+Send refund or cancellation requests to bharatpahchan.helpline@gmail.com. Include the customer's name, registered mobile/email, order or invoice number, transaction ID, payment date, amount, service purchased, reason for request, requested resolution and relevant supporting material. Do not send card PINs, OTPs or unnecessary banking credentials.
 
 ## 18. Verification of Request
 
@@ -116,7 +116,7 @@ Nothing in this Policy limits a right or remedy that cannot be waived under the 
 
 ## 25. Grievance Escalation
 
-If a refund request is not resolved satisfactorily, the customer may write to the Grievance Officer / Support Contact at bharatpahchan.helpnine@gmail.com with the earlier ticket/order details and reasons for escalation. Statutory consumer remedies remain available.
+If a refund request is not resolved satisfactorily, the customer may write to the Grievance Officer / Support Contact at bharatpahchan.helpline@gmail.com with the earlier ticket/order details and reasons for escalation. Statutory consumer remedies remain available.
 
 ## 26. Policy Changes
 
@@ -124,7 +124,7 @@ This Policy may be updated prospectively. The policy applicable to a transaction
 
 ## 27. Contact
 
-Refund, cancellation, billing and payment grievances: bharatpahchan.helpnine@gmail.com. Corporate and Registered Office details are stated at the beginning of this Policy.
+Refund, cancellation, billing and payment grievances: bharatpahchan.helpline@gmail.com. Corporate and Registered Office details are stated at the beginning of this Policy.
 `;
 
 export default function RefundPolicy() {
@@ -137,3 +137,4 @@ export default function RefundPolicy() {
     />
   );
 }
+

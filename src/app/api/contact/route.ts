@@ -10,6 +10,10 @@ const leadSchema = z.object({
   source: z.string().max(40).optional().or(z.literal("")),
   state: z.string().max(60).optional().or(z.literal("")),
   city: z.string().max(80).optional().or(z.literal("")),
+  pageUrl: z.string().max(500).optional().or(z.literal("")),
+  utmSource: z.string().max(80).optional().or(z.literal("")),
+  utmMedium: z.string().max(80).optional().or(z.literal("")),
+  utmCampaign: z.string().max(120).optional().or(z.literal("")),
   message: z.string().max(1000).optional().or(z.literal("")),
 });
 
@@ -24,7 +28,17 @@ export async function POST(request: Request) {
       source: data.source || undefined,
       state: data.state || undefined,
       city: data.city || undefined,
-      message: data.message || undefined,
+      message: [
+        data.message || "",
+        `Lead Status: NEW`,
+        `Source: ${data.source || "BharatPahchan Website"}`,
+        `Page URL: ${data.pageUrl || request.headers.get("referer") || "Not captured"}`,
+        `UTM Source: ${data.utmSource || "Not captured"}`,
+        `UTM Medium: ${data.utmMedium || "Not captured"}`,
+        `UTM Campaign: ${data.utmCampaign || "Not captured"}`,
+      ]
+        .filter(Boolean)
+        .join("\n"),
     });
 
     return NextResponse.json({ ok: true, id: lead.id });

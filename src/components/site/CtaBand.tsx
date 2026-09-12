@@ -39,6 +39,10 @@ export function CtaBand() {
           post: "District Partner Program",
           source: "District Partner Form",
           state: String(data.get("district") ?? ""),
+          pageUrl: window.location.href,
+          utmSource: new URLSearchParams(window.location.search).get("utm_source") || "",
+          utmMedium: new URLSearchParams(window.location.search).get("utm_medium") || "",
+          utmCampaign: new URLSearchParams(window.location.search).get("utm_campaign") || "",
           message,
         }),
       });
@@ -80,7 +84,7 @@ export function CtaBand() {
                 {[
                   ["10%", "Commission per sale"],
                   ["Rs. 1000", "Referral bonus per GP"],
-                  ["33", "Districts in Rajasthan"],
+                  ["Local", "District-level partner support"],
                 ].map(([value, label]) => (
                   <div key={label} className="rounded-lg bg-white/14 p-5 ring-1 ring-white/16">
                     <p className="font-display text-3xl font-black text-white">{value}</p>

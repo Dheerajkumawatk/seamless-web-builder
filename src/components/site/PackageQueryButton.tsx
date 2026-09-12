@@ -6,7 +6,7 @@ import { CheckCircle2, Loader2, Send, X } from "lucide-react";
 export function PackageQueryButton({
   packageName,
   featured = false,
-  ctaLabel = "चुनें",
+  ctaLabel = "इस पैकेज की जानकारी लें",
   tone = "navy",
 }: {
   packageName: string;
@@ -35,6 +35,10 @@ export function PackageQueryButton({
           city: String(data.get("city") ?? ""),
           state: String(data.get("state") ?? ""),
           pincode: String(data.get("pincode") ?? ""),
+          pageUrl: window.location.href,
+          utmSource: new URLSearchParams(window.location.search).get("utm_source") || "",
+          utmMedium: new URLSearchParams(window.location.search).get("utm_medium") || "",
+          utmCampaign: new URLSearchParams(window.location.search).get("utm_campaign") || "",
         }),
       });
       if (!response.ok) throw new Error("Plan query failed");

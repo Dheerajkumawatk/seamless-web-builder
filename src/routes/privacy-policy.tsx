@@ -1,14 +1,14 @@
-import { LegalDoc } from "@/components/site/LegalDoc";
+﻿import { LegalDoc } from "@/components/site/LegalDoc";
 
 const content = `
 *BHARATPAHCHAN.COM — PRIVACY POLICY*
 
-BharatPahchan.com is a venture of Channel009, a brand owned by *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
+BharatPahchan.com is a venture of *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
 
 *Corporate Office:* 301, Dreampoint, PN 1156, Khandela House, Nirwan Marg, Jaipur - 302016, Rajasthan, India.
 *Registered Office:* 715, Mastermind V, Royal Palm Estate, Goregaon (East), Mumbai - 400065, Maharashtra, India.
-*Official Contact / Support / Grievance Email:* bharatpahchan.helpnine@gmail.com
-*Phone:* +91 7375 009 009
+*Official Contact / Support / Grievance Email:* bharatpahchan.helpline@gmail.com
+*Phone:* +91 7891-131-132
 
 ## 1. Introduction and Scope
 
@@ -106,7 +106,7 @@ Subject to applicable law and identity verification, a person may request inform
 
 ## 21. Profile Correction, Claim, De-indexing or Removal Requests
 
-If you are represented in a BharatPahchan profile and believe information is inaccurate, misleading, impersonating you, unlawfully published or requires correction/removal, email bharatpahchan.helpnine@gmail.com. Include the exact profile/page URL, disputed material, requested action, your contact details and sufficient information to verify your identity or authority. Do not send unnecessary sensitive documents.
+If you are represented in a BharatPahchan profile and believe information is inaccurate, misleading, impersonating you, unlawfully published or requires correction/removal, email bharatpahchan.helpline@gmail.com. Include the exact profile/page URL, disputed material, requested action, your contact details and sufficient information to verify your identity or authority. Do not send unnecessary sensitive documents.
 
 We may seek clarification or proportionate verification. Submission of a request does not guarantee deletion where publication or retention remains lawful, but we will assess the request under applicable law and Platform policy.
 
@@ -120,7 +120,7 @@ The Platform may contain external links, social-media embeds, maps, payment gate
 
 ## 24. Grievance Redressal and Privacy Contact
 
-Privacy questions, correction/removal requests, account/profile complaints and grievances may be addressed to: Grievance Officer / Privacy Contact, BharatPahchan.com, CITILINE TECHNOLOGIES PRIVATE LIMITED, Email: bharatpahchan.helpnine@gmail.com. Please identify the relevant URL/account/order, explain the issue and requested action, and provide a reliable contact method.
+Privacy questions, correction/removal requests, account/profile complaints and grievances may be addressed to: Grievance Officer / Privacy Contact, BharatPahchan.com, CITILINE TECHNOLOGIES PRIVATE LIMITED, Email: bharatpahchan.helpline@gmail.com. Please identify the relevant URL/account/order, explain the issue and requested action, and provide a reliable contact method.
 
 We will acknowledge, assess and respond within the period required by the law applicable to the particular grievance. We may ask for additional information necessary to verify identity, authority or the factual basis of the request.
 
@@ -134,7 +134,7 @@ We may revise this Policy to reflect changes in law, technology, services or pro
 
 ## 27. Governing Law and Contact
 
-This Policy is governed by applicable laws of India, subject to mandatory privacy, data-protection, consumer and other statutory rights and forums that cannot lawfully be excluded. For privacy, profile correction, data requests, impersonation complaints or other concerns, contact bharatpahchan.helpnine@gmail.com or write to the Corporate Office stated above.
+This Policy is governed by applicable laws of India, subject to mandatory privacy, data-protection, consumer and other statutory rights and forums that cannot lawfully be excluded. For privacy, profile correction, data requests, impersonation complaints or other concerns, contact bharatpahchan.helpline@gmail.com or write to the Corporate Office stated above.
 `;
 
 export default function PrivacyPolicy() {
@@ -147,3 +147,4 @@ export default function PrivacyPolicy() {
     />
   );
 }
+

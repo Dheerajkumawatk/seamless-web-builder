@@ -1,14 +1,14 @@
-import { LegalDoc } from "@/components/site/LegalDoc";
+﻿import { LegalDoc } from "@/components/site/LegalDoc";
 
 const content = `
 *BHARATPAHCHAN.COM — TERMS & CONDITIONS / TERMS OF USE*
 
-BharatPahchan.com is a venture of Channel009, a brand owned by *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
+BharatPahchan.com is a venture of *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
 
 *Corporate Office:* 301, Dreampoint, PN 1156, Khandela House, Nirwan Marg, Jaipur - 302016, Rajasthan, India.
 *Registered Office:* 715, Mastermind V, Royal Palm Estate, Goregaon (East), Mumbai - 400065, Maharashtra, India.
-*Official Contact / Support / Grievance Email:* bharatpahchan.helpnine@gmail.com
-*Phone:* +91 7375 009 009
+*Official Contact / Support / Grievance Email:* bharatpahchan.helpline@gmail.com
+*Phone:* +91 7891-131-132
 
 ## 1. Acceptance and Binding Effect
 
@@ -16,7 +16,7 @@ These Terms govern access to and use of BharatPahchan.com. By browsing, register
 
 ## 2. Operator and Private Status
 
-BharatPahchan.com is operated by CITILINE TECHNOLOGIES PRIVATE LIMITED as a venture of Channel009. BharatPahchan is a private platform. It is not a Government of India, State Government, local-government, UIDAI/Aadhaar, Election Commission, statutory authority or official government identity registry. A profile, badge, claim, listing or verification does not constitute government certification, appointment, statutory recognition, licence or endorsement unless expressly stated and supported by the relevant authority.
+BharatPahchan.com is operated by CITILINE TECHNOLOGIES PRIVATE LIMITED. BharatPahchan is a private platform. It is not a Government of India, State Government, local-government, UIDAI/Aadhaar, Election Commission, statutory authority or official government identity registry. A profile, badge, claim, listing or verification does not constitute government certification, appointment, statutory recognition, licence or endorsement unless expressly stated and supported by the relevant authority.
 
 ## 3. Nature and Evolution of Services
 
@@ -72,7 +72,7 @@ BharatPahchan, Channel009 and associated names, marks, logos, layouts or trade d
 
 ## 16. Copyright, Trademark and Other Rights Complaints
 
-A rights holder alleging infringement should email bharatpahchan.helpnine@gmail.com with the exact URL, identification of the protected work/mark, explanation of the alleged infringement, proof of authority and contact information. CTPL may seek clarification, temporarily restrict material, notify the uploader where appropriate, and take action required by applicable law.
+A rights holder alleging infringement should email bharatpahchan.helpline@gmail.com with the exact URL, identification of the protected work/mark, explanation of the alleged infringement, proof of authority and contact information. CTPL may seek clarification, temporarily restrict material, notify the uploader where appropriate, and take action required by applicable law.
 
 ## 17. Privacy, Impersonation and Takedown Complaints
 
@@ -140,7 +140,7 @@ We may revise these Terms prospectively for changes in law, risk, technology or 
 
 ## 33. Grievance Redressal
 
-Complaints may be sent to the Grievance Officer / Support Contact at bharatpahchan.helpnine@gmail.com with the relevant URL/account/order, description, requested action and supporting information. CTPL may seek identity or authority verification and will process the grievance within timelines required by the applicable law.
+Complaints may be sent to the Grievance Officer / Support Contact at bharatpahchan.helpline@gmail.com with the relevant URL/account/order, description, requested action and supporting information. CTPL may seek identity or authority verification and will process the grievance within timelines required by the applicable law.
 
 ## 34. Governing Law and Jurisdiction
 
@@ -152,7 +152,7 @@ If a provision is held unenforceable, the remaining provisions continue to the e
 
 ## 36. Contact
 
-Questions concerning these Terms may be sent to bharatpahchan.helpnine@gmail.com or addressed to CITILINE TECHNOLOGIES PRIVATE LIMITED at the Corporate Office stated above.
+Questions concerning these Terms may be sent to bharatpahchan.helpline@gmail.com or addressed to CITILINE TECHNOLOGIES PRIVATE LIMITED at the Corporate Office stated above.
 `;
 
 export default function TermsConditions() {
@@ -165,3 +165,4 @@ export default function TermsConditions() {
     />
   );
 }
+

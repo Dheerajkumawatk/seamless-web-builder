@@ -35,21 +35,23 @@ export default function Portfolio() {
         </div>
       </Section>
 
-      <Section muted>
-        <SectionHeading title="ग्राहकों की राय" />
-        <div className="mt-9 grid gap-5 lg:grid-cols-3">
-          {testimonials.map((t) => (
-            <article key={t.name} className="card-warm p-6">
-              <Quote className="h-6 w-6 text-saffron/50" />
-              <p className="mt-3 text-sm leading-relaxed text-foreground/85">"{t.quote}"</p>
-              <div className="mt-5">
-                <p className="text-sm font-semibold text-maroon">{t.name}</p>
-                <p className="text-xs text-muted-foreground">{t.role}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </Section>
+      {testimonials.length > 0 && (
+        <Section muted>
+          <SectionHeading title="ग्राहकों की राय" />
+          <div className="mt-9 grid gap-5 lg:grid-cols-3">
+            {testimonials.map((t) => (
+              <article key={t.name} className="card-warm p-6">
+                <Quote className="h-6 w-6 text-saffron/50" />
+                <p className="mt-3 text-sm leading-relaxed text-foreground/85">"{t.quote}"</p>
+                <div className="mt-5">
+                  <p className="text-sm font-semibold text-maroon">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">{t.role}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Section>
+      )}
 
       <CtaBand />
     </>

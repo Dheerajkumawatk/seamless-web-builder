@@ -1,7 +1,7 @@
 import { Check, Target, Eye, HeartHandshake } from "lucide-react";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { CtaBand } from "@/components/site/CtaBand";
-import { stats, faqs } from "@/data/site";
+import { faqs, trustCapabilities } from "@/data/site";
 import { images } from "@/data/images";
 
 const values = [
@@ -39,13 +39,14 @@ export default function About() {
           <div>
             <h2 className="font-display text-2xl text-maroon">गाँव की आवाज़, डिजिटल पहचान</h2>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              2018 से हम पंचायत, ब्लॉक और जिला स्तर के उम्मीदवारों के लिए वेबसाइट, सोशल मीडिया,
-              व्हाट्सएप अभियान और वीडियो कंटेंट बना रहे हैं। हमारी टीम में डिज़ाइनर, कंटेंट राइटर,
-              वीडियो एडिटर और कैंपेन मैनेजर शामिल हैं जो स्थानीय भाषा और संस्कृति को समझते हैं।
+              हम पंचायत, ब्लॉक और जिला स्तर के उम्मीदवारों के लिए वेबसाइट, सोशल मीडिया, डिजिटल
+              आउटरीच और वीडियो कंटेंट तैयार करने में मदद करते हैं। हमारी टीम में डिज़ाइनर, कंटेंट
+              राइटर, वीडियो एडिटर और कैंपेन मैनेजर शामिल हैं जो स्थानीय भाषा और संस्कृति को समझते
+              हैं।
             </p>
             <ul className="mt-5 space-y-2.5">
               {[
-                "100+ उम्मीदवारों के साथ काम का अनुभव",
+                "उम्मीदवार वेबसाइट और डिजिटल पहचान",
                 "हिंदी और क्षेत्रीय भाषाओं में कंटेंट",
                 "चुनाव आयोग नियमों के अनुरूप प्रचार सामग्री",
                 "समर्पित अकाउंट मैनेजर और तेज़ सपोर्ट",
@@ -77,10 +78,10 @@ export default function About() {
 
       <Section>
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label} className="card-warm p-5 text-center">
-              <p className="font-display text-2xl font-bold text-saffron">{s.value}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{s.label}</p>
+          {trustCapabilities.slice(0, 4).map((item) => (
+            <div key={item.label} className="card-warm p-5 text-center">
+              <item.icon className="mx-auto h-8 w-8 text-saffron" />
+              <p className="mt-3 text-xs font-bold text-muted-foreground">{item.label}</p>
             </div>
           ))}
         </div>

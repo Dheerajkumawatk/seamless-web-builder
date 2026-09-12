@@ -181,18 +181,11 @@ export function Header() {
                 </Link>
               ))}
               <Link
-                href="/contact"
+                href="/#demo-form"
                 className="ml-1 whitespace-nowrap rounded-lg bg-[#159a56] px-6 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(21,154,86,.22)] transition-transform hover:scale-[1.03]"
               >
-                फ्री कंसल्टेशन बुक करें
+                मेरे नाम से डेमो बनाइए
               </Link>
-              <button
-                type="button"
-                onClick={openVikasForm}
-                className="whitespace-nowrap rounded-lg bg-[#123a72] px-6 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(18,58,114,.22)] transition-transform hover:scale-[1.03] hover:bg-[#1b4c8a]"
-              >
-                Vikas Mitra Join
-              </button>
             </nav>
 
             <button
@@ -220,25 +213,25 @@ export function Header() {
                   </Link>
                 ))}
                 <Link
-                  href="/contact"
+                  href="/#demo-form"
                   onClick={() => setOpen(false)}
                   className="mt-4 rounded-md bg-saffron px-4 py-3 text-center text-sm font-bold text-white"
                 >
-                  फ्री कंसल्टेशन बुक करें
+                  मेरे नाम से डेमो बनाइए
                 </Link>
-                <button
-                  type="button"
-                  onClick={openVikasForm}
-                  className="mt-2 rounded-md bg-maroon px-4 py-3 text-center text-sm font-bold text-white"
-                >
-                  Vikas Mitra Join
-                </button>
                 <a
                   href={`tel:${site.phone}`}
                   className="mt-2 rounded-md border border-border px-4 py-3 text-center text-sm font-bold text-maroon"
                 >
                   {site.phone}
                 </a>
+                <button
+                  type="button"
+                  onClick={openVikasForm}
+                  className="mt-2 rounded-md border border-border px-4 py-3 text-center text-sm font-bold text-[#123a72]"
+                >
+                  Vikas Mitra Join
+                </button>
               </div>
             </nav>
           )}
@@ -250,7 +243,9 @@ export function Header() {
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
-        className="fixed right-5 bottom-5 z-50 inline-flex items-center gap-2 rounded-full bg-[#25d366] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(37,211,102,.35)] transition-transform hover:scale-105"
+        className={`fixed right-5 bottom-5 z-50 items-center gap-2 rounded-full bg-[#25d366] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(37,211,102,.35)] transition-transform hover:scale-105 ${
+          pathname === "/" ? "hidden md:inline-flex" : "inline-flex"
+        }`}
       >
         <MessageCircle className="h-5 w-5" />
         WhatsApp

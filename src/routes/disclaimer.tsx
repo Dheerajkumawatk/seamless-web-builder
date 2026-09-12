@@ -1,14 +1,14 @@
-import { LegalDoc } from "@/components/site/LegalDoc";
+﻿import { LegalDoc } from "@/components/site/LegalDoc";
 
 const content = `
 *BHARATPAHCHAN.COM — DISCLAIMER*
 
-BharatPahchan.com is a venture of Channel009, a brand owned by *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
+BharatPahchan.com is a venture of *CITILINE TECHNOLOGIES PRIVATE LIMITED*.
 
 *Corporate Office:* 301, Dreampoint, PN 1156, Khandela House, Nirwan Marg, Jaipur - 302016, Rajasthan, India.
 *Registered Office:* 715, Mastermind V, Royal Palm Estate, Goregaon (East), Mumbai - 400065, Maharashtra, India.
-*Official Contact / Support / Grievance Email:* bharatpahchan.helpnine@gmail.com
-*Phone:* +91 7375 009 009
+*Official Contact / Support / Grievance Email:* bharatpahchan.helpline@gmail.com
+*Phone:* +91 7891-131-132
 
 ## 1. General Disclaimer
 
@@ -40,7 +40,7 @@ Opinions, claims, photographs, documents, advertisements, links and other materi
 
 ## 8. Correction and Removal
 
-A person who believes a profile or item is inaccurate, impersonating, privacy-invasive, defamatory, infringing or otherwise unlawful should email bharatpahchan.helpnine@gmail.com with the exact URL/material, explanation, requested action and proportionate supporting evidence. CTPL may verify the request and take action appropriate under applicable law and Platform policy.
+A person who believes a profile or item is inaccurate, impersonating, privacy-invasive, defamatory, infringing or otherwise unlawful should email bharatpahchan.helpline@gmail.com with the exact URL/material, explanation, requested action and proportionate supporting evidence. CTPL may verify the request and take action appropriate under applicable law and Platform policy.
 
 ## 9. No Professional Advice
 
@@ -108,7 +108,7 @@ This Disclaimer may be updated to reflect changes in services, risk, law or tech
 
 ## 25. Complaints and Contact
 
-For inaccurate information, impersonation, privacy concerns, copyright/trademark complaints, unlawful content, fraud or other legal concerns, email bharatpahchan.helpnine@gmail.com with the exact URL/material and supporting information. Corporate and Registered Office details are stated above.
+For inaccurate information, impersonation, privacy concerns, copyright/trademark complaints, unlawful content, fraud or other legal concerns, email bharatpahchan.helpline@gmail.com with the exact URL/material and supporting information. Corporate and Registered Office details are stated above.
 
 ## 26. Governing Law
 
@@ -125,3 +125,4 @@ export default function Disclaimer() {
     />
   );
 }
+

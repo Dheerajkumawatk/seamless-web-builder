@@ -3,6 +3,7 @@ import { z } from "zod";
 import { isAdminRequest } from "@/lib/admin-auth";
 import { createBlogPost, deleteBlogPost, listBlogPosts, updateBlogPost } from "@/lib/blog.server";
 import { deleteLead, listLeads, updateLead } from "@/lib/contact.server";
+import { deleteDemoLead, listDemoLeads, updateDemoLead } from "@/lib/demo-request.server";
 import {
   deleteVikasMitraProfile,
   listVikasMitraProfiles,
@@ -47,6 +48,25 @@ const leadSchema = z.object({
   }),
 });
 
+const demoSchema = z.object({
+  type: z.literal("demo"),
+  id: z.string().uuid(),
+  data: z.object({
+    name: z.string().min(2).max(80).optional(),
+    phone: z.string().min(8).max(20).optional(),
+    village: z.string().max(120).optional().or(z.literal("")),
+    district: z.string().max(80).optional().or(z.literal("")),
+    post: z.string().max(80).optional().or(z.literal("")),
+    source: z.string().max(80).optional().or(z.literal("")),
+    pageUrl: z.string().max(500).optional().or(z.literal("")),
+    utmSource: z.string().max(80).optional().or(z.literal("")),
+    utmMedium: z.string().max(80).optional().or(z.literal("")),
+    utmCampaign: z.string().max(120).optional().or(z.literal("")),
+    status: z.string().max(40).optional().or(z.literal("")),
+    notes: z.string().max(1000).optional().or(z.literal("")),
+  }),
+});
+
 const blogDataSchema = z.object({
   title: z.string().min(2).max(160),
   slug: z.string().max(180).optional().or(z.literal("")),
@@ -72,10 +92,16 @@ const createSchema = z.object({
   data: blogDataSchema,
 });
 
-const updateSchema = z.discriminatedUnion("type", [vikasSchema, leadSchema, blogUpdateSchema]);
+const updateSchema = z.discriminatedUnion("type", [
+  vikasSchema,
+  leadSchema,
+  demoSchema,
+  blogUpdateSchema,
+]);
 const deleteSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("vikas"), id: z.string().uuid() }),
   z.object({ type: z.literal("contact"), id: z.string().uuid() }),
+  z.object({ type: z.literal("demo"), id: z.string().uuid() }),
   z.object({ type: z.literal("blog"), id: z.string().min(1) }),
 ]);
 
@@ -84,13 +110,14 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const [vikas, contacts, blogs] = await Promise.all([
+  const [vikas, contacts, demos, blogs] = await Promise.all([
     listVikasMitraProfiles(),
     listLeads(),
+    listDemoLeads(),
     listBlogPosts(),
   ]);
 
-  return NextResponse.json({ vikas, contacts, blogs });
+  return NextResponse.json({ vikas, contacts, demos, blogs });
 }
 
 export async function POST(request: Request) {
@@ -128,6 +155,11 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ ok: true, row });
   }
 
+  if (body.type === "demo") {
+    const row = await updateDemoLead(body.id, body.data);
+    return NextResponse.json({ ok: true, row });
+  }
+
   if (body.type === "blog") {
     const row = await updateBlogPost(body.id, body.data);
     return NextResponse.json({ ok: true, row });
@@ -150,6 +182,11 @@ export async function DELETE(request: Request) {
 
   if (body.type === "contact") {
     await deleteLead(body.id);
+    return NextResponse.json({ ok: true });
+  }
+
+  if (body.type === "demo") {
+    await deleteDemoLead(body.id);
     return NextResponse.json({ ok: true });
   }
 

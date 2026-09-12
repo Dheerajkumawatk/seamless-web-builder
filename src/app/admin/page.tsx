@@ -18,6 +18,7 @@ import {
   Search,
   ShieldCheck,
   Trash2,
+  UserRoundPlus,
   UsersRound,
   X,
   XCircle,
@@ -25,7 +26,7 @@ import {
 import { adminEmail, adminPassword } from "@/lib/admin-auth";
 import { formatVikasMitraId } from "@/lib/profile-id";
 
-type Tab = "vikas" | "contacts" | "blogs";
+type Tab = "vikas" | "contacts" | "demos" | "blogs";
 
 type Vikas = {
   id: string;
@@ -59,6 +60,23 @@ type ContactLead = {
   createdAt: string;
 };
 
+type DemoLead = {
+  id: string;
+  name: string;
+  phone: string;
+  village?: string;
+  district?: string;
+  post?: string;
+  source?: string;
+  pageUrl?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  status: string;
+  notes?: string;
+  createdAt: string;
+};
+
 type BlogPost = {
   id: string;
   slug: string;
@@ -78,14 +96,16 @@ type BlogPost = {
 type AdminData = {
   vikas: Vikas[];
   contacts: ContactLead[];
+  demos: DemoLead[];
   blogs: BlogPost[];
 };
 
-const emptyData: AdminData = { vikas: [], contacts: [], blogs: [] };
+const emptyData: AdminData = { vikas: [], contacts: [], demos: [], blogs: [] };
 
 const navItems = [
   { key: "vikas" as const, label: "Vikas Mitra", icon: UsersRound },
   { key: "contacts" as const, label: "Contact Details", icon: Mail },
+  { key: "demos" as const, label: "Demo Requests", icon: UserRoundPlus },
   { key: "blogs" as const, label: "Blogs", icon: Newspaper },
 ];
 
@@ -98,8 +118,10 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [query, setQuery] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
   const [editing, setEditing] = useState<{
-    type: "vikas" | "contact" | "blog";
+    type: "vikas" | "contact" | "demo" | "blog";
     row: Record<string, unknown>;
   } | null>(null);
   const [previewing, setPreviewing] = useState<Vikas | null>(null);
@@ -173,7 +195,7 @@ export default function AdminPage() {
   };
 
   async function updateRow(
-    type: "vikas" | "contact" | "blog",
+    type: "vikas" | "contact" | "demo" | "blog",
     id: string,
     rowData: Record<string, unknown>,
     options?: { notify?: boolean; silent?: boolean },
@@ -256,7 +278,7 @@ export default function AdminPage() {
     }
   }
 
-  async function deleteRow(type: "vikas" | "contact" | "blog", id: string, label: string) {
+  async function deleteRow(type: "vikas" | "contact" | "demo" | "blog", id: string, label: string) {
     const ok = window.confirm(`${label} delete karna hai? Ye row DB se permanently delete hogi.`);
     if (!ok) return;
 
@@ -284,10 +306,12 @@ export default function AdminPage() {
   function exportCurrentTab() {
     const rows =
       tab === "vikas"
-        ? filterRows(data.vikas, query)
+        ? filterRows(data.vikas, query, dateFrom, dateTo)
         : tab === "contacts"
-          ? filterRows(data.contacts, query)
-          : filterRows(data.blogs, query);
+          ? filterRows(data.contacts, query, dateFrom, dateTo)
+          : tab === "demos"
+            ? filterRows(data.demos, query, dateFrom, dateTo)
+            : filterRows(data.blogs, query, dateFrom, dateTo);
     if (!rows.length) {
       setMessage("Export ke liye koi record nahi mila.");
       return;
@@ -393,15 +417,15 @@ export default function AdminPage() {
 
   return (
     <main className="min-h-screen bg-slate-100 text-slate-950 lg:grid lg:grid-cols-[280px_1fr]">
-      <aside className="border-b border-slate-200 bg-[#111827] text-white lg:sticky lg:top-0 lg:h-screen lg:border-b-0">
-        <div className="flex items-center justify-between px-5 py-5 lg:block">
+      <aside className="sticky top-0 z-40 border-b border-slate-200 bg-[#111827] text-white shadow-lg shadow-slate-950/10 lg:top-0 lg:h-screen lg:border-b-0">
+        <div className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-5 lg:block">
           <div className="flex items-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-lg bg-emerald-600">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-emerald-600 sm:h-11 sm:w-11">
               <LayoutDashboard className="h-5 w-5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-sm font-black">Bharat Pehchan</p>
-              <p className="text-xs font-semibold text-slate-400">Admin Dashboard</p>
+              <p className="truncate text-xs font-semibold text-slate-400">Admin Dashboard</p>
             </div>
           </div>
           <button
@@ -412,12 +436,12 @@ export default function AdminPage() {
           </button>
         </div>
 
-        <nav className="flex gap-2 overflow-x-auto px-5 pb-5 lg:mt-4 lg:block lg:space-y-2 lg:overflow-visible">
+        <nav className="flex gap-2 overflow-x-auto px-4 pb-3 [-webkit-overflow-scrolling:touch] sm:px-5 sm:pb-5 lg:mt-4 lg:block lg:space-y-2 lg:overflow-visible">
           {navItems.map(({ key, label, icon: Icon }) => (
             <button
               key={key}
               onClick={() => setTab(key)}
-              className={`flex shrink-0 items-center gap-3 rounded-md px-4 py-3 text-sm font-black transition lg:w-full ${
+              className={`flex min-h-11 shrink-0 items-center gap-2 rounded-md px-3 py-2.5 text-xs font-black whitespace-nowrap transition sm:gap-3 sm:px-4 sm:py-3 sm:text-sm lg:w-full ${
                 tab === key
                   ? "bg-emerald-600 text-white"
                   : "text-slate-300 hover:bg-white/10 hover:text-white"
@@ -445,18 +469,18 @@ export default function AdminPage() {
       </aside>
 
       <section className="min-w-0">
-        <header className="border-b border-slate-200 bg-white px-4 py-5 lg:px-8">
+        <header className="border-b border-slate-200 bg-white px-4 py-4 sm:py-5 lg:px-8">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div>
               <p className="text-xs font-black tracking-[0.18em] text-emerald-700 uppercase">
                 Admin Panel
               </p>
-              <h1 className="mt-1 text-3xl font-black text-slate-950">
+              <h1 className="mt-1 text-2xl font-black text-slate-950 sm:text-3xl">
                 {navItems.find((item) => item.key === tab)?.label}
               </h1>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <label className="relative min-w-0 sm:w-72">
+            <div className="grid gap-3 sm:grid-cols-2 xl:flex xl:flex-wrap xl:justify-end">
+              <label className="relative min-w-0 sm:col-span-2 xl:w-72">
                 <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   value={query}
@@ -465,6 +489,41 @@ export default function AdminPage() {
                   placeholder="Search records"
                 />
               </label>
+              <label className="min-w-0 xl:w-56">
+                <span className="mb-1 block text-[11px] font-black tracking-[0.12em] text-slate-500 uppercase">
+                  From
+                </span>
+                <input
+                  value={dateFrom}
+                  onChange={(event) => setDateFrom(event.target.value)}
+                  type="datetime-local"
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-emerald-500"
+                  title="From date/time"
+                />
+              </label>
+              <label className="min-w-0 xl:w-56">
+                <span className="mb-1 block text-[11px] font-black tracking-[0.12em] text-slate-500 uppercase">
+                  To
+                </span>
+                <input
+                  value={dateTo}
+                  onChange={(event) => setDateTo(event.target.value)}
+                  type="datetime-local"
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-emerald-500"
+                  title="To date/time"
+                />
+              </label>
+              {(dateFrom || dateTo) && (
+                <button
+                  onClick={() => {
+                    setDateFrom("");
+                    setDateTo("");
+                  }}
+                  className="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm font-black"
+                >
+                  Clear Date
+                </button>
+              )}
               {tab === "blogs" && (
                 <button
                   onClick={createBlog}
@@ -496,11 +555,12 @@ export default function AdminPage() {
           </div>
         </header>
 
-        <div className="px-4 py-6 lg:px-8">
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="px-3 py-4 sm:px-4 sm:py-6 lg:px-8">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
             <Stat label="Total Vikas Mitra" value={data.vikas.length} />
             <Stat label="Pending Approval" value={pendingCount} tone="orange" />
             <Stat label="Approved Profiles" value={approvedCount} tone="green" />
+            <Stat label="Demo Requests" value={data.demos.length} tone="orange" />
             <Stat label="Package Leads" value={packageLeadCount} tone="blue" />
             <Stat label="Contact Leads" value={data.contacts.length} tone="blue" />
             <Stat label="Blogs" value={data.blogs.length} tone="green" />
@@ -515,7 +575,7 @@ export default function AdminPage() {
           <div className="mt-6">
             {tab === "vikas" && (
               <VikasList
-                rows={filterRows(data.vikas, query)}
+                rows={filterRows(data.vikas, query, dateFrom, dateTo)}
                 onApprove={approve}
                 onReject={reject}
                 onEdit={(row) => setEditing({ type: "vikas", row })}
@@ -525,7 +585,7 @@ export default function AdminPage() {
             )}
             {tab === "contacts" && (
               <SimpleList
-                rows={filterRows(data.contacts, query)}
+                rows={filterRows(data.contacts, query, dateFrom, dateTo)}
                 type="contact"
                 onEdit={(type, row) => setEditing({ type, row })}
                 onDelete={(type, row) => deleteRow(type, row.id, row.name)}
@@ -535,9 +595,21 @@ export default function AdminPage() {
                 }
               />
             )}
+            {tab === "demos" && (
+              <SimpleList
+                rows={filterRows(data.demos, query, dateFrom, dateTo)}
+                type="demo"
+                onEdit={(type, row) => setEditing({ type, row })}
+                onDelete={(type, row) => deleteRow(type, row.id, row.name)}
+                title={(row) => `${row.name} - ${row.status || "NEW"}`}
+                detail={(row) =>
+                  `${row.phone}${row.post ? ` | ${row.post}` : ""}${row.village ? ` | ${row.village}` : ""}${row.district ? ` | ${row.district}` : ""}`
+                }
+              />
+            )}
             {tab === "blogs" && (
               <BlogList
-                rows={filterRows(data.blogs, query)}
+                rows={filterRows(data.blogs, query, dateFrom, dateTo)}
                 onEdit={(row) => setEditing({ type: "blog", row })}
                 onDelete={(row) => deleteRow("blog", row.id, row.title)}
               />
@@ -561,10 +633,28 @@ export default function AdminPage() {
   );
 }
 
-function filterRows<T extends Record<string, unknown>>(rows: T[], query: string): T[] {
+function filterRows<T extends Record<string, unknown> & { createdAt?: string }>(
+  rows: T[],
+  query: string,
+  dateFrom = "",
+  dateTo = "",
+): T[] {
   const text = query.trim().toLowerCase();
-  if (!text) return rows;
-  return rows.filter((row) => Object.values(row).join(" ").toLowerCase().includes(text));
+  const fromTime = dateFrom ? new Date(dateFrom).getTime() : null;
+  const toTime = dateTo ? new Date(dateTo).getTime() : null;
+
+  return rows.filter((row) => {
+    const matchesText = !text || Object.values(row).join(" ").toLowerCase().includes(text);
+    if (!matchesText) return false;
+
+    if (!fromTime && !toTime) return true;
+
+    const rowTime = row.createdAt ? new Date(row.createdAt).getTime() : Number.NaN;
+    if (!Number.isFinite(rowTime)) return false;
+    if (fromTime && rowTime < fromTime) return false;
+    if (toTime && rowTime > toTime) return false;
+    return true;
+  });
 }
 
 function toCsv(rows: Record<string, unknown>[]) {
@@ -573,8 +663,10 @@ function toCsv(rows: Record<string, unknown>[]) {
     const text = value === null || value === undefined ? "" : String(value);
     return `"${text.replaceAll('"', '""')}"`;
   };
-  return [columns.join(","), ...rows.map((row) => columns.map((key) => escape(row[key])).join(","))]
-    .join("\n");
+  return [
+    columns.join(","),
+    ...rows.map((row) => columns.map((key) => escape(row[key])).join(",")),
+  ].join("\n");
 }
 
 function readFileAsDataUrl(file: File) {
@@ -627,10 +719,12 @@ function Stat({
     blue: "bg-blue-600",
   };
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
       <div className={`h-1.5 w-12 rounded-full ${tones[tone]}`} />
-      <p className="mt-4 text-sm font-bold text-slate-500">{label}</p>
-      <p className="mt-1 text-3xl font-black">{value}</p>
+      <p className="mt-3 text-xs leading-tight font-bold text-slate-500 sm:mt-4 sm:text-sm">
+        {label}
+      </p>
+      <p className="mt-1 text-2xl font-black sm:text-3xl">{value}</p>
     </div>
   );
 }
@@ -671,17 +765,20 @@ function VikasList({
       </div>
       <div className="divide-y divide-slate-200">
         {rows.map((row) => (
-          <section key={row.id} className="p-5">
+          <section key={row.id} className="p-4 sm:p-5">
             <div className="flex flex-col gap-4 xl:flex-row xl:justify-between">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-xl font-black">{row.name}</h3>
+                  <h3 className="break-words text-lg font-black sm:text-xl">{row.name}</h3>
                   <StatusBadge status={row.status} />
                 </div>
                 <p className="mt-2 text-xs font-black tracking-[0.16em] text-emerald-700 uppercase">
                   {formatVikasMitraId(row.id, row.createdAt)}
                 </p>
-                <p className="mt-1 text-sm font-bold text-slate-600">
+                <p className="mt-1 text-xs font-bold text-slate-500">
+                  Submitted: {formatAdminDateTime(row.createdAt)}
+                </p>
+                <p className="mt-1 break-all text-sm font-bold text-slate-600">
                   {row.phone} {row.email ? `| ${row.email}` : ""}
                 </p>
                 <p className="mt-2 text-sm text-slate-700">
@@ -699,7 +796,7 @@ function VikasList({
                   </p>
                 )}
               </div>
-              <div className="flex shrink-0 flex-wrap items-start gap-2">
+              <div className="grid shrink-0 grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-start">
                 <button onClick={() => onPreview(row)} className="action border bg-white">
                   <Eye className="h-4 w-4" /> Preview
                 </button>
@@ -712,7 +809,10 @@ function VikasList({
                 <button onClick={() => onEdit(row)} className="action border bg-white">
                   <Edit3 className="h-4 w-4" /> Edit
                 </button>
-                <button onClick={() => onDelete(row)} className="action border bg-white text-red-700">
+                <button
+                  onClick={() => onDelete(row)}
+                  className="action border bg-white text-red-700"
+                >
                   <Trash2 className="h-4 w-4" /> Delete
                 </button>
                 {row.status === "rejected" && (
@@ -756,26 +856,32 @@ function SimpleList<T extends { id: string; message?: string; createdAt: string 
   onDelete,
 }: {
   rows: T[];
-  type: "contact";
+  type: "contact" | "demo";
   title: (row: T) => string;
   detail: (row: T) => string;
-  onEdit: (type: "contact", row: Record<string, unknown>) => void;
-  onDelete: (type: "contact", row: T) => void;
+  onEdit: (type: "contact" | "demo", row: Record<string, unknown>) => void;
+  onDelete: (type: "contact" | "demo", row: T) => void;
 }) {
   return (
     <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
       <div className="divide-y divide-slate-200">
         {rows.map((row) => (
-          <section key={row.id} className="p-5">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <h2 className="text-lg font-black">{title(row)}</h2>
-                <p className="mt-1 text-sm font-bold text-slate-600">{detail(row)}</p>
-                {row.message && (
+          <section key={row.id} className="p-4 sm:p-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
+                <h2 className="break-words text-lg font-black">{title(row)}</h2>
+                <p className="mt-1 break-words text-sm font-bold text-slate-600">{detail(row)}</p>
+                <p className="mt-1 text-xs font-bold text-slate-500">
+                  Submitted: {formatAdminDateTime(row.createdAt)}
+                </p>
+                {"message" in row && typeof row.message === "string" && row.message && (
                   <p className="mt-2 whitespace-pre-wrap text-sm text-slate-600">{row.message}</p>
                 )}
+                {"notes" in row && typeof row.notes === "string" && row.notes && (
+                  <p className="mt-2 whitespace-pre-wrap text-sm text-slate-600">{row.notes}</p>
+                )}
               </div>
-              <div className="flex shrink-0 flex-wrap gap-2">
+              <div className="grid shrink-0 grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                 <button onClick={() => onEdit(type, row)} className="action border bg-white">
                   <Edit3 className="h-4 w-4" /> Edit
                 </button>
@@ -816,8 +922,8 @@ function BlogList({
       </div>
       <div className="divide-y divide-slate-200">
         {rows.map((row) => (
-          <section key={row.id} className="p-5">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <section key={row.id} className="p-4 sm:p-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-sm bg-emerald-50 px-2 py-1 text-xs font-black text-emerald-700">
@@ -827,20 +933,28 @@ function BlogList({
                     Publish: {row.publishDate || row.date}
                   </span>
                 </div>
-                <h3 className="mt-2 text-xl font-black text-slate-950">{row.title}</h3>
-                <p className="mt-1 text-sm font-bold text-slate-500">/{row.slug}</p>
+                <h3 className="mt-2 break-words text-lg font-black text-slate-950 sm:text-xl">
+                  {row.title}
+                </h3>
+                <p className="mt-1 break-all text-sm font-bold text-slate-500">/{row.slug}</p>
                 <p className="mt-2 max-w-4xl text-sm leading-relaxed text-slate-600">
                   {row.excerpt}
                 </p>
                 <p className="mt-2 text-xs font-bold text-slate-400">
                   SEO: {row.seoTitle || row.title}
                 </p>
+                <p className="mt-1 text-xs font-bold text-slate-400">
+                  Created: {formatAdminDateTime(row.createdAt)}
+                </p>
               </div>
-              <div className="flex shrink-0 flex-wrap gap-2">
+              <div className="grid shrink-0 grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                 <button onClick={() => onEdit(row)} className="action border bg-white">
                   <Edit3 className="h-4 w-4" /> Edit
                 </button>
-                <button onClick={() => onDelete(row)} className="action border bg-white text-red-700">
+                <button
+                  onClick={() => onDelete(row)}
+                  className="action border bg-white text-red-700"
+                >
                   <Trash2 className="h-4 w-4" /> Delete
                 </button>
               </div>
@@ -862,7 +976,7 @@ function EditModal({
   onClose,
   onSave,
 }: {
-  type: "vikas" | "contact" | "blog";
+  type: "vikas" | "contact" | "demo" | "blog";
   row: Record<string, unknown>;
   fieldClass: string;
   onClose: () => void;
@@ -889,18 +1003,42 @@ function EditModal({
         ]
       : type === "contact"
         ? ["name", "phone", "email", "post", "source", "city", "state", "message"]
-        : [
-            "title",
-            "slug",
-            "excerpt",
-            "image",
-            "imageAltText",
-            "content",
-            "seoTitle",
-            "metaDescription",
-            "publishDate",
-          ];
-  const longFields = ["message", "photo", "panCard", "aadhaarCard", "excerpt", "content", "metaDescription"];
+        : type === "demo"
+          ? [
+              "name",
+              "phone",
+              "village",
+              "district",
+              "post",
+              "source",
+              "pageUrl",
+              "utmSource",
+              "utmMedium",
+              "utmCampaign",
+              "status",
+              "notes",
+            ]
+          : [
+              "title",
+              "slug",
+              "excerpt",
+              "image",
+              "imageAltText",
+              "content",
+              "seoTitle",
+              "metaDescription",
+              "publishDate",
+            ];
+  const longFields = [
+    "message",
+    "notes",
+    "photo",
+    "panCard",
+    "aadhaarCard",
+    "excerpt",
+    "content",
+    "metaDescription",
+  ];
   const labels: Record<string, string> = {
     title: "Blog title",
     slug: "URL slug",
@@ -923,13 +1061,16 @@ function EditModal({
   }
 
   return (
-    <div className="fixed inset-0 z-[90] grid place-items-center bg-slate-950/70 px-4">
+    <div className="fixed inset-0 z-[90] grid place-items-center bg-slate-950/70 px-3 py-4 sm:px-4">
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          onSave(String(row["id"]), type === "blog" ? { ...form, date: form["publishDate"] ?? "" } : form);
+          onSave(
+            String(row["id"]),
+            type === "blog" ? { ...form, date: form["publishDate"] ?? "" } : form,
+          );
         }}
-        className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-5 shadow-2xl"
+        className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-4 shadow-2xl sm:p-5"
       >
         <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-4">
           <div>
@@ -1012,6 +1153,21 @@ function displayLeadCity(row: ContactLead) {
   return row.city || (row.post === "Website Popup Lead" ? row.state : "");
 }
 
+function formatAdminDateTime(value: string) {
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 function leadSourceLabel(row: ContactLead) {
   if (row.source) return row.source;
   if (row.post === "Website Popup Lead") return "Popup Form";
@@ -1027,8 +1183,8 @@ function PreviewModal({ row, onClose }: { row: Vikas; onClose: () => void }) {
   ];
 
   return (
-    <div className="fixed inset-0 z-[90] grid place-items-center bg-slate-950/70 px-4">
-      <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-lg bg-white p-5 shadow-2xl">
+    <div className="fixed inset-0 z-[90] grid place-items-center bg-slate-950/70 px-3 py-4 sm:px-4">
+      <div className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-lg bg-white p-4 shadow-2xl sm:p-5">
         <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-4">
           <div>
             <p className="text-xs font-black tracking-[0.18em] text-emerald-700 uppercase">

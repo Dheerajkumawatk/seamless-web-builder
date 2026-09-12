@@ -2,17 +2,13 @@ import {
   BarChart3,
   ClipboardCheck,
   Globe,
-  Handshake,
   LineChart,
   Megaphone,
-  MessageCircle,
   Monitor,
   PenTool,
   Search,
   Share2,
   Target,
-  Trophy,
-  UserRound,
   Video,
 } from "lucide-react";
 
@@ -23,7 +19,7 @@ export const site = {
   whatsapp: "+91 7891-131-132",
   whatsappUrl: "https://wa.me/917891131132",
   email: "bharatpahchan.helpline@gmail.com",
-  website: "www.bharatpahchan.com",
+  website: "bharatpahchan.com",
   socialLinks: {
     instagram: "https://www.instagram.com/bharatpahchan/",
     facebook: "https://www.facebook.com/profile.php?id=61593206296368",
@@ -35,29 +31,36 @@ export const site = {
 
 export const nav = [
   { label: "होम", to: "/" },
-  { label: "हमारे बारे में", to: "/about" },
   { label: "सेवाएं", to: "/services" },
-  { label: "अभियान वेबसाइट", to: "/campaign-website" },
-  { label: "पोर्टफोलियो", to: "/portfolio" },
+  { label: "डेमो", to: "/#demo-form" },
   { label: "पैकेज", to: "/packages" },
+  { label: "संपर्क", to: "/contact" },
+] as const;
+
+export const secondaryNav = [
+  { label: "हमारे बारे में", to: "/about" },
+  { label: "पोर्टफोलियो", to: "/portfolio" },
   { label: "ब्लॉग", to: "/blog" },
-  { label: "संपर्क करें", to: "/contact" },
+  { label: "Vikas Mitra", to: "/vikas-mitra" },
+  { label: "District Partner Program", to: "/contact" },
 ] as const;
 
 export const heroFeatures = [
   { icon: Monitor, label: "उम्मीदवार\nवेबसाइट" },
   { icon: Share2, label: "सोशल मीडिया\nमैनेजमेंट" },
-  { icon: MessageCircle, label: "व्हाट्सएप\nअभियान" },
-  { icon: Megaphone, label: "वीडियो\nप्रोडक्शन" },
+  { icon: Megaphone, label: "डिजिटल\nआउटरीच" },
+  { icon: Video, label: "वीडियो\nप्रोडक्शन" },
   { icon: PenTool, label: "ग्राफिक\nडिजाइन" },
   { icon: BarChart3, label: "एनालिटिक्स\nरिपोर्टिंग" },
 ];
 
-export const stats = [
-  { icon: Trophy, value: "500+", label: "अभियान क्रिएटिव्स" },
-  { icon: Globe, value: "50+", label: "वेबसाइट तैयार" },
-  { icon: UserRound, value: "20+", label: "राज्यों में सेवा" },
-  { icon: Handshake, value: "100+", label: "उम्मीदवारों का भरोसा" },
+export const trustCapabilities = [
+  { icon: Monitor, label: "उम्मीदवार वेबसाइट" },
+  { icon: Share2, label: "सोशल मीडिया" },
+  { icon: Video, label: "वीडियो" },
+  { icon: PenTool, label: "ग्राफिक्स" },
+  { icon: Megaphone, label: "डिजिटल आउटरीच" },
+  { icon: BarChart3, label: "अभियान रिपोर्टिंग" },
 ];
 
 export const audiences = [
@@ -81,7 +84,7 @@ export const audiences = [
   },
   {
     iconColor: "bg-purple-700",
-    title: "स्वतंत्र उम्मीदवार",
+    title: "अन्य स्थानीय चुनाव उम्मीदवार",
     desc: "व्यक्तिगत ब्रांडिंग और कैंपेन मैनेजमेंट",
     image: "rally",
   },
@@ -97,7 +100,7 @@ export const services = [
       "मोबाइल फ्रेंडली रिस्पॉन्सिव डिजाइन",
       "उम्मीदवार परिचय और विकास योजना सेक्शन",
       "गैलरी, वीडियो और न्यूज अपडेट",
-      "शिकायत और सुझाव पोर्टल",
+      "जन सुझाव एवं संपर्क",
     ],
   },
   {
@@ -113,15 +116,15 @@ export const services = [
     ],
   },
   {
-    slug: "whatsapp",
-    icon: MessageCircle,
-    title: "व्हाट्सएप अभियान",
-    short: "बूथ प्रबंधन, ब्रॉडकास्ट, वोटर नेटवर्क और मतदाता संपर्क",
+    slug: "digital-outreach",
+    icon: Megaphone,
+    title: "डिजिटल आउटरीच",
+    short: "क्षेत्र के अनुसार डिजिटल प्रचार, संदेश और मतदाता संपर्क सहायता",
     points: [
-      "बूथ-वार ग्रुप स्ट्रक्चर",
-      "ब्रॉडकास्ट मैसेज और क्रिएटिव",
-      "कार्यकर्ता नेटवर्क मैनेजमेंट",
-      "फीडबैक कलेक्शन",
+      "क्षेत्र के अनुसार डिजिटल प्रचार योजना",
+      "WhatsApp और सोशल शेयरिंग सामग्री",
+      "कार्यकर्ता नेटवर्क के लिए कंटेंट सपोर्ट",
+      "जन सुझाव एवं संपर्क फॉलोअप",
     ],
   },
   {
@@ -174,57 +177,57 @@ export const process = [
 
 export const websiteSections = [
   "उम्मीदवार परिचय",
-  "गांव का इतिहास और जानकारी",
-  "विकास योजना",
-  "गैलरी और वीडियो",
-  "इवेंट और न्यूज",
-  "शिकायत पोर्टल",
-  "सुझाव पोर्टल",
-  "संपर्क और जुड़ें",
+  "विजन/संकल्प",
+  "क्षेत्र के मुद्दे",
+  "कार्य/उपलब्धियाँ",
+  "Gallery",
+  "Videos",
+  "Social links",
+  "जन सुझाव एवं संपर्क",
 ];
 
 export const packages = [
   {
-    name: "स्टार्टर पैकेज",
-    desc: "शुरुआत करें मजबूत डिजिटल पहचान के साथ",
+    name: "Starter",
+    desc: "डिजिटल पहचान की मजबूत शुरुआत",
     price: "₹49,999",
     period: "/6 माह",
     featured: false,
-    ctaLabel: "चुनें",
+    ctaLabel: "इस पैकेज की जानकारी लें",
     theme: "green",
     features: [
       "उम्मीदवार वेबसाइट",
       "सोशल मीडिया सेटअप",
       "15 क्रिएटिव्स/माह",
-      "व्हाट्सएप ब्रॉडकास्ट (लिमिटेड)",
+      "डिजिटल आउटरीच सपोर्ट",
       "बेसिक सपोर्ट",
     ],
   },
   {
-    name: "प्रोफेशनल पैकेज",
-    desc: "संपूर्ण डिजिटल चुनाव मैनेजमेंट",
+    name: "Professional",
+    desc: "पूरा Managed Digital Campaign",
     price: "₹99,999",
     period: "/6 माह",
     featured: true,
     badge: "लोकप्रिय",
-    ctaLabel: "चुनें",
+    ctaLabel: "इस पैकेज की जानकारी लें",
     theme: "orange",
     features: [
       "वेबसाइट (प्रीमियम)",
       "सोशल मीडिया मैनेजमेंट",
       "30 क्रिएटिव्स/माह",
-      "व्हाट्सएप अभियान (अनलिमिटेड)",
+      "डिजिटल आउटरीच मैनेजमेंट",
       "वीडियो (2/माह)",
       "मंथली रिपोर्ट",
     ],
   },
   {
-    name: "प्रीमियम पैकेज",
-    desc: "एंड-टू-एंड प्रोफेशनल चुनाव अभियान",
+    name: "Premium",
+    desc: "Advanced Campaign Support",
     price: "₹149,999",
     period: "/6 माह",
     featured: false,
-    ctaLabel: "चुनें",
+    ctaLabel: "इस पैकेज की जानकारी लें",
     theme: "navy",
     features: [
       "सब कुछ प्रोफेशनल पैकेज में शामिल",
@@ -237,24 +240,7 @@ export const packages = [
   },
 ];
 
-export const testimonials = [
-  {
-    quote:
-      "भारत पहचान टीम ने हमारी पूरी डिजिटल पहचान को नई ऊंचाई दी। वेबसाइट, सोशल मीडिया और व्हाट्सएप अभियान बहुत प्रभावी रहा।",
-    name: "मोहनलाल जी",
-    role: "सरपंच, राजस्थान",
-  },
-  {
-    quote: "बहुत ही प्रोफेशनल टीम है, समय पर काम पूरा करते हैं और हर समय सपोर्ट में रहते हैं।",
-    name: "सीता देवी",
-    role: "पंचायत समिति सदस्य, मध्य प्रदेश",
-  },
-  {
-    quote: "हमारे जिला परिषद चुनाव में डिजिटल अभियान ने बहुत बड़ा योगदान दिया।",
-    name: "अजय सिंह",
-    role: "जिला परिषद सदस्य, उत्तर प्रदेश",
-  },
-];
+export const testimonials: Array<{ quote: string; name: string; role: string }> = [];
 
 export const portfolio = [
   { title: "सरपंच अभियान - राजस्थान", type: "वेबसाइट + सोशल मीडिया", image: "village" },
@@ -282,7 +268,7 @@ export const blogPosts = [
   {
     slug: "whatsapp-booth-management",
     title: "व्हाट्सएप से बूथ मैनेजमेंट कैसे करें",
-    excerpt: "बूथ-वार ग्रुप, कार्यकर्ता नेटवर्क और ब्रॉडकास्ट - एक व्यवहारिक गाइड।",
+    excerpt: "कार्यकर्ता नेटवर्क, डिजिटल सामग्री और क्षेत्रीय आउटरीच - एक व्यवहारिक गाइड।",
     date: "02 अगस्त 2026",
     category: "व्हाट्सएप",
     image: "rally",
@@ -290,7 +276,7 @@ export const blogPosts = [
   {
     slug: "candidate-website-must-have",
     title: "उम्मीदवार वेबसाइट में क्या-क्या होना चाहिए",
-    excerpt: "परिचय से लेकर शिकायत पोर्टल तक - एक भरोसेमंद वेबसाइट के जरूरी सेक्शन।",
+    excerpt: "परिचय से लेकर जन सुझाव एवं संपर्क तक - एक भरोसेमंद वेबसाइट के जरूरी सेक्शन।",
     date: "24 जुलाई 2026",
     category: "वेबसाइट",
     image: "panchayat",
@@ -307,19 +293,19 @@ export const blogPosts = [
 
 export const faqs = [
   {
-    q: "क्या आप छोटे गांव के उम्मीदवारों के लिए भी काम करते हैं?",
-    a: "बिल्कुल। हमारा मुख्य फोकस ग्राम पंचायत, पंचायत समिति और जिला परिषद उम्मीदवार हैं।",
+    q: "क्या BharatPahchan चुनाव जिताने की गारंटी देता है?",
+    a: "नहीं। BharatPahchan डिजिटल सेवाएं देता है, चुनाव परिणाम या जीत की गारंटी नहीं देता।",
   },
   {
     q: "वेबसाइट कितने दिन में तैयार हो जाती है?",
-    a: "सामान्य रूप से 3 से 7 कार्य दिवस में आपकी अभियान वेबसाइट लाइव कर दी जाती है।",
+    a: "समय आपकी सामग्री, फोटो और जरूरतों पर निर्भर करता है। सही समय टीम से पुष्टि करके बताया जाता है।",
   },
   {
-    q: "क्या कंटेंट हिंदी और स्थानीय भाषा में मिलेगा?",
-    a: "हां, हम हिंदी सहित मराठी, गुजराती, भोजपुरी और अन्य क्षेत्रीय भाषाओं में कंटेंट बनाते हैं।",
+    q: "Package कितने समय के लिए है?",
+    a: "मौजूदा पैकेज 6 माह के आधार पर दिखाए गए हैं। कस्टम अवधि के लिए टीम से बात करें।",
   },
   {
-    q: "पैकेज की अवधि कितनी होती है?",
-    a: "पैकेज मासिक आधार पर होते हैं, और चुनाव अवधि के अनुसार कस्टमाइज भी किए जा सकते हैं।",
+    q: "क्या BharatPahchan किसी राजनीतिक दल से जुड़ा है?",
+    a: "नहीं। BharatPahchan निजी डिजिटल सेवा प्लेटफॉर्म है और किसी राजनीतिक दल की आधिकारिक वेबसाइट नहीं है।",
   },
 ];

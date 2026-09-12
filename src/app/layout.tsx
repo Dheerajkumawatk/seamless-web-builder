@@ -1,21 +1,33 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { LeadPopup } from "@/components/site/LeadPopup";
 import "../styles.css";
 
 export const metadata: Metadata = {
-  title: "भारत पहचान — डिजिटल चुनाव अभियान एजेंसी",
+  metadataBase: new URL("https://bharatpahchan.com"),
+  title: "Panchayat Election Digital Campaign Services | BharatPahchan",
   description:
-    "सरपंच, पंचायत समिति और जिला परिषद उम्मीदवारों के लिए डिजिटल मार्केटिंग और ब्रांडिंग समाधान।",
+    "BharatPahchan पंचायत एवं स्थानीय चुनाव उम्मीदवारों के लिए वेबसाइट, सोशल मीडिया, वीडियो, ग्राफिक्स और डिजिटल आउटरीच सेवाएँ प्रदान करता है।",
   authors: [{ name: "भारत पहचान" }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "भारत पहचान — डिजिटल चुनाव अभियान एजेंसी",
-    description: "वेबसाइट, सोशल मीडिया, व्हाट्सएप अभियान और वीडियो प्रोडक्शन।",
+    title: "Panchayat Election Digital Campaign Services | BharatPahchan",
+    description: "उम्मीदवार वेबसाइट, सोशल मीडिया, वीडियो, ग्राफिक्स और डिजिटल आउटरीच सेवाएँ।",
+    url: "https://bharatpahchan.com",
+    siteName: "BharatPahchan",
+    images: [{ url: "/favicon.ico", width: 512, height: 512, alt: "BharatPahchan" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
+    title: "Panchayat Election Digital Campaign Services | BharatPahchan",
+    description:
+      "पंचायत एवं स्थानीय चुनाव उम्मीदवारों के लिए वेबसाइट, सोशल मीडिया और डिजिटल आउटरीच सेवाएँ।",
+    images: ["/favicon.ico"],
   },
 };
 
@@ -31,6 +43,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-YZGGSCVZ2D"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-YZGGSCVZ2D');
+          `}
+        </Script>
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">{children}</main>

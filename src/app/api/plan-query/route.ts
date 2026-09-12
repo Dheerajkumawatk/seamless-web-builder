@@ -10,6 +10,10 @@ const planQuerySchema = z.object({
   city: z.string().min(2).max(80),
   state: z.string().min(2).max(80),
   pincode: z.string().min(4).max(12),
+  pageUrl: z.string().max(500).optional().or(z.literal("")),
+  utmSource: z.string().max(80).optional().or(z.literal("")),
+  utmMedium: z.string().max(80).optional().or(z.literal("")),
+  utmCampaign: z.string().max(120).optional().or(z.literal("")),
 });
 
 export async function POST(request: Request) {
@@ -29,6 +33,12 @@ export async function POST(request: Request) {
         `City: ${data.city}`,
         `State: ${data.state}`,
         `Pincode: ${data.pincode}`,
+        "Lead Status: NEW",
+        `Source: Package Form`,
+        `Page URL: ${data.pageUrl || request.headers.get("referer") || "Not captured"}`,
+        `UTM Source: ${data.utmSource || "Not captured"}`,
+        `UTM Medium: ${data.utmMedium || "Not captured"}`,
+        `UTM Campaign: ${data.utmCampaign || "Not captured"}`,
       ].join("\n"),
     });
     return NextResponse.json({ ok: true, id: query.id });

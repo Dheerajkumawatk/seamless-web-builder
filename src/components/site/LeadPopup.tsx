@@ -15,6 +15,7 @@ export function LeadPopup() {
 
   useEffect(() => {
     if (pathname?.startsWith("/admin")) return;
+    if (pathname === "/") return;
     if (window.sessionStorage.getItem(submittedKey) === "yes") return;
 
     const timer = window.setTimeout(() => setOpen(true), 10_000);
@@ -48,6 +49,10 @@ export function LeadPopup() {
           state: city,
           post: "Website Popup Lead",
           source: "Popup Form",
+          pageUrl: window.location.href,
+          utmSource: new URLSearchParams(window.location.search).get("utm_source") || "",
+          utmMedium: new URLSearchParams(window.location.search).get("utm_medium") || "",
+          utmCampaign: new URLSearchParams(window.location.search).get("utm_campaign") || "",
           message: city ? `City: ${city}` : "City: Not provided",
         }),
       });
