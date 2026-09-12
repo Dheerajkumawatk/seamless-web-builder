@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { images } from "@/data/images";
 import { audiences, packages, site, trustCapabilities, websiteSections } from "@/data/site";
+import heroBackground from "@/assets/bharatpahchan-hero-background.png";
 import mobileSliderBackground from "@/assets/bharatpahchan-mobile-slider.png";
 import channel009Logo from "@/assets/channel009-logo.png";
 import { MobileContactBar } from "@/components/site/MobileContactBar";
@@ -87,9 +88,9 @@ export default function Index() {
     <>
       <section className="relative min-h-[382px] overflow-hidden border-b border-emerald-100 bg-[#f8dfbf] sm:min-h-[620px]">
         <img
-          src={mobileSliderBackground.src}
-          width={1152}
-          height={1408}
+          src={heroBackground.src}
+          width={2560}
+          height={1024}
           alt="BharatPahchan digital campaign background"
           className="absolute inset-0 hidden h-full w-full object-cover object-center sm:block"
           fetchPriority="high"
