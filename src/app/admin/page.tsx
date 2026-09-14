@@ -354,7 +354,7 @@ export default function AdminPage() {
 
     if (email?.skipped) {
       setMessage(
-        "Approve ho gaya, par auto-email band hai (RESEND_API_KEY set nahi). 'Email Card' se manually bhejein.",
+        "Approve ho gaya, par auto-email band hai (SMTP settings set nahi). 'Email Card' se manually bhejein.",
       );
     } else {
       setMessage(

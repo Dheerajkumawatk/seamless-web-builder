@@ -56,7 +56,7 @@ export function Header() {
     return () => window.clearTimeout(timer);
   }, [vikasOpen, vikasStatus]);
 
-  if (pathname.startsWith("/admin")) {
+  if (pathname.startsWith("/admin") || pathname.startsWith("/vikas-mitra/id-card")) {
     return null;
   }
 

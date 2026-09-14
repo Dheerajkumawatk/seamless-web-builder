@@ -17,38 +17,106 @@ type CardProfile = {
 
 export function VikasMitraIdCardPrint({ profile }: { profile: CardProfile }) {
   return (
-    <main className="min-h-screen bg-slate-100 px-4 py-6 text-[#08245a] print:bg-white print:p-0">
+    <main className="id-card-document flex min-h-screen items-start justify-center bg-slate-100 px-4 py-6 text-[#08245a] print:block print:bg-white print:p-0">
       <style
         dangerouslySetInnerHTML={{
           __html: `
-            @page { size: A4 landscape; margin: 10mm; }
+            body > div > header,
+            body > div > footer,
+            body > div > main ~ * {
+              display: none !important;
+            }
+            body > div {
+              display: block !important;
+              min-height: 100vh !important;
+            }
+            body > div > main {
+              min-height: 100vh !important;
+            }
+            .id-card-panel > .relative.z-10 {
+              height: 113.5%;
+              width: 113.5%;
+              margin-left: -6.75%;
+              transform: scale(0.88);
+              transform-origin: top center;
+            }
+            @page { size: A4 landscape; margin: 0; }
             @media print {
               .no-print { display: none !important; }
-              .id-card-page { box-shadow: none !important; background: white !important; }
+              html,
+              body,
+              body > div,
+              body > div > main {
+                width: 296mm;
+                max-width: 296mm !important;
+                height: 209mm;
+                min-height: 209mm !important;
+                max-height: 209mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden;
+              }
               body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+              .id-card-document {
+                position: fixed !important;
+                inset: 0 !important;
+                width: 296mm !important;
+                min-width: 296mm !important;
+                max-width: 296mm !important;
+                min-height: 209mm !important;
+                height: 209mm !important;
+                max-height: 209mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+                overflow: hidden !important;
+              }
+              .id-card-page {
+                display: flex !important;
+                flex-direction: row !important;
+                position: fixed !important;
+                top: 6mm !important;
+                left: 13mm !important;
+                width: 270mm !important;
+                height: 188mm !important;
+                gap: 8mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                background: white !important;
+                overflow: hidden !important;
+                page-break-inside: avoid;
+                page-break-before: avoid;
+                page-break-after: avoid;
+                break-inside: avoid;
+              }
+              .id-card-panel {
+                width: 131mm !important;
+                height: 183mm !important;
+                flex: 0 0 131mm !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+                page-break-before: avoid;
+                page-break-after: avoid;
+                break-inside: avoid;
+              }
             }
           `,
         }}
       />
 
-      <div className="no-print mx-auto mb-5 flex max-w-7xl flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="text-xs font-black tracking-[0.18em] text-emerald-700 uppercase">
-            Approved Vikas Mitra ID Card
-          </p>
-          <h1 className="text-2xl font-black text-slate-950">{profile.name}</h1>
-        </div>
+      <div className="no-print fixed top-4 right-4 z-50">
         <button
           type="button"
           onClick={() => window.print()}
           className="inline-flex items-center gap-2 rounded-lg bg-[#123a72] px-5 py-3 text-sm font-black text-white shadow-sm"
         >
           <Printer className="h-4 w-4" />
-          Print / Save PDF
+          Save PDF - Page 1
         </button>
       </div>
 
-      <section className="id-card-page mx-auto flex max-w-7xl flex-col gap-6 rounded-xl bg-white p-4 shadow-xl print:max-w-none print:flex-row print:gap-5 print:rounded-none print:p-0 lg:flex-row">
+      <section className="id-card-page flex max-w-7xl flex-col gap-6 rounded-xl bg-white p-4 shadow-xl print:max-w-none print:flex-row print:gap-5 print:rounded-none print:p-0 lg:flex-row">
         <IdCardFront profile={profile} />
         <IdCardBack profile={profile} />
       </section>
@@ -58,7 +126,7 @@ export function VikasMitraIdCardPrint({ profile }: { profile: CardProfile }) {
 
 function IdCardFront({ profile }: { profile: CardProfile }) {
   return (
-    <article className="relative aspect-[63/88] w-full overflow-hidden rounded-[18px] border border-slate-200 bg-white shadow-lg print:w-[88mm] print:rounded-[10px]">
+    <article className="id-card-panel relative aspect-[63/88] w-full overflow-hidden rounded-[18px] border border-slate-200 bg-white shadow-lg print:rounded-[10px]">
       <CornerBands />
       <div className="relative z-10 flex h-full flex-col px-7 pt-7 pb-6 text-center">
         <img
@@ -116,7 +184,7 @@ function IdCardFront({ profile }: { profile: CardProfile }) {
 
 function IdCardBack({ profile }: { profile: CardProfile }) {
   return (
-    <article className="relative aspect-[63/88] w-full overflow-hidden rounded-[18px] border border-slate-200 bg-white shadow-lg print:w-[88mm] print:rounded-[10px]">
+    <article className="id-card-panel relative aspect-[63/88] w-full overflow-hidden rounded-[18px] border border-slate-200 bg-white shadow-lg print:rounded-[10px]">
       <CornerBands />
       <div className="relative z-10 flex h-full flex-col px-8 pt-8 pb-7 text-center">
         <img
@@ -199,9 +267,7 @@ function BottomRibbon() {
   return (
     <div className="absolute inset-x-0 bottom-0 z-20 bg-[#123a72] px-5 py-3 text-center text-xl font-black text-white">
       www.bharatpahchan.com
-      <span className="absolute right-5 bottom-3 text-xs tracking-[0.18em] text-white/70">
-        SAMPLE
-      </span>
+     
     </div>
   );
 }

@@ -46,7 +46,7 @@ export function Footer() {
     { icon: MessageCircle, href: site.whatsappUrl, label: "WhatsApp" },
   ];
 
-  if (pathname.startsWith("/admin")) {
+  if (pathname.startsWith("/admin") || pathname.startsWith("/vikas-mitra/id-card")) {
     return null;
   }
 

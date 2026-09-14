@@ -1,7 +1,19 @@
 import { formatVikasMitraId } from "@/lib/profile-id";
+import nodemailer from "nodemailer";
 
 const resendApiKey = process.env["RESEND_API_KEY"];
 const emailFrom = process.env["EMAIL_FROM"] ?? "Bharat Pehchan <bharatpahchan.helpline@gmail.com>";
+const smtpHost = process.env["SMTP_HOST"];
+const smtpPort = Number(process.env["SMTP_PORT"] ?? "587");
+const smtpUser = process.env["SMTP_USER"];
+const smtpPass = process.env["SMTP_PASS"];
+const smtpSecureValue = process.env["SMTP_SECURE"]?.toLowerCase();
+const smtpSecure =
+  smtpSecureValue === "true" || smtpSecureValue === "1" || smtpSecureValue === "yes"
+    ? true
+    : smtpSecureValue === "false" || smtpSecureValue === "0" || smtpSecureValue === "no"
+      ? false
+      : smtpPort === 465;
 
 export type SendEmailInput = {
   to: string;
@@ -38,6 +50,33 @@ export async function sendEmail({
 }: SendEmailInput): Promise<SendEmailResult> {
   if (!to) {
     return { ok: false, skipped: true, error: "No recipient email" };
+  }
+
+  if (smtpHost && smtpUser && smtpPass) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: Number.isFinite(smtpPort) ? smtpPort : 587,
+        secure: smtpSecure,
+        auth: {
+          user: smtpUser,
+          pass: smtpPass,
+        },
+      });
+
+      await transporter.sendMail({
+        from: emailFrom,
+        to,
+        subject,
+        text,
+        ...(html ? { html } : {}),
+      });
+
+      return { ok: true };
+    } catch (error) {
+      console.error("[email] SMTP send error", error);
+      return { ok: false, error: error instanceof Error ? error.message : "SMTP send failed" };
+    }
   }
 
   if (!resendApiKey) {
@@ -80,10 +119,11 @@ function escapeHtml(value: string) {
 
 export function buildVikasMitraSubmitEmail(row: VikasMitraMailRow): SendEmailInput {
   const uniqueId = formatVikasMitraId(row.id, row.createdAt);
-  const subject = `Vikas Mitra form submit ho gaya - ${uniqueId}`;
+  const subject = `Welcome to Bharat Pehchan - Vikas Mitra application ${uniqueId}`;
   const text = [
     `Namaste ${row.name},`,
     "",
+    "Welcome to Bharat Pehchan.",
     "Aapka Vikas Mitra join form submit ho gaya hai.",
     "Admin review ke baad approval ya rejection ka update isi email par bheja jayega.",
     "",
@@ -97,6 +137,7 @@ export function buildVikasMitraSubmitEmail(row: VikasMitraMailRow): SendEmailInp
 
   const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#262b39;line-height:1.6;max-width:560px">
     <p>Namaste <strong>${escapeHtml(row.name)}</strong>,</p>
+    <p><strong>Welcome to Bharat Pehchan.</strong></p>
     <p>Aapka <strong>Vikas Mitra join form</strong> submit ho gaya hai. Admin review ke baad approval ya rejection ka update isi email par bheja jayega.</p>
     <div style="margin:18px 0;padding:14px 18px;background:#eaf1fb;border:1px solid #bcd2ec;border-radius:8px">
       <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#1b4c8a;font-weight:bold">Application ID</div>
