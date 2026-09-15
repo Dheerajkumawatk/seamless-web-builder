@@ -20,6 +20,12 @@ if (!existsSync(standalone)) {
 await copyIfExists(path.join(dist, "static"), path.join(standalone, "dist", "static"));
 await copyIfExists(path.join(root, "public"), path.join(standalone, "public"));
 
+await copyIfExists(path.join(root, "src/assets/fonts"), path.join(standalone, "src/assets/fonts"));
+await copyIfExists(
+  path.join(root, "src/assets/vikas-mitra-id-card.png"),
+  path.join(standalone, "src/assets/vikas-mitra-id-card.png"),
+);
+
 await writeFile(
   path.join(dist, "package.json"),
   `${JSON.stringify(

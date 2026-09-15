@@ -24,6 +24,8 @@ function createSequelize() {
     host,
     port: Number(process.env["DB_PORT"] ?? 3306),
     dialect: "mysql",
+    dialectOptions: { charset: "utf8mb4" },
+    define: { charset: "utf8mb4", collate: "utf8mb4_unicode_ci" },
     logging: false,
     pool: { max: 10, min: 0, idle: 10_000 },
   });

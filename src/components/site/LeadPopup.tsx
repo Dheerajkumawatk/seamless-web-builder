@@ -15,8 +15,11 @@ export function LeadPopup() {
 
   useEffect(() => {
     if (pathname?.startsWith("/admin")) return;
-    if (pathname === "/") return;
-    if (window.sessionStorage.getItem(submittedKey) === "yes") return;
+    try {
+      if (window.sessionStorage.getItem(submittedKey) === "yes") return;
+    } catch {
+      // The enquiry form should still open when browser storage is unavailable.
+    }
 
     const timer = window.setTimeout(() => setOpen(true), 10_000);
     return () => window.clearTimeout(timer);
@@ -62,7 +65,11 @@ export function LeadPopup() {
         throw new Error(errorData?.error ?? "Lead submit nahi ho payi.");
       }
 
-      window.sessionStorage.setItem(submittedKey, "yes");
+      try {
+        window.sessionStorage.setItem(submittedKey, "yes");
+      } catch {
+        // A saved lead is successful even if the browser cannot remember it.
+      }
       setStatus("done");
       window.setTimeout(() => {
         setOpen(false);
@@ -75,11 +82,13 @@ export function LeadPopup() {
     }
   }
 
+  if (pathname?.startsWith("/admin")) return null;
+
   if (!open) {
     if (!minimized) return null;
 
     return (
-      <div className="fixed inset-x-0 bottom-0 z-[100] flex justify-center px-3 pb-2">
+      <div className="fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-[100] md:bottom-0 flex justify-center px-3 pb-2">
         <div className="flex items-center gap-1.5 rounded-full border border-emerald-700 bg-emerald-600 py-1.5 pl-3 pr-1.5 shadow-lg">
           <button
             type="button"
@@ -96,7 +105,7 @@ export function LeadPopup() {
             type="button"
             onClick={() => setMinimized(false)}
             aria-label="Enquiry bar band karein"
-            className="shrink-0 rounded-full p-0.5 text-white/80 transition hover:bg-white/10 hover:text-white"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-white/80 transition hover:bg-white/10 hover:text-white"
           >
             <X className="h-3.5 w-3.5" />
           </button>
@@ -112,13 +121,13 @@ export function LeadPopup() {
     <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/82 px-4 py-6 backdrop-blur-sm">
       <form
         onSubmit={onSubmit}
-        className="relative w-full max-w-md rounded-lg bg-white p-5 text-slate-950 shadow-2xl sm:p-6"
+        className="relative max-h-[calc(100dvh-3rem)] w-full max-w-md overflow-y-auto overscroll-contain rounded-lg bg-white p-5 text-slate-950 shadow-2xl sm:p-6"
       >
         <button
           type="button"
           onClick={onClose}
           aria-label="Popup band karein"
-          className="absolute right-3 top-3 rounded-md p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+          className="absolute right-3 top-3 grid h-11 w-11 place-items-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
         >
           <X className="h-5 w-5" />
         </button>

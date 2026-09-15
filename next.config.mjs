@@ -3,7 +3,10 @@ const nextConfig = {
   distDir: "dist",
   output: "standalone",
   agentRules: false,
-  serverExternalPackages: ["sequelize", "mysql2"],
+  outputFileTracingIncludes: {
+    "/api/admin/data": ["./src/assets/fonts/**/*", "./src/assets/vikas-mitra-id-card.png"],
+  },
+  serverExternalPackages: ["sequelize", "mysql2", "sharp"],
 };
 
 export default nextConfig;

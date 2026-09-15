@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { z, ZodError } from "zod";
 import { createDemoLead } from "@/lib/demo-request.server";
+import { buildDemoReadyEmail, sendEmail } from "@/lib/email.server";
 
 const demoRequestSchema = z.object({
   name: z.string().min(2).max(80),
   phone: z.string().min(8).max(20),
+  email: z.string().email().max(120),
   village: z.string().max(120).optional().or(z.literal("")),
   district: z.string().max(80).optional().or(z.literal("")),
   post: z.string().max(80).optional().or(z.literal("")),
@@ -34,7 +36,29 @@ export async function POST(request: Request) {
       status: "NEW",
     });
 
-    return NextResponse.json({ ok: true, id: lead.id });
+    const origin = new URL(request.url).origin;
+    const configuredOrigin = process.env["NEXT_PUBLIC_SITE_URL"] || process.env["SITE_URL"];
+    const siteOrigin = configuredOrigin
+      ? (configuredOrigin.startsWith("http")
+          ? configuredOrigin
+          : `https://${configuredOrigin}`
+        ).replace(/\/$/, "")
+      : origin;
+    // The browser must open the same server that saved the record. This matters
+    // in local development, where the production database does not contain it.
+    const demoUrl = `${origin}/demo/${lead.id}`;
+    const emailedDemoUrl = `${siteOrigin}/demo/${lead.id}`;
+    const email = await sendEmail(
+      buildDemoReadyEmail({
+        email: data.email,
+        name: lead.name,
+        village: lead.village || "आपका क्षेत्र",
+        district: lead.district || "",
+        demoUrl: emailedDemoUrl,
+      }),
+    );
+
+    return NextResponse.json({ ok: true, id: lead.id, demoUrl, emailSent: email.ok });
   } catch (error) {
     const message =
       error instanceof ZodError

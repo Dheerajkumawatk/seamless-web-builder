@@ -3,11 +3,12 @@ import { z } from "zod";
 import { createVikasMitraProfile, listVikasMitraProfiles } from "@/lib/vikas-mitra.server";
 import { formatVikasMitraId } from "@/lib/profile-id";
 import { uploadImageToCloudinary } from "@/lib/cloudinary.server";
+import { buildVikasMitraRegistrationEmail, sendEmail } from "@/lib/email.server";
 
 const profileSchema = z.object({
   name: z.string().min(2).max(80),
   phone: z.string().min(8).max(20),
-  email: z.string().email().max(120).optional().or(z.literal("")),
+  email: z.string().email().max(120),
   district: z.string().min(2).max(80),
   tehsil: z.string().min(2).max(80),
   village: z.string().min(2).max(80),
@@ -67,6 +68,7 @@ export async function POST(request: Request) {
       aadhaarCard: aadhaarCard || undefined,
     });
 
+    await sendEmail(buildVikasMitraRegistrationEmail(profile));
     return NextResponse.json({ ok: true, id: formatVikasMitraId(profile.id, profile.createdAt) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Vikas Mitra form submit failed";

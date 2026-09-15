@@ -124,13 +124,13 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 shadow-[0_2px_12px_rgba(18,58,114,.18)]">
-        <div className="hidden border-b border-white/10 bg-[#123a72] text-white md:block">
+        <div className="hidden border-b border-white/10 bg-[#123a72] text-white lg:block">
           <div className="mx-auto flex h-[42px] max-w-[1720px] items-center justify-between gap-4 px-8 text-[14px] font-bold xl:px-14">
             <p className="flex min-w-0 items-center gap-2 truncate">
               <MapPin className="h-4 w-4 fill-white/15" />
               {site.topbar}
             </p>
-            <div className="flex shrink-0 items-center gap-12">
+            <div className="flex shrink-0 items-center gap-5 xl:gap-12">
               <a href={`tel:${site.phone}`} className="flex items-center gap-1.5 hover:text-gold">
                 <Phone className="h-4 w-4 fill-white/15" /> {site.phone}
               </a>
@@ -159,7 +159,7 @@ export function Header() {
         </div>
 
         <div className="border-b border-[#dde5f0] bg-white/98 backdrop-blur">
-          <div className="mx-auto grid h-[104px] max-w-[1720px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 md:px-8 lg:flex lg:justify-between xl:px-14">
+          <div className="mx-auto grid h-20 sm:h-[104px] max-w-[1720px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 md:px-8 xl:flex xl:justify-between xl:px-14">
             <Link
               href="/"
               className="flex min-w-0 items-center gap-2"
@@ -168,7 +168,7 @@ export function Header() {
               <Logo />
             </Link>
 
-            <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
+            <nav className="hidden items-center gap-4 xl:flex 2xl:gap-8">
               {nav.map((item) => (
                 <Link
                   key={item.label}
@@ -180,6 +180,13 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
+              <button
+                type="button"
+                onClick={openVikasForm}
+                className="min-h-11 whitespace-nowrap rounded-lg border border-[#123a72] px-4 py-3 text-[15px] font-extrabold text-[#123a72] transition-colors hover:bg-[#123a72] hover:text-white"
+              >
+                Vikas Mitra Join
+              </button>
               <Link
                 href="/#demo-form"
                 className="ml-1 whitespace-nowrap rounded-lg bg-[#159a56] px-6 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(21,154,86,.22)] transition-transform hover:scale-[1.03]"
@@ -190,15 +197,20 @@ export function Header() {
 
             <button
               aria-label="मेन्यू"
+              aria-expanded={open}
+              aria-controls="mobile-navigation"
               onClick={() => setOpen((v) => !v)}
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-md border border-border text-maroon lg:hidden"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-md border border-border text-maroon xl:hidden"
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
 
           {open && (
-            <nav className="border-t border-border bg-white px-4 py-3 lg:hidden">
+            <nav
+              id="mobile-navigation"
+              className="max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain border-t border-border bg-white px-4 py-3 sm:max-h-[calc(100dvh-104px)] lg:max-h-[calc(100dvh-146px)] xl:hidden"
+            >
               <div className="flex flex-col">
                 {nav.map((item) => (
                   <Link
@@ -243,7 +255,7 @@ export function Header() {
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
-        className={`fixed right-5 bottom-5 z-50 items-center gap-2 rounded-full bg-[#25d366] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(37,211,102,.35)] transition-transform hover:scale-105 ${
+        className={`fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-50 items-center gap-2 rounded-full bg-[#25d366] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(37,211,102,.35)] transition-transform hover:scale-105 ${
           pathname === "/" ? "hidden md:inline-flex" : "inline-flex"
         }`}
       >
@@ -253,7 +265,7 @@ export function Header() {
 
       {vikasOpen && (
         <div className="fixed inset-0 z-[80] grid place-items-center bg-[#0a1526]/70 px-4 py-6 backdrop-blur-sm">
-          <div className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-[#f7faff] shadow-[0_24px_70px_rgba(29,9,8,.42)]">
+          <div className="max-h-[calc(100dvh-3rem)] w-full max-w-2xl overflow-y-auto rounded-lg bg-[#f7faff] shadow-[0_24px_70px_rgba(29,9,8,.42)]">
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-emerald-200 bg-[#f7faff] px-5 py-4">
               <div>
                 <p className="text-xs font-extrabold tracking-[0.16em] text-saffron uppercase">
@@ -267,7 +279,7 @@ export function Header() {
                 type="button"
                 onClick={() => setVikasOpen(false)}
                 aria-label="Close Vikas Mitra form"
-                className="grid h-10 w-10 place-items-center rounded-full border border-emerald-200 text-maroon hover:bg-emerald-50"
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-emerald-200 text-maroon hover:bg-emerald-50"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -337,10 +349,11 @@ export function Header() {
                     className="mb-1.5 block text-xs font-extrabold text-[#33384a]"
                     htmlFor="vikas-email"
                   >
-                    ईमेल
+                    ईमेल *
                   </label>
                   <input
                     id="vikas-email"
+                    required
                     name="email"
                     type="email"
                     className={field}

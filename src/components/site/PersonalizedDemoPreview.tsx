@@ -6,12 +6,15 @@ import { ArrowRight, CheckCircle2, Loader2, UserRound } from "lucide-react";
 export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: string }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [location, setLocation] = useState("");
   const [district, setDistrict] = useState("");
   const [post, setPost] = useState("");
   const [preview, setPreview] = useState({ name: "आपका नाम", location: "आपका गांव / शहर" });
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [error, setError] = useState("");
+  const [demoUrl, setDemoUrl] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
 
   const contactHref = useMemo(() => {
     const details =
@@ -38,6 +41,7 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
         body: JSON.stringify({
           name: nextPreview.name,
           phone: phone.trim(),
+          email: email.trim(),
           post: post.trim() || undefined,
           source: "BharatPahchan Website",
           village: location.trim(),
@@ -61,6 +65,9 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
         throw new Error(errorData?.error ?? "Demo request submit nahi ho payi.");
       }
 
+      const result = (await response.json()) as { demoUrl: string; emailSent: boolean };
+      setDemoUrl(result.demoUrl);
+      setEmailSent(result.emailSent);
       setStatus("done");
     } catch (err) {
       setStatus("error");
@@ -98,6 +105,23 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
                 onChange={(event) => setName(event.target.value)}
                 className="w-full rounded-lg border border-[#cfe2d5] bg-white px-4 py-3 text-base font-semibold text-[#232a3c] outline-none focus:border-[#159a56] focus:ring-2 focus:ring-[#159a56]/20"
                 placeholder="जैसे: रमेश कुमार"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="demo-email"
+                className="mb-1.5 block text-sm font-black text-[#232a3c]"
+              >
+                ईमेल *
+              </label>
+              <input
+                id="demo-email"
+                type="email"
+                required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="w-full rounded-lg border border-[#cfe2d5] bg-white px-4 py-3 text-base font-semibold text-[#232a3c] outline-none focus:border-[#159a56] focus:ring-2 focus:ring-[#159a56]/20"
+                placeholder="आपका ईमेल"
               />
             </div>
             <div>
@@ -178,11 +202,23 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
               )}
               मेरे नाम से डेमो बनाइए
             </button>
-            {status === "done" && (
-              <p className="flex items-start gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700 sm:col-span-2">
-                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
-                धन्यवाद। हमारी टीम आपके नाम और क्षेत्र के अनुसार डेमो तैयार कर आपसे संपर्क करेगी।
-              </p>
+            {status === "done" && demoUrl && (
+              <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700 sm:col-span-2">
+                <p className="flex items-start gap-2">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+                  {emailSent
+                    ? "धन्यवाद। आपकी demo website तैयार है और उसका link आपके email पर भेज दिया गया है।"
+                    : "आपकी demo website तैयार है। Email delivery नहीं हो पाई, इसलिए नीचे दिए button से website खोलें।"}
+                </p>
+                <a
+                  href={demoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 inline-flex rounded-md bg-[#159a56] px-4 py-2 text-white"
+                >
+                  Demo Website खोलें
+                </a>
+              </div>
             )}
             {status === "error" && (
               <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700 sm:col-span-2">

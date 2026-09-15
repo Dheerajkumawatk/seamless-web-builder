@@ -85,7 +85,7 @@ export default function Index() {
 
   return (
     <>
-      <section className="relative min-h-[620px] overflow-hidden border-b border-emerald-100 bg-[#f8dfbf]">
+      <section className="relative min-h-[480px] sm:min-h-[620px] overflow-hidden border-b border-emerald-100 bg-[#f8dfbf]">
         <img
           src={heroBackground.src}
           width={2560}
@@ -95,29 +95,29 @@ export default function Index() {
           fetchPriority="high"
         />
 
-        <div className="relative z-10 mx-auto flex min-h-[620px] max-w-[1720px] items-center px-6 py-20 lg:px-20">
+        <div className="relative z-10 mx-auto flex min-h-[480px] sm:min-h-[620px] max-w-[1720px] items-center px-4 py-12 sm:px-6 sm:py-20 lg:px-20">
           <div className="max-w-[760px]">
-            <h1 className="font-display text-[40px] leading-[1.08] font-black tracking-normal text-[#0a1526] [text-shadow:0_3px_12px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:text-[58px] lg:text-[76px]">
+            <h1 className="font-display text-[32px] leading-[1.2] min-[380px]:text-[36px] sm:leading-[1.08] font-black tracking-normal text-[#0a1526] [text-shadow:0_3px_12px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:text-[58px] lg:text-[76px]">
               पंचायत चुनाव की तैयारी कर रहे हैं?
               <br />
               <span className="text-[#0f7a42]">अपनी डिजिटल पहचान</span>{" "}
               <span className="text-[#0e2f5e]">आज से मजबूत बनाइए।</span>
             </h1>
-            <p className="mt-7 max-w-[650px] text-xl leading-relaxed font-extrabold text-[#232a3c] [text-shadow:0_2px_10px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:text-2xl">
+            <p className="mt-5 max-w-[650px] text-lg sm:mt-7 leading-relaxed font-extrabold text-[#232a3c] [text-shadow:0_2px_10px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:text-2xl">
               उम्मीदवार वेबसाइट, सोशल मीडिया, वीडियो-ग्राफिक्स, डिजिटल आउटरीच और अभियान प्रबंधन — एक
               ही जगह।
             </p>
 
-            <div className="mt-10 flex flex-col gap-5 sm:flex-row">
+            <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-5">
               <Link
                 href="/#demo-form"
-                className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#0e2f5e] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)]"
+                className="inline-flex w-full min-w-0 items-center justify-center gap-2 sm:w-auto sm:min-w-[270px] sm:gap-4 rounded-lg bg-[#0e2f5e] px-4 py-4 text-base sm:px-9 sm:py-5 sm:text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)]"
               >
                 मेरे नाम से डेमो बनाइए <ArrowRight className="h-6 w-6" />
               </Link>
               <a
                 href={`tel:${site.phone}`}
-                className="inline-flex min-w-[270px] items-center justify-center gap-4 rounded-lg bg-[#159a56] px-9 py-5 text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(21,154,86,.25)]"
+                className="inline-flex w-full min-w-0 items-center justify-center gap-2 sm:w-auto sm:min-w-[270px] sm:gap-4 rounded-lg bg-[#159a56] px-4 py-4 text-base sm:px-9 sm:py-5 sm:text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(21,154,86,.25)]"
               >
                 अभी बात करें <Phone className="h-6 w-6" />
               </a>
@@ -413,7 +413,7 @@ export default function Index() {
                 BharatPahchan.com, CITILINE TECHNOLOGIES PRIVATE LIMITED का एक venture है। यह निजी
                 डिजिटल सेवा प्लेटफॉर्म है, सरकारी वेबसाइट नहीं।
               </p>
-              <div className="mt-5 grid gap-3 text-sm font-semibold text-neutral-800 sm:grid-cols-3">
+              <div className="mt-5 grid gap-3 text-sm font-semibold text-neutral-800 lg:grid-cols-3">
                 <a href={`tel:${site.phone}`} className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-[#159a56]" /> {site.phone}
                 </a>
@@ -487,7 +487,7 @@ export default function Index() {
       </Section>
 
       <section className="bg-[#0e2f5e] px-4 py-12 text-white">
-        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-[1fr_auto] md:items-center">
+        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <p className="text-sm font-black tracking-[0.18em] text-white/70 uppercase">
               संपर्क करें
@@ -519,7 +519,6 @@ export default function Index() {
         </div>
       </section>
 
-      <div className="h-20 md:hidden" aria-hidden="true" />
       <MobileContactBar message={enquiryMessage} />
     </>
   );

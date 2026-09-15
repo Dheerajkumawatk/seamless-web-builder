@@ -9,7 +9,11 @@ import {
   listVikasMitraProfiles,
   updateVikasMitraProfile,
 } from "@/lib/vikas-mitra.server";
-import { buildVikasMitraApprovalEmail, sendEmail } from "@/lib/email.server";
+import {
+  buildVikasMitraApprovalEmail,
+  buildVikasMitraRejectionEmail,
+  sendEmail,
+} from "@/lib/email.server";
 
 const vikasSchema = z.object({
   type: z.literal("vikas"),
@@ -142,9 +146,24 @@ export async function PATCH(request: Request) {
 
     let email:
       { sent: boolean; skipped?: boolean | undefined; error?: string | undefined } | undefined;
-    if (body.notify && row.status === "approved" && row.email) {
-      const result = await sendEmail(buildVikasMitraApprovalEmail(row));
-      email = { sent: result.ok, skipped: result.skipped, error: result.error };
+    if (
+      (body.notify || body.data.status) &&
+      (row.status === "approved" || row.status === "rejected")
+    ) {
+      try {
+        const result = await sendEmail(
+          row.status === "approved"
+            ? await buildVikasMitraApprovalEmail(row)
+            : buildVikasMitraRejectionEmail(row),
+        );
+        email = { sent: result.ok, skipped: result.skipped, error: result.error };
+      } catch {
+        email = {
+          sent: false,
+          error:
+            "ID card generate nahi ho paya. Profile photo check karke Email Card se retry karein.",
+        };
+      }
     }
 
     return NextResponse.json({ ok: true, row, email });

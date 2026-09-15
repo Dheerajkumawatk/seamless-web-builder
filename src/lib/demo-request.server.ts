@@ -79,6 +79,12 @@ export async function listDemoLeads(): Promise<DemoLead[]> {
   return rows.map(toDemoLead);
 }
 
+export async function getDemoLead(id: string): Promise<DemoLead | null> {
+  const Model = await getDemoRequestModel();
+  const row = await Model.findByPk(id);
+  return row ? toDemoLead(row) : null;
+}
+
 export async function updateDemoLead(id: string, input: DemoLeadUpdate): Promise<DemoLead> {
   const Model = await getDemoRequestModel();
   const row = await Model.findByPk(id);

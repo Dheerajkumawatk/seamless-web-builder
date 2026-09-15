@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import https from "node:https";
 
 type CloudinaryUploadResponse = {
   secure_url?: string;
@@ -48,13 +49,55 @@ export async function uploadImageToCloudinary(file: File, folder: string): Promi
     );
   }
 
-  const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-    method: "POST",
-    body: form,
+  const uploadRequest = new Request(
+    `https://api.cloudinary.com/v1_1/${encodeURIComponent(cloudName)}/image/upload`,
+    {
+      method: "POST",
+      body: form,
+    },
+  );
+  const body = Buffer.from(await uploadRequest.arrayBuffer());
+  const response = await new Promise<{ status: number; body: string }>((resolve, reject) => {
+    // Use IPv4 explicitly: some networks resolve IPv6 but cannot reach Cloudinary over it.
+    const request = https.request(
+      uploadRequest.url,
+      {
+        method: "POST",
+        family: 4,
+        headers: {
+          "Content-Type": uploadRequest.headers.get("content-type")!,
+          "Content-Length": body.length,
+        },
+      },
+      (response) => {
+        const chunks: Buffer[] = [];
+        response.on("data", (chunk: Buffer) => chunks.push(chunk));
+        response.on("error", reject);
+        response.on("end", () =>
+          resolve({
+            status: response.statusCode ?? 502,
+            body: Buffer.concat(chunks).toString("utf8"),
+          }),
+        );
+      },
+    );
+    const timer = setTimeout(() => request.destroy(new Error("Upload timeout")), 60_000);
+    request.on("close", () => clearTimeout(timer));
+    request.on("error", reject);
+    request.end(body);
+  }).catch(() => {
+    throw new Error(
+      "Photo/document upload server se connection nahi ho paya. Internet connection check karke dobara submit karein.",
+    );
   });
-  const result = (await response.json().catch(() => ({}))) as CloudinaryUploadResponse;
+  let result: CloudinaryUploadResponse = {};
+  try {
+    result = JSON.parse(response.body) as CloudinaryUploadResponse;
+  } catch {
+    throw new Error("Photo/document upload server ne invalid response diya. Dobara try karein.");
+  }
 
-  if (!response.ok || !result.secure_url) {
+  if (response.status < 200 || response.status >= 300 || !result.secure_url) {
     throw new Error(result.error?.message || "Cloudinary image upload failed.");
   }
 

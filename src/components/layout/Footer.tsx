@@ -53,7 +53,9 @@ export function Footer() {
   return (
     <>
       <BlogFooterSection />
-      <footer className="border-t border-[#dbe3ef] bg-[#f7faff] text-[#33384a] shadow-[0_-2px_10px_rgba(18,58,114,.06)]">
+      <footer
+        className={`${pathname === "/" ? "pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0" : "pb-20 sm:pb-0"} border-t border-[#dbe3ef] bg-[#f7faff] text-[#33384a] shadow-[0_-2px_10px_rgba(18,58,114,.06)]`}
+      >
         <div className="mx-auto grid max-w-[1720px] gap-10 px-6 py-11 md:grid-cols-2 lg:grid-cols-[1.22fr_.82fr_.98fr_.98fr] lg:px-20">
           <div className="pr-4">
             <Logo size="footer" />
@@ -77,7 +79,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="lg:border-l-2 lg:border-[#dbe3ef] lg:pl-16">
+          <div className="lg:border-l-2 lg:border-[#dbe3ef] lg:pl-5 2xl:pl-16">
             <h4 className="text-[24px] leading-none text-[#1f2532]">क्विक लिंक</h4>
             <ul className="mt-7 space-y-3 text-[16px] font-extrabold text-[#4b5364]">
               {[...nav, ...secondaryNav].slice(1).map((item) => (
@@ -97,7 +99,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="lg:border-l-2 lg:border-[#dbe3ef] lg:pl-16">
+          <div className="lg:border-l-2 lg:border-[#dbe3ef] lg:pl-5 2xl:pl-16">
             <h4 className="text-[24px] leading-none text-[#1f2532]">सेवाएं</h4>
             <ul className="mt-7 space-y-3 text-[16px] font-extrabold text-[#4b5364]">
               {services.map((s) => (
@@ -110,7 +112,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="lg:border-l-2 lg:border-[#dbe3ef] lg:pl-16">
+          <div className="lg:border-l-2 lg:border-[#dbe3ef] lg:pl-5 2xl:pl-16">
             <h4 className="text-[24px] leading-none text-[#1f2532]">संपर्क करें</h4>
             <ul className="mt-7 space-y-5 text-[16px] font-extrabold text-[#4b5364]">
               <li className="flex items-center gap-4">
@@ -206,7 +208,7 @@ function BlogFooterSection() {
           </Link>
         </div>
 
-        <div className="mt-7 grid gap-5 md:grid-cols-3">
+        <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {posts.slice(0, 3).map((post) => (
             <Link
               key={post.id ?? post.slug}

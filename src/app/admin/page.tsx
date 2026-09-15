@@ -348,27 +348,41 @@ export default function AdminPage() {
 
     const email = result.email;
     if (email?.sent) {
-      setMessage(`Approve ho gaya. Unique ID ke saath email ${row.email} par bhej diya gaya.`);
+      setMessage(
+        `Approve ho gaya. Member card aur Unique ID ke saath email ${row.email} par bhej diya gaya.`,
+      );
       return;
     }
 
     if (email?.skipped) {
       setMessage(
-        "Approve ho gaya, par auto-email band hai (RESEND_API_KEY set nahi). 'Email Card' se manually bhejein.",
+        "Approve ho gaya, par email configure nahi hai. SMTP settings check karke 'Email Card' se retry karein.",
       );
     } else {
       setMessage(
-        `Approve ho gaya, par email bhejne me dikkat aayi${email?.error ? `: ${email.error}` : ""}. 'Email Card' se manually bhejein.`,
+        `Approve ho gaya, par email bhejne me dikkat aayi${email?.error ? `: ${email.error}` : ""}. 'Email Card' se retry karein.`,
       );
     }
-    window.open(buildApprovalMail(row), "_blank", "noopener,noreferrer");
   }
 
   async function reject(row: Vikas) {
-    const rejectionMessage =
-      window.prompt("Reject message", "Your Vikas Mitra profile has been rejected.") ??
-      "Your Vikas Mitra profile has been rejected.";
-    await updateRow("vikas", row.id, { status: "rejected", rejectionMessage });
+    const rejectionMessage = window.prompt(
+      "Reject message",
+      "Your Vikas Mitra profile has been rejected.",
+    );
+    if (rejectionMessage === null) return;
+    const result = await updateRow(
+      "vikas",
+      row.id,
+      { status: "rejected", rejectionMessage },
+      { notify: true, silent: true },
+    );
+    if (!result?.ok) return;
+    setMessage(
+      result.email?.sent
+        ? "Reject ho gaya. Applicant ko rejection email bhej diya gaya."
+        : "Reject ho gaya, par email nahi bheja ja saka. Applicant email aur SMTP settings check karein; Reject se dobara email bhej sakte hain.",
+    );
   }
 
   const field =
@@ -678,31 +692,6 @@ function readFileAsDataUrl(file: File) {
   });
 }
 
-function buildApprovalMail(row: Vikas) {
-  const subject = `Vikas Mitra Approval Card - ${row.name}`;
-  const body = [
-    `Namaste ${row.name},`,
-    "",
-    "Aapka Vikas Mitra profile approve ho gaya hai.",
-    "",
-    "VIKAS MITRA CARD",
-    `Unique ID: ${formatVikasMitraId(row.id, row.createdAt)}`,
-    `Name: ${row.name}`,
-    `Mobile: ${row.phone}`,
-    `Location: ${row.village}, ${row.tehsil}, ${row.district}`,
-    row.occupation ? `Profession: ${row.occupation}` : "",
-    row.experience ? `Experience: ${row.experience}` : "",
-    "",
-    "Aapki profile website par show hone lagi hai.",
-    "",
-    "Bharat Pehchan Team",
-  ]
-    .filter(Boolean)
-    .join("\n");
-
-  return `mailto:${row.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-
 function Stat({
   label,
   value,
@@ -826,14 +815,13 @@ function VikasList({
                   </a>
                 )}
                 {row.status === "approved" && row.email && (
-                  <a
-                    href={buildApprovalMail(row)}
-                    target="_blank"
-                    rel="noreferrer"
+                  <button
+                    type="button"
+                    onClick={() => onApprove(row)}
                     className="action border bg-white"
                   >
                     <Mail className="h-4 w-4" /> Email Card
-                  </a>
+                  </button>
                 )}
               </div>
             </div>
@@ -1070,7 +1058,7 @@ function EditModal({
             type === "blog" ? { ...form, date: form["publishDate"] ?? "" } : form,
           );
         }}
-        className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-4 shadow-2xl sm:p-5"
+        className="max-h-[calc(100dvh-3rem)] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-4 shadow-2xl sm:p-5"
       >
         <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-4">
           <div>
@@ -1184,7 +1172,7 @@ function PreviewModal({ row, onClose }: { row: Vikas; onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-[90] grid place-items-center bg-slate-950/70 px-3 py-4 sm:px-4">
-      <div className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-lg bg-white p-4 shadow-2xl sm:p-5">
+      <div className="max-h-[calc(100dvh-3rem)] w-full max-w-3xl overflow-y-auto rounded-lg bg-white p-4 shadow-2xl sm:p-5">
         <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-4">
           <div>
             <p className="text-xs font-black tracking-[0.18em] text-emerald-700 uppercase">

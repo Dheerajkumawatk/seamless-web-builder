@@ -67,6 +67,8 @@ export function initDemoRequest(): typeof DemoRequest {
         sequelize: getSequelize(),
         modelName: "DemoRequest",
         tableName: "demo_requests",
+        charset: "utf8mb4",
+        collate: "utf8mb4_unicode_ci",
         timestamps: true,
         createdAt: "created_at",
         updatedAt: false,
