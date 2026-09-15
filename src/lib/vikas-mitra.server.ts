@@ -79,6 +79,12 @@ export async function listVikasMitraProfiles(
   return rows.map(toProfile);
 }
 
+export async function getVikasMitraProfileById(id: string): Promise<VikasMitraProfile | null> {
+  const Model = await getVikasMitraProfileModel();
+  const row = await Model.findByPk(id);
+  return row ? toProfile(row) : null;
+}
+
 export async function updateVikasMitraProfile(
   id: string,
   input: {
@@ -120,8 +126,7 @@ export async function updateVikasMitraProfile(
     ...(input.status !== undefined ? { status: input.status } : {}),
     ...(input.rejectionMessage !== undefined
       ? {
-          rejectionMessage:
-            input.rejectionMessage || "Your Vikas Mitra profile has been rejected.",
+          rejectionMessage: input.rejectionMessage || "Your Vikas Mitra profile has been rejected.",
         }
       : {}),
   });

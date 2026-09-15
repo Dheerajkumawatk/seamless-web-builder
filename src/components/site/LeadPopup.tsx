@@ -12,9 +12,11 @@ export function LeadPopup() {
   const [minimized, setMinimized] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [error, setError] = useState("");
+  const isIdCardRoute = pathname?.startsWith("/vikas-mitra/id-card");
 
   useEffect(() => {
     if (pathname?.startsWith("/admin")) return;
+    if (isIdCardRoute) return;
     try {
       if (window.sessionStorage.getItem(submittedKey) === "yes") return;
     } catch {
@@ -23,7 +25,11 @@ export function LeadPopup() {
 
     const timer = window.setTimeout(() => setOpen(true), 10_000);
     return () => window.clearTimeout(timer);
-  }, [pathname]);
+  }, [isIdCardRoute, pathname]);
+
+  if (isIdCardRoute) {
+    return null;
+  }
 
   function onClose() {
     setOpen(false);

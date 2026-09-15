@@ -375,12 +375,18 @@ export default function AdminPage() {
       "vikas",
       row.id,
       { status: "rejected", rejectionMessage },
-      { notify: true, silent: true },
+      { notify: Boolean(row.email), silent: true },
     );
     if (!result?.ok) return;
+    if (!row.email) {
+      setMessage(
+        "Reject ho gaya. Client ka email nahi diya gaya tha, isliye auto-mail nahi bheja.",
+      );
+      return;
+    }
     setMessage(
       result.email?.sent
-        ? "Reject ho gaya. Applicant ko rejection email bhej diya gaya."
+        ? `Reject ho gaya. Rejection email ${row.email} par bhej diya gaya.`
         : "Reject ho gaya, par email nahi bheja ja saka. Applicant email aur SMTP settings check karein; Reject se dobara email bhej sakte hain.",
     );
   }
@@ -822,6 +828,16 @@ function VikasList({
                   >
                     <Mail className="h-4 w-4" /> Email Card
                   </button>
+                )}
+                {row.status === "approved" && (
+                  <a
+                    href={`/vikas-mitra/id-card/${row.id}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="action border bg-white"
+                  >
+                    <Download className="h-4 w-4" /> ID Card PDF
+                  </a>
                 )}
               </div>
             </div>

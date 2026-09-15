@@ -39,6 +39,7 @@ type FooterBlogPost = {
 
 export function Footer() {
   const pathname = usePathname();
+  const hideBlogFooter = pathname.startsWith("/election-results");
   const socialLinks = [
     { icon: Facebook, href: site.socialLinks.facebook, label: "Facebook" },
     { icon: Instagram, href: site.socialLinks.instagram, label: "Instagram" },
@@ -46,13 +47,13 @@ export function Footer() {
     { icon: MessageCircle, href: site.whatsappUrl, label: "WhatsApp" },
   ];
 
-  if (pathname.startsWith("/admin")) {
+  if (pathname.startsWith("/admin") || pathname.startsWith("/vikas-mitra/id-card")) {
     return null;
   }
 
   return (
     <>
-      <BlogFooterSection />
+      {!hideBlogFooter && <BlogFooterSection />}
       <footer
         className={`${pathname === "/" ? "pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0" : "pb-20 sm:pb-0"} border-t border-[#dbe3ef] bg-[#f7faff] text-[#33384a] shadow-[0_-2px_10px_rgba(18,58,114,.06)]`}
       >

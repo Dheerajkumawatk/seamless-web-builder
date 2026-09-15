@@ -56,7 +56,7 @@ export function Header() {
     return () => window.clearTimeout(timer);
   }, [vikasOpen, vikasStatus]);
 
-  if (pathname.startsWith("/admin")) {
+  if (pathname.startsWith("/admin") || pathname.startsWith("/vikas-mitra/id-card")) {
     return null;
   }
 
@@ -124,7 +124,17 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 shadow-[0_2px_12px_rgba(18,58,114,.18)]">
-        <div className="hidden border-b border-white/10 bg-[#123a72] text-white lg:block">
+        <div className="border-b border-white/10 bg-[#123a72] text-white md:hidden">
+          <a
+            href={`tel:${site.phone}`}
+            className="mx-auto flex h-8 max-w-[1720px] items-center justify-center gap-2 px-4 text-xs font-black"
+          >
+            <Phone className="h-3.5 w-3.5 fill-white/15" />
+            {site.phone}
+          </a>
+        </div>
+
+        <div className="hidden border-b border-white/10 bg-[#123a72] text-white md:block">
           <div className="mx-auto flex h-[42px] max-w-[1720px] items-center justify-between gap-4 px-8 text-[14px] font-bold xl:px-14">
             <p className="flex min-w-0 items-center gap-2 truncate">
               <MapPin className="h-4 w-4 fill-white/15" />
@@ -159,7 +169,7 @@ export function Header() {
         </div>
 
         <div className="border-b border-[#dde5f0] bg-white/98 backdrop-blur">
-          <div className="mx-auto grid h-20 sm:h-[104px] max-w-[1720px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 md:px-8 xl:flex xl:justify-between xl:px-14">
+          <div className="mx-auto grid h-[76px] max-w-[1720px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 md:h-[104px] md:px-8 xl:flex xl:justify-between xl:px-14">
             <Link
               href="/"
               className="flex min-w-0 items-center gap-2"

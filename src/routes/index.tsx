@@ -13,8 +13,11 @@ import {
 } from "lucide-react";
 import { images } from "@/data/images";
 import { audiences, packages, site, trustCapabilities, websiteSections } from "@/data/site";
+import { rajasthanElectionSummary } from "@/data/election-results";
 import heroBackground from "@/assets/bharatpahchan-hero-background.png";
+import mobileSliderBackground from "@/assets/bharatpahchan-mobile-slider.png";
 import channel009Logo from "@/assets/channel009-logo.png";
+import aiCampaignPreview from "@/assets/ai-campaign-preview.png";
 import { MobileContactBar } from "@/components/site/MobileContactBar";
 import { PackageQueryButton } from "@/components/site/PackageQueryButton";
 import { PersonalizedDemoPreview } from "@/components/site/PersonalizedDemoPreview";
@@ -85,41 +88,49 @@ export default function Index() {
 
   return (
     <>
-      <section className="relative min-h-[480px] sm:min-h-[620px] overflow-hidden border-b border-emerald-100 bg-[#f8dfbf]">
+      <section className="relative min-h-[382px] overflow-hidden border-b border-emerald-100 bg-[#f8dfbf] sm:min-h-[620px]">
         <img
           src={heroBackground.src}
           width={2560}
           height={1024}
           alt="BharatPahchan digital campaign background"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 hidden h-full w-full object-cover object-center sm:block"
+          fetchPriority="high"
+        />
+        <img
+          src={mobileSliderBackground.src}
+          width={1152}
+          height={1408}
+          alt="BharatPahchan digital campaign background"
+          className="absolute inset-x-0 top-0 h-[108%] w-full object-cover object-top sm:hidden"
           fetchPriority="high"
         />
 
-        <div className="relative z-10 mx-auto flex min-h-[480px] sm:min-h-[620px] max-w-[1720px] items-center px-4 py-12 sm:px-6 sm:py-20 lg:px-20">
-          <div className="max-w-[760px]">
-            <h1 className="font-display text-[32px] leading-[1.2] min-[380px]:text-[36px] sm:leading-[1.08] font-black tracking-normal text-[#0a1526] [text-shadow:0_3px_12px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:text-[58px] lg:text-[76px]">
+        <div className="relative z-10 mx-auto flex min-h-[382px] max-w-[1720px] items-start px-4 pt-11 pb-6 sm:min-h-[620px] sm:items-center sm:px-6 sm:py-20 lg:px-20">
+          <div className="max-w-[84%] sm:max-w-[760px]">
+            <h1 className="font-display text-[32px] leading-[1.06] font-black tracking-normal text-[#0a1526] [text-shadow:0_3px_12px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:text-[58px] sm:leading-[1.08] lg:text-[76px]">
               पंचायत चुनाव की तैयारी कर रहे हैं?
               <br />
               <span className="text-[#0f7a42]">अपनी डिजिटल पहचान</span>{" "}
               <span className="text-[#0e2f5e]">आज से मजबूत बनाइए।</span>
             </h1>
-            <p className="mt-5 max-w-[650px] text-lg sm:mt-7 leading-relaxed font-extrabold text-[#232a3c] [text-shadow:0_2px_10px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:text-2xl">
+            <p className="mt-3 max-w-[320px] text-[15px] leading-snug font-extrabold text-[#232a3c] [text-shadow:0_2px_10px_rgba(255,255,255,.95),0_1px_2px_rgba(255,255,255,.9)] sm:mt-7 sm:max-w-[650px] sm:text-2xl sm:leading-relaxed">
               उम्मीदवार वेबसाइट, सोशल मीडिया, वीडियो-ग्राफिक्स, डिजिटल आउटरीच और अभियान प्रबंधन — एक
               ही जगह।
             </p>
 
-            <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-5">
+            <div className="mt-5 flex max-w-[340px] flex-row gap-2 sm:mt-10 sm:max-w-none sm:gap-5">
               <Link
                 href="/#demo-form"
-                className="inline-flex w-full min-w-0 items-center justify-center gap-2 sm:w-auto sm:min-w-[270px] sm:gap-4 rounded-lg bg-[#0e2f5e] px-4 py-4 text-base sm:px-9 sm:py-5 sm:text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)]"
+                className="inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#0e2f5e] px-2 py-3 text-center text-[11px] leading-tight font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)] sm:min-w-[270px] sm:flex-none sm:gap-4 sm:px-9 sm:py-5 sm:text-xl"
               >
-                मेरे नाम से डेमो बनाइए <ArrowRight className="h-6 w-6" />
+                मेरे नाम से डेमो बनाइए <ArrowRight className="h-4 w-4 shrink-0 sm:h-6 sm:w-6" />
               </Link>
               <a
                 href={`tel:${site.phone}`}
-                className="inline-flex w-full min-w-0 items-center justify-center gap-2 sm:w-auto sm:min-w-[270px] sm:gap-4 rounded-lg bg-[#159a56] px-4 py-4 text-base sm:px-9 sm:py-5 sm:text-xl font-extrabold text-white shadow-[0_14px_26px_rgba(21,154,86,.25)]"
+                className="inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#159a56] px-2 py-3 text-center text-[11px] leading-tight font-extrabold text-white shadow-[0_14px_26px_rgba(21,154,86,.25)] sm:min-w-[270px] sm:flex-none sm:gap-4 sm:px-9 sm:py-5 sm:text-xl"
               >
-                अभी बात करें <Phone className="h-6 w-6" />
+                अभी बात करें <Phone className="h-4 w-4 shrink-0 sm:h-6 sm:w-6" />
               </a>
             </div>
           </div>
@@ -130,6 +141,76 @@ export default function Index() {
         <div className="mx-auto max-w-7xl text-center text-sm font-extrabold text-[#0e2f5e]">
           BharatPahchan — Citiline Technologies Private Limited द्वारा संचालित Digital Campaign
           Initiative
+        </div>
+      </section>
+
+      <section className="border-b border-[#dbe8dd] bg-[#f5f8fc] px-4 py-8">
+        <div className="mx-auto max-w-7xl rounded-lg border border-[#dbe5ee] bg-white p-5 shadow-sm sm:p-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="inline-flex rounded-lg bg-red-50 px-3 py-1 text-sm font-black text-[#df1414]">
+                डिजाइन डेमो • वास्तविक परिणाम नहीं
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-black leading-tight text-[#0e2f5e] sm:text-4xl">
+                राजस्थान निकाय चुनाव परिणाम
+              </h2>
+              <p className="mt-1 text-lg font-bold text-[#69748a]">जिला, निकाय और वार्डवार नतीजे</p>
+            </div>
+            <p className="text-sm font-bold text-[#5c6880]">
+              अंतिम अपडेट: {rajasthanElectionSummary.lastUpdated}
+            </p>
+          </div>
+
+          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                label: "भाजपा",
+                value: rajasthanElectionSummary.largestPartyBodies.bjp,
+                tone: "border-orange-200 bg-orange-50 text-orange-700",
+                bar: "bg-[#f97316]",
+              },
+              {
+                label: "कांग्रेस",
+                value: rajasthanElectionSummary.largestPartyBodies.congress,
+                tone: "border-blue-200 bg-blue-50 text-blue-700",
+                bar: "bg-[#2f73ff]",
+              },
+              {
+                label: "अन्य दल",
+                value: rajasthanElectionSummary.largestPartyBodies.ties,
+                tone: "border-violet-200 bg-violet-50 text-violet-700",
+                bar: "bg-[#7c3aed]",
+              },
+              {
+                label: "निर्दलीय",
+                value: "—",
+                tone: "border-slate-200 bg-slate-50 text-slate-700",
+                bar: "bg-[#6b7280]",
+              },
+            ].map((item) => (
+              <article
+                key={item.label}
+                className={`overflow-hidden rounded-lg border ${item.tone}`}
+              >
+                <div className={`h-1.5 ${item.bar}`} />
+                <div className="p-4 text-center">
+                  <p className="text-xl font-black">{item.label}</p>
+                  <p className="mt-2 text-2xl font-black text-[#0e2f5e]">{item.value}</p>
+                  <div className="mt-3 grid grid-cols-2 rounded-lg bg-white/70 text-sm font-bold text-[#526079]">
+                    <span className="px-2 py-2">जीत: —</span>
+                    <span className="px-2 py-2">बढ़त: —</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <Link
+            href="/election-results"
+            className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border border-[#df1414] bg-white px-6 py-3 text-sm font-black text-[#df1414] transition hover:bg-red-50"
+          >
+            सभी परिणाम देखें <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
@@ -186,7 +267,7 @@ export default function Index() {
               ))}
             </div>
             <Link
-              href="/#demo-form"
+              href="/contact"
               className="mt-7 inline-flex items-center gap-2 rounded-lg bg-[#0e2f5e] px-6 py-3.5 text-sm font-black text-white"
             >
               मेरे नाम से डेमो बनाइए <ArrowRight className="h-4 w-4" />
@@ -222,7 +303,7 @@ export default function Index() {
               ))}
             </div>
             <Link
-              href="/#demo-form"
+              href="/contact"
               className="mt-7 inline-flex items-center gap-2 rounded-lg bg-[#159a56] px-6 py-3.5 text-sm font-black text-white"
             >
               मेरे नाम से डेमो बनाइए <ArrowRight className="h-4 w-4" />
@@ -274,20 +355,21 @@ export default function Index() {
       <Section className="website-demo-section border-y border-[#dbe8dd] bg-[#f6fbf8]">
         <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_.85fr]">
           <img
-            src={images["demo"]}
-            alt="सैंपल वेबसाइट प्रीव्यू"
+            src={aiCampaignPreview.src}
+            width={2048}
+            height={878}
+            alt="AI generated campaign image"
             loading="lazy"
-            className="w-full rounded-lg border border-[#dbe8dd] bg-white object-contain shadow-card"
+            className="h-full max-h-[440px] w-full rounded-lg border border-[#dbe8dd] bg-white object-cover shadow-card"
           />
           <div>
-            <p className="text-xs font-black tracking-[0.2em] text-[#159a56] uppercase">
-              Sample Preview
-            </p>
+            <p className="text-sm font-black text-[#159a56]">AI Visual Studio</p>
             <h2 className="mt-3 font-display text-3xl font-black leading-tight text-[#0e2f5e] sm:text-4xl">
-              देखें आपकी उम्मीदवार वेबसाइट कैसी दिख सकती है
+              Website aur social campaign ke liye ready visuals
             </h2>
             <p className="mt-4 text-base leading-relaxed font-semibold text-[#4b5364]">
-              आपके नाम, फोटो और क्षेत्र के अनुसार customised demo उपलब्ध।
+              Local campaign ko clean, trustworthy aur modern dikhane ke liye AI-generated banners,
+              creatives aur digital material.
             </p>
             <ul className="mt-5 grid gap-2.5">
               {websiteSections.slice(0, 6).map((item) => (
@@ -300,31 +382,37 @@ export default function Index() {
               ))}
             </ul>
             <Link
-              href="/#demo-form"
+              href="/contact"
               className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#0e2f5e] px-6 py-3.5 text-sm font-black text-white"
             >
-              मेरे नाम से डेमो बनाइए <ArrowRight className="h-4 w-4" />
+              Design ke liye contact karein <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </Section>
 
-      <Section>
-        <div className="text-center">
-          <h2 className="font-display text-3xl font-bold text-maroon">पैकेज और कीमत</h2>
+      <Section className="relative overflow-hidden bg-[#fff4e1] [background-image:linear-gradient(135deg,rgba(189,55,31,.08)_0_14%,transparent_14%_28%,rgba(15,122,102,.07)_28%_42%,transparent_42%)]">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-2 bg-[repeating-linear-gradient(90deg,#b72b24_0_26px,#f2a12b_26px_52px,#0f7a66_52px_78px,#173b6d_78px_104px)]" />
+        <div className="relative text-center">
+          <p className="mb-2 text-xs font-black tracking-[0.22em] text-[#0f7a66] uppercase">
+            Rajasthani Digital Plans
+          </p>
+          <h2 className="font-display text-2xl font-bold text-[#8f1f1b] sm:text-3xl">
+            पैकेज और कीमत
+          </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
             कीमत और अवधि मौजूदा पैकेज डेटा से ली गई है। दैनिक भुगतान का दावा नहीं किया गया है।
           </p>
         </div>
-        <div className="mt-8 grid gap-6 lg:grid-cols-3">
+        <div className="relative mt-7 grid gap-4 sm:mt-8 sm:gap-6 lg:grid-cols-3">
           {packages.map((p) => {
             const daily = dailyEquivalent(p.price, p.period);
 
             return (
               <article
                 key={p.name}
-                className={`relative flex flex-col overflow-hidden rounded-lg border bg-white shadow-card ${
-                  p.featured ? "border-saffron" : "border-emerald-200"
+                className={`relative flex flex-col overflow-hidden rounded-lg border bg-white/95 shadow-[0_18px_35px_rgba(91,43,18,.12)] ${
+                  p.featured ? "border-[#f2a12b]" : "border-[#ead3a9]"
                 }`}
               >
                 {p.featured && (
@@ -335,7 +423,9 @@ export default function Index() {
                   </span>
                 )}
                 <div
-                  className={`px-6 py-6 text-center ${p.featured ? `${homePackageTheme(p.theme).headBg} text-white` : ""}`}
+                  className={`px-5 py-5 text-center sm:px-6 sm:py-6 ${
+                    p.featured ? `${homePackageTheme(p.theme).headBg} text-white` : "bg-[#fffaf1]"
+                  }`}
                 >
                   <h3
                     className={`text-xl ${p.featured ? "text-white" : homePackageTheme(p.theme).title}`}
@@ -350,8 +440,8 @@ export default function Index() {
                     </p>
                   )}
                 </div>
-                <div className="flex flex-1 flex-col px-7 pt-5 pb-7">
-                  <div className="rounded-lg bg-[#f7faff] p-4 text-center">
+                <div className="flex flex-1 flex-col px-5 pt-5 pb-6 sm:px-7 sm:pb-7">
+                  <div className="rounded-lg border border-[#f0dfbd] bg-[#fff8ec] p-4 text-center">
                     <p className="text-xs font-black tracking-[0.16em] text-[#596173] uppercase">
                       कुल पैकेज कीमत
                     </p>

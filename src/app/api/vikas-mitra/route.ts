@@ -68,7 +68,9 @@ export async function POST(request: Request) {
       aadhaarCard: aadhaarCard || undefined,
     });
 
-    await sendEmail(buildVikasMitraRegistrationEmail(profile));
+    if (profile.email) {
+      await sendEmail(buildVikasMitraRegistrationEmail(profile));
+    }
     return NextResponse.json({ ok: true, id: formatVikasMitraId(profile.id, profile.createdAt) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Vikas Mitra form submit failed";
