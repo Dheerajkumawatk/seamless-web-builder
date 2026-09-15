@@ -4,6 +4,7 @@ export type DemoLead = {
   id: string;
   name: string;
   phone: string;
+  photo?: string | undefined;
   village?: string | undefined;
   district?: string | undefined;
   post?: string | undefined;
@@ -20,6 +21,7 @@ export type DemoLead = {
 type DemoLeadUpdate = {
   name?: string | undefined;
   phone?: string | undefined;
+  photo?: string | undefined;
   village?: string | undefined;
   district?: string | undefined;
   post?: string | undefined;
@@ -37,6 +39,7 @@ function toDemoLead(row: DemoRequest): DemoLead {
     id: row.id,
     name: row.name,
     phone: row.phone,
+    photo: row.photo ?? undefined,
     village: row.village ?? undefined,
     district: row.district ?? undefined,
     post: row.post ?? undefined,
@@ -58,6 +61,7 @@ export async function createDemoLead(
   const row = await Model.create({
     name: input.name,
     phone: input.phone,
+    photo: input.photo || null,
     village: input.village || null,
     district: input.district || null,
     post: input.post || null,
@@ -95,6 +99,7 @@ export async function updateDemoLead(id: string, input: DemoLeadUpdate): Promise
   row.set({
     ...(input.name !== undefined ? { name: input.name } : {}),
     ...(input.phone !== undefined ? { phone: input.phone } : {}),
+    ...(input.photo !== undefined ? { photo: input.photo || null } : {}),
     ...(input.village !== undefined ? { village: input.village || null } : {}),
     ...(input.district !== undefined ? { district: input.district || null } : {}),
     ...(input.post !== undefined ? { post: input.post || null } : {}),

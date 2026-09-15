@@ -14,6 +14,7 @@ export class DemoRequest extends Model<
   declare id: CreationOptional<string>;
   declare name: string;
   declare phone: string;
+  declare photo: string | null;
   declare village: string | null;
   declare district: string | null;
   declare post: string | null;
@@ -42,6 +43,7 @@ export function initDemoRequest(): typeof DemoRequest {
         },
         name: { type: DataTypes.STRING(80), allowNull: false },
         phone: { type: DataTypes.STRING(20), allowNull: false },
+        photo: { type: DataTypes.STRING(500), allowNull: true },
         village: { type: DataTypes.STRING(120), allowNull: true },
         district: { type: DataTypes.STRING(80), allowNull: true },
         post: { type: DataTypes.STRING(80), allowNull: true },

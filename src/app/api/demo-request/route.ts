@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z, ZodError } from "zod";
 import { createDemoLead } from "@/lib/demo-request.server";
 import { buildDemoReadyEmail, sendEmail } from "@/lib/email.server";
+import { uploadImageToCloudinary } from "@/lib/cloudinary.server";
 
 const demoRequestSchema = z.object({
   name: z.string().min(2).max(80),
@@ -20,10 +21,33 @@ const demoRequestSchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const data = demoRequestSchema.parse(await request.json());
+    const form = await request.formData();
+    const data = demoRequestSchema.parse({
+      name: String(form.get("name") ?? ""),
+      phone: String(form.get("phone") ?? ""),
+      email: String(form.get("email") ?? ""),
+      village: String(form.get("village") ?? ""),
+      district: String(form.get("district") ?? ""),
+      post: String(form.get("post") ?? ""),
+      source: String(form.get("source") ?? ""),
+      pageUrl: String(form.get("pageUrl") ?? ""),
+      utmSource: String(form.get("utmSource") ?? ""),
+      utmMedium: String(form.get("utmMedium") ?? ""),
+      utmCampaign: String(form.get("utmCampaign") ?? ""),
+      notes: String(form.get("notes") ?? ""),
+    });
+    const photoFile = form.get("photo");
+    if (!(photoFile instanceof File) || photoFile.size === 0) {
+      throw new Error("Candidate photo required hai.");
+    }
+    if (!photoFile.type.startsWith("image/") || photoFile.size > 5_000_000) {
+      throw new Error("Photo JPG, PNG ya WebP mein aur 5 MB se chhoti honi chahiye.");
+    }
+    const photo = await uploadImageToCloudinary(photoFile, "bharat-pahchan/demo-candidates");
     const lead = await createDemoLead({
       name: data.name,
       phone: data.phone,
+      photo,
       village: data.village || undefined,
       district: data.district || undefined,
       post: data.post || undefined,

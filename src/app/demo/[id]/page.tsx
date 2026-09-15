@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowRight, CheckCircle2, MapPin, MessageCircle, Phone } from "lucide-react";
 import { getDemoLead } from "@/lib/demo-request.server";
@@ -39,33 +40,48 @@ export default async function DemoPage({ params }: DemoPageProps) {
   return (
     <main className="bg-[#f7faf8] text-[#182638]">
       <section className="overflow-hidden bg-[linear-gradient(135deg,#0e2f5e_0%,#174b78_55%,#159a56_100%)] px-4 py-16 text-white sm:py-24">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-black tracking-[0.18em] text-emerald-200 uppercase">
-            Personalised Election Demo
-          </p>
-          <h1 className="mt-5 max-w-4xl font-display text-4xl leading-tight font-black text-white sm:text-6xl">
-            {demo.name}
-          </h1>
-          <p className="mt-3 text-xl font-bold text-white/90">{post}</p>
-          <p className="mt-5 flex items-center gap-2 text-base font-semibold text-white/80">
-            <MapPin className="h-5 w-5" /> {location}
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a
-              href={`tel:${demo.phone}`}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3.5 font-black text-[#0e2f5e]"
-            >
-              <Phone className="h-5 w-5" /> संपर्क करें
-            </a>
-            <a
-              href={whatsapp}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#20a45b] px-6 py-3.5 font-black text-white"
-            >
-              <MessageCircle className="h-5 w-5" /> WhatsApp
-            </a>
+        <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1fr_360px]">
+          <div>
+            <p className="text-sm font-black tracking-[0.18em] text-emerald-200 uppercase">
+              Personalised Election Demo
+            </p>
+            <h1 className="mt-5 max-w-4xl font-display text-4xl leading-tight font-black text-white sm:text-6xl">
+              {demo.name}
+            </h1>
+            <p className="mt-3 text-xl font-bold text-white/90">{post}</p>
+            <p className="mt-5 flex items-center gap-2 text-base font-semibold text-white/80">
+              <MapPin className="h-5 w-5" /> {location}
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a
+                href={`tel:${demo.phone}`}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3.5 font-black text-[#0e2f5e]"
+              >
+                <Phone className="h-5 w-5" /> संपर्क करें
+              </a>
+              <a
+                href={whatsapp}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#20a45b] px-6 py-3.5 font-black text-white"
+              >
+                <MessageCircle className="h-5 w-5" /> WhatsApp
+              </a>
+            </div>
           </div>
+          {demo.photo && (
+            <div className="relative mx-auto aspect-[4/5] w-full max-w-[340px] overflow-hidden rounded-3xl border-4 border-white/25 bg-white/10 shadow-2xl">
+              <Image
+                src={demo.photo}
+                alt={demo.name}
+                fill
+                unoptimized
+                priority
+                sizes="340px"
+                className="object-cover"
+              />
+            </div>
+          )}
         </div>
       </section>
 

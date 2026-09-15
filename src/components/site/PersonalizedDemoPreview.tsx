@@ -7,6 +7,8 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState("");
   const [location, setLocation] = useState("");
   const [district, setDistrict] = useState("");
   const [post, setPost] = useState("");
@@ -35,29 +37,33 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
 
     try {
       const params = new URLSearchParams(window.location.search);
+      if (!photo) throw new Error("Candidate photo select karein.");
+      const payload = new FormData();
+      const values = {
+        name: nextPreview.name,
+        phone: phone.trim(),
+        email: email.trim(),
+        post: post.trim(),
+        source: "BharatPahchan Website",
+        village: location.trim(),
+        district: district.trim(),
+        pageUrl: window.location.href,
+        utmSource: params.get("utm_source") || "",
+        utmMedium: params.get("utm_medium") || "",
+        utmCampaign: params.get("utm_campaign") || "",
+        notes: [
+          "Personalised Demo Request",
+          `गांव / ग्राम पंचायत: ${location.trim() || "Not provided"}`,
+          `जिला: ${district.trim() || "Not provided"}`,
+          `किस पद के लिए: ${post.trim() || "Not provided"}`,
+          "Lead Status: NEW",
+        ].join("\n"),
+      };
+      Object.entries(values).forEach(([key, value]) => payload.append(key, value));
+      payload.append("photo", photo);
       const response = await fetch("/api/demo-request", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: nextPreview.name,
-          phone: phone.trim(),
-          email: email.trim(),
-          post: post.trim() || undefined,
-          source: "BharatPahchan Website",
-          village: location.trim(),
-          district: district.trim(),
-          pageUrl: window.location.href,
-          utmSource: params.get("utm_source") || "",
-          utmMedium: params.get("utm_medium") || "",
-          utmCampaign: params.get("utm_campaign") || "",
-          notes: [
-            "Personalised Demo Request",
-            `गांव / ग्राम पंचायत: ${location.trim() || "Not provided"}`,
-            `जिला: ${district.trim() || "Not provided"}`,
-            `किस पद के लिए: ${post.trim() || "Not provided"}`,
-            "Lead Status: NEW",
-          ].join("\n"),
-        }),
+        body: payload,
       });
 
       if (!response.ok) {
@@ -174,6 +180,30 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
               />
             </div>
             <div className="sm:col-span-2">
+              <label
+                htmlFor="demo-photo"
+                className="mb-1.5 block text-sm font-black text-[#232a3c]"
+              >
+                उम्मीदवार की फोटो *
+              </label>
+              <input
+                id="demo-photo"
+                type="file"
+                required
+                accept="image/png,image/jpeg,image/webp"
+                onChange={(event) => {
+                  const file = event.target.files?.[0] ?? null;
+                  setPhoto(file);
+                  if (photoPreview) URL.revokeObjectURL(photoPreview);
+                  setPhotoPreview(file ? URL.createObjectURL(file) : "");
+                }}
+                className="w-full rounded-lg border border-[#cfe2d5] bg-white px-4 py-3 text-sm font-semibold file:mr-4 file:rounded-md file:border-0 file:bg-[#159a56] file:px-4 file:py-2 file:font-bold file:text-white"
+              />
+              <p className="mt-1 text-xs font-semibold text-[#667085]">
+                JPG, PNG या WebP — अधिकतम 5 MB
+              </p>
+            </div>
+            <div className="sm:col-span-2">
               <label htmlFor="demo-post" className="mb-1.5 block text-sm font-black text-[#232a3c]">
                 किस पद के लिए तैयारी
               </label>
@@ -231,9 +261,17 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
         <div className="rounded-lg border border-[#dbe8dd] bg-[#f6fbf8] p-5 shadow-card">
           <div className="rounded-lg bg-white p-5 shadow-sm">
             <div className="flex items-center gap-4 border-b border-[#e5efe8] pb-5">
-              <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-[#159a56] text-white">
-                <UserRound className="h-8 w-8" />
-              </span>
+              {photoPreview ? (
+                <img
+                  src={photoPreview}
+                  alt="Candidate preview"
+                  className="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-emerald-200"
+                />
+              ) : (
+                <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-[#159a56] text-white">
+                  <UserRound className="h-8 w-8" />
+                </span>
+              )}
               <div>
                 <p className="text-xs font-black tracking-[0.16em] text-[#159a56] uppercase">
                   सैंपल प्रीव्यू
