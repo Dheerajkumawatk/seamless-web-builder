@@ -1,0 +1,91 @@
+export type ElectionResultStatus = "declared" | "counting" | "tie";
+
+export type ElectionResultRow = {
+  state: "Rajasthan";
+  district: string;
+  localBody: string;
+  category: "Nagar Nigam" | "Nagar Parishad" | "Nagar Palika";
+  leadingParty: string;
+  status: ElectionResultStatus;
+};
+
+export const rajasthanElectionSummary = {
+  title: "Rajasthan Municipal Election Result 2026",
+  displayTitle: "राजस्थान निकाय चुनाव परिणाम",
+  subtitle: "जिला, निकाय और वार्डवार नतीजे",
+  lastUpdated: "14 Sep 2026, 09:11 PM IST",
+  totalUrbanBodies: 309,
+  councillorSeats: 10245,
+  corporations: 10,
+  councils: 51,
+  municipalities: 248,
+  phaseOneTurnout: "76.42%",
+  phaseTwoTurnout: "70.68%",
+  largestPartyBodies: {
+    bjp: 148,
+    congress: 104,
+    ties: 10,
+  },
+  sourceName: "Indian Express",
+  sourceUrl:
+    "https://indianexpress.com/article/cities/jaipur/rajasthan-municipal-election-result-2026-ward-wise-winners-list-nagar-nigam-palika-parishad-10877083/lite/",
+  officialStatsName: "RAJ MASTERS",
+  officialStatsUrl: "https://rajmasters.rajasthan.gov.in/",
+};
+
+export const rajasthanElectionResults: ElectionResultRow[] = [
+  { state: "Rajasthan", district: "Ajmer", localBody: "Ajmer Nagar Nigam", category: "Nagar Nigam", leadingParty: "INC", status: "declared" },
+  { state: "Rajasthan", district: "Ajmer", localBody: "Kekri", category: "Nagar Palika", leadingParty: "INC", status: "declared" },
+  { state: "Rajasthan", district: "Ajmer", localBody: "Kishangarh", category: "Nagar Parishad", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Ajmer", localBody: "Nasirabad", category: "Nagar Palika", leadingParty: "BJP / INC", status: "tie" },
+  { state: "Rajasthan", district: "Ajmer", localBody: "Peesangan", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Ajmer", localBody: "Pushkar", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Ajmer", localBody: "Sarwad", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Ajmer", localBody: "Sawar", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Ajmer", localBody: "Tantoti", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Alwar Nagar Nigam", category: "Nagar Nigam", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Bahadurpur", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Barodamev", category: "Nagar Palika", leadingParty: "INC", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Govindgarh-Rambas", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Kathumar", category: "Nagar Palika", leadingParty: "INC", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Kherli", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Laxmangarh", category: "Nagar Palika", leadingParty: "IND", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Malakheda", category: "Nagar Palika", leadingParty: "INC / IND", status: "tie" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Nau Gaon", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Rajgarh", category: "Nagar Palika", leadingParty: "IND", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Ramgarh", category: "Nagar Palika", leadingParty: "IND", status: "declared" },
+  { state: "Rajasthan", district: "Alwar", localBody: "Thanagazi", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Balotra", localBody: "Balotra", category: "Nagar Parishad", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Balotra", localBody: "Padru", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Balotra", localBody: "Parlu", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Balotra", localBody: "Samdari", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Balotra", localBody: "Siwana", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Balotra", localBody: "Thapan", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Banswara", localBody: "Bagidora", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Banswara", localBody: "Gadhi", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Banswara", localBody: "Partapur", category: "Nagar Palika", leadingParty: "INC", status: "declared" },
+  { state: "Rajasthan", district: "Baran", localBody: "Anta", category: "Nagar Palika", leadingParty: "BJP / INC", status: "tie" },
+  { state: "Rajasthan", district: "Baran", localBody: "Atru", category: "Nagar Palika", leadingParty: "INC", status: "declared" },
+  { state: "Rajasthan", district: "Baran", localBody: "Baran", category: "Nagar Parishad", leadingParty: "AAP", status: "declared" },
+  { state: "Rajasthan", district: "Baran", localBody: "Chhabra", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Baran", localBody: "Mangrol", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Baran", localBody: "Siswali", category: "Nagar Palika", leadingParty: "INC", status: "declared" },
+  { state: "Rajasthan", district: "Bharatpur", localBody: "Bharatpur Nagar Nigam", category: "Nagar Nigam", leadingParty: "IND", status: "declared" },
+  { state: "Rajasthan", district: "Bharatpur", localBody: "Bhusawar", category: "Nagar Palika", leadingParty: "IND", status: "declared" },
+  { state: "Rajasthan", district: "Bharatpur", localBody: "Deeg", category: "Nagar Palika", leadingParty: "IND", status: "declared" },
+  { state: "Rajasthan", district: "Bharatpur", localBody: "Kaman", category: "Nagar Palika", leadingParty: "IND", status: "declared" },
+  { state: "Rajasthan", district: "Bharatpur", localBody: "Kumher", category: "Nagar Palika", leadingParty: "IND", status: "declared" },
+  { state: "Rajasthan", district: "Bharatpur", localBody: "Nadbai", category: "Nagar Palika", leadingParty: "IND", status: "declared" },
+  { state: "Rajasthan", district: "Bhilwara", localBody: "Bhilwara Nagar Nigam", category: "Nagar Nigam", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Bhilwara", localBody: "Gangapur", category: "Nagar Palika", leadingParty: "INC", status: "declared" },
+  { state: "Rajasthan", district: "Bhilwara", localBody: "Gulabpura", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Bhilwara", localBody: "Jahazpur", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Bhilwara", localBody: "Kotri", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Bhilwara", localBody: "Mandalgarh", category: "Nagar Palika", leadingParty: "BJP", status: "declared" },
+  { state: "Rajasthan", district: "Bhilwara", localBody: "Shahpura", category: "Nagar Palika", leadingParty: "INC", status: "declared" },
+  { state: "Rajasthan", district: "Bikaner", localBody: "Bikaner Nagar Nigam", category: "Nagar Nigam", leadingParty: "INC", status: "declared" },
+  { state: "Rajasthan", district: "Jaipur", localBody: "Jaipur Nagar Nigam", category: "Nagar Nigam", leadingParty: "Counting underway", status: "counting" },
+  { state: "Rajasthan", district: "Jodhpur", localBody: "Jodhpur Nagar Nigam", category: "Nagar Nigam", leadingParty: "Counting underway", status: "counting" },
+  { state: "Rajasthan", district: "Kota", localBody: "Kota Nagar Nigam", category: "Nagar Nigam", leadingParty: "Counting underway", status: "counting" },
+  { state: "Rajasthan", district: "Kota", localBody: "Suket", category: "Nagar Palika", leadingParty: "Counting underway", status: "counting" },
+];

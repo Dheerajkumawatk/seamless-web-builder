@@ -39,6 +39,7 @@ type FooterBlogPost = {
 
 export function Footer() {
   const pathname = usePathname();
+  const hideBlogFooter = pathname.startsWith("/election-results");
   const socialLinks = [
     { icon: Facebook, href: site.socialLinks.facebook, label: "Facebook" },
     { icon: Instagram, href: site.socialLinks.instagram, label: "Instagram" },
@@ -52,7 +53,7 @@ export function Footer() {
 
   return (
     <>
-      <BlogFooterSection />
+      {!hideBlogFooter && <BlogFooterSection />}
       <footer className="border-t border-[#dbe3ef] bg-[#f7faff] text-[#33384a] shadow-[0_-2px_10px_rgba(18,58,114,.06)]">
         <div className="mx-auto grid max-w-[1720px] gap-10 px-6 py-11 md:grid-cols-2 lg:grid-cols-[1.22fr_.82fr_.98fr_.98fr] lg:px-20">
           <div className="pr-4">

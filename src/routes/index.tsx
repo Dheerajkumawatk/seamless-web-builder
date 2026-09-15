@@ -13,9 +13,11 @@ import {
 } from "lucide-react";
 import { images } from "@/data/images";
 import { audiences, packages, site, trustCapabilities, websiteSections } from "@/data/site";
+import { rajasthanElectionSummary } from "@/data/election-results";
 import heroBackground from "@/assets/bharatpahchan-hero-background.png";
 import mobileSliderBackground from "@/assets/bharatpahchan-mobile-slider.png";
 import channel009Logo from "@/assets/channel009-logo.png";
+import aiCampaignPreview from "@/assets/ai-campaign-preview.png";
 import { MobileContactBar } from "@/components/site/MobileContactBar";
 import { PackageQueryButton } from "@/components/site/PackageQueryButton";
 import { PersonalizedDemoPreview } from "@/components/site/PersonalizedDemoPreview";
@@ -119,7 +121,7 @@ export default function Index() {
 
             <div className="mt-5 flex max-w-[340px] flex-row gap-2 sm:mt-10 sm:max-w-none sm:gap-5">
               <Link
-                href="/#demo-form"
+                href="/contact"
                 className="inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#0e2f5e] px-2 py-3 text-center text-[11px] leading-tight font-extrabold text-white shadow-[0_14px_26px_rgba(80,8,10,.22)] sm:min-w-[270px] sm:flex-none sm:gap-4 sm:px-9 sm:py-5 sm:text-xl"
               >
                 मेरे नाम से डेमो बनाइए <ArrowRight className="h-4 w-4 shrink-0 sm:h-6 sm:w-6" />
@@ -139,6 +141,52 @@ export default function Index() {
         <div className="mx-auto max-w-7xl text-center text-sm font-extrabold text-[#0e2f5e]">
           BharatPahchan — Citiline Technologies Private Limited द्वारा संचालित Digital Campaign
           Initiative
+        </div>
+      </section>
+
+      <section className="border-b border-[#dbe8dd] bg-[#f5f8fc] px-4 py-8">
+        <div className="mx-auto max-w-7xl rounded-lg border border-[#dbe5ee] bg-white p-5 shadow-sm sm:p-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="inline-flex rounded-lg bg-red-50 px-3 py-1 text-sm font-black text-[#df1414]">
+                डिजाइन डेमो • वास्तविक परिणाम नहीं
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-black leading-tight text-[#0e2f5e] sm:text-4xl">
+                राजस्थान निकाय चुनाव परिणाम
+              </h2>
+              <p className="mt-1 text-lg font-bold text-[#69748a]">जिला, निकाय और वार्डवार नतीजे</p>
+             
+            </div>
+            <p className="text-sm font-bold text-[#5c6880]">अंतिम अपडेट: {rajasthanElectionSummary.lastUpdated}</p>
+          </div>
+
+          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { label: "भाजपा", value: rajasthanElectionSummary.largestPartyBodies.bjp, tone: "border-orange-200 bg-orange-50 text-orange-700", bar: "bg-[#f97316]" },
+              { label: "कांग्रेस", value: rajasthanElectionSummary.largestPartyBodies.congress, tone: "border-blue-200 bg-blue-50 text-blue-700", bar: "bg-[#2f73ff]" },
+              { label: "अन्य दल", value: rajasthanElectionSummary.largestPartyBodies.ties, tone: "border-violet-200 bg-violet-50 text-violet-700", bar: "bg-[#7c3aed]" },
+              { label: "निर्दलीय", value: "—", tone: "border-slate-200 bg-slate-50 text-slate-700", bar: "bg-[#6b7280]" },
+            ].map((item) => (
+              <article key={item.label} className={`overflow-hidden rounded-lg border ${item.tone}`}>
+                <div className={`h-1.5 ${item.bar}`} />
+                <div className="p-4 text-center">
+                  <p className="text-xl font-black">{item.label}</p>
+                  <p className="mt-2 text-2xl font-black text-[#0e2f5e]">{item.value}</p>
+                  <div className="mt-3 grid grid-cols-2 rounded-lg bg-white/70 text-sm font-bold text-[#526079]">
+                    <span className="px-2 py-2">जीत: —</span>
+                    <span className="px-2 py-2">बढ़त: —</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <Link
+            href="/election-results"
+            className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border border-[#df1414] bg-white px-6 py-3 text-sm font-black text-[#df1414] transition hover:bg-red-50"
+          >
+            सभी परिणाम देखें <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
@@ -195,7 +243,7 @@ export default function Index() {
               ))}
             </div>
             <Link
-              href="/#demo-form"
+              href="/contact"
               className="mt-7 inline-flex items-center gap-2 rounded-lg bg-[#0e2f5e] px-6 py-3.5 text-sm font-black text-white"
             >
               मेरे नाम से डेमो बनाइए <ArrowRight className="h-4 w-4" />
@@ -231,7 +279,7 @@ export default function Index() {
               ))}
             </div>
             <Link
-              href="/#demo-form"
+              href="/contact"
               className="mt-7 inline-flex items-center gap-2 rounded-lg bg-[#159a56] px-6 py-3.5 text-sm font-black text-white"
             >
               मेरे नाम से डेमो बनाइए <ArrowRight className="h-4 w-4" />
@@ -283,20 +331,20 @@ export default function Index() {
       <Section className="website-demo-section border-y border-[#dbe8dd] bg-[#f6fbf8]">
         <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_.85fr]">
           <img
-            src={images["demo"]}
-            alt="सैंपल वेबसाइट प्रीव्यू"
+            src={aiCampaignPreview.src}
+            width={2048}
+            height={878}
+            alt="AI generated campaign image"
             loading="lazy"
-            className="w-full rounded-lg border border-[#dbe8dd] bg-white object-contain shadow-card"
+            className="h-full max-h-[440px] w-full rounded-lg border border-[#dbe8dd] bg-white object-cover shadow-card"
           />
           <div>
-            <p className="text-xs font-black tracking-[0.2em] text-[#159a56] uppercase">
-              Sample Preview
-            </p>
+            <p className="text-sm font-black text-[#159a56]">AI Visual Studio</p>
             <h2 className="mt-3 font-display text-3xl font-black leading-tight text-[#0e2f5e] sm:text-4xl">
-              देखें आपकी उम्मीदवार वेबसाइट कैसी दिख सकती है
+              Website aur social campaign ke liye ready visuals
             </h2>
             <p className="mt-4 text-base leading-relaxed font-semibold text-[#4b5364]">
-              आपके नाम, फोटो और क्षेत्र के अनुसार customised demo उपलब्ध।
+              Local campaign ko clean, trustworthy aur modern dikhane ke liye AI-generated banners, creatives aur digital material.
             </p>
             <ul className="mt-5 grid gap-2.5">
               {websiteSections.slice(0, 6).map((item) => (
@@ -309,10 +357,10 @@ export default function Index() {
               ))}
             </ul>
             <Link
-              href="/#demo-form"
+              href="/contact"
               className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#0e2f5e] px-6 py-3.5 text-sm font-black text-white"
             >
-              मेरे नाम से डेमो बनाइए <ArrowRight className="h-4 w-4" />
+              Design ke liye contact karein <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>

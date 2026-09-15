@@ -1,14 +1,18 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowRight, CheckCircle2, Loader2, UserRound } from "lucide-react";
+import { ArrowRight, CheckCircle2, Eye, EyeOff, Loader2 } from "lucide-react";
+import aiCampaignPreview from "@/assets/ai-campaign-preview.png";
 
 export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: string }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [location, setLocation] = useState("");
   const [district, setDistrict] = useState("");
   const [post, setPost] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [preview, setPreview] = useState({ name: "आपका नाम", location: "आपका गांव / शहर" });
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [error, setError] = useState("");
@@ -51,6 +55,8 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
             `गांव / ग्राम पंचायत: ${location.trim() || "Not provided"}`,
             `जिला: ${district.trim() || "Not provided"}`,
             `किस पद के लिए: ${post.trim() || "Not provided"}`,
+            `Email: ${email.trim() || "Not provided"}`,
+            `Password: ${password ? "Provided" : "Not provided"}`,
             "Lead Status: NEW",
           ].join("\n"),
         }),
@@ -116,6 +122,50 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
                 className="w-full rounded-lg border border-[#cfe2d5] bg-white px-4 py-3 text-base font-semibold text-[#232a3c] outline-none focus:border-[#159a56] focus:ring-2 focus:ring-[#159a56]/20"
                 placeholder="+91"
               />
+            </div>
+            <div>
+              <label
+                htmlFor="demo-email"
+                className="mb-1.5 block text-sm font-black text-[#232a3c]"
+              >
+                ईमेल *
+              </label>
+              <input
+                id="demo-email"
+                required
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="w-full rounded-lg border border-[#cfe2d5] bg-white px-4 py-3 text-base font-semibold text-[#232a3c] outline-none focus:border-[#159a56] focus:ring-2 focus:ring-[#159a56]/20"
+                placeholder="example@email.com"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="demo-password"
+                className="mb-1.5 block text-sm font-black text-[#232a3c]"
+              >
+                पासवर्ड *
+              </label>
+              <div className="relative">
+                <input
+                  id="demo-password"
+                  required
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  className="w-full rounded-lg border border-[#cfe2d5] bg-white px-4 py-3 pr-12 text-base font-semibold text-[#232a3c] outline-none focus:border-[#159a56] focus:ring-2 focus:ring-[#159a56]/20"
+                  placeholder="Password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((current) => !current)}
+                  className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-lg text-[#526079] hover:bg-[#eef5ff] hover:text-[#0e2f5e]"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
             <div>
               <label
@@ -192,35 +242,21 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
           </form>
         </div>
 
-        <div className="rounded-lg border border-[#dbe8dd] bg-[#f6fbf8] p-5 shadow-card">
-          <div className="rounded-lg bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-4 border-b border-[#e5efe8] pb-5">
-              <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-[#159a56] text-white">
-                <UserRound className="h-8 w-8" />
-              </span>
-              <div>
-                <p className="text-xs font-black tracking-[0.16em] text-[#159a56] uppercase">
-                  सैंपल प्रीव्यू
-                </p>
-                <h3 className="mt-1 font-display text-2xl font-black text-maroon">
-                  {preview.name}
-                </h3>
-                <p className="text-sm font-bold text-[#596173]">{preview.location}</p>
-              </div>
-            </div>
-            <div className="mt-5 grid gap-3 sm:grid-cols-3">
-              {["परिचय", "विकास योजना", "संपर्क"].map((item) => (
-                <div key={item} className="rounded-lg border border-[#e5efe8] bg-[#fbfdfc] p-4">
-                  <p className="text-sm font-black text-[#0e2f5e]">{item}</p>
-                  <div className="mt-3 h-2 rounded bg-emerald-100" />
-                  <div className="mt-2 h-2 w-2/3 rounded bg-[#dfe8f7]" />
-                </div>
-              ))}
-            </div>
-            <p className="mt-5 rounded-lg bg-[#fff8eb] px-4 py-3 text-sm font-bold text-[#8a4f00]">
-              यह preview केवल demo request समझाने के लिए है। वास्तविक demo आपकी जानकारी के अनुसार
-              टीम तैयार करेगी।
-            </p>
+        <div className="overflow-hidden rounded-lg border border-[#dbe8dd] bg-white shadow-card">
+          <img
+            src={aiCampaignPreview.src}
+            width={2048}
+            height={878}
+            alt="AI generated digital campaign workspace"
+            loading="lazy"
+            className="h-[320px] w-full object-cover sm:h-[430px] lg:h-full"
+          />
+          <div className="border-t border-[#dbe8dd] p-5">
+            <p className="text-sm font-black text-[#159a56]">AI Campaign Image</p>
+            <h3 className="mt-1 font-display text-2xl font-black text-[#0e2f5e]">
+              {preview.name} ke liye modern digital campaign look
+            </h3>
+            <p className="mt-2 text-sm font-bold text-[#596173]">{preview.location}</p>
             <a
               href={contactHref}
               className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#159a56] px-5 py-3.5 text-base font-black text-white"

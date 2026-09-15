@@ -234,7 +234,7 @@ function IdCardBack({ profile }: { profile: CardProfile }) {
           </div>
         </div>
 
-        <div className="mt-auto pb-10 text-lg font-black">पहचान से विकास की ओर</div>
+        <div className="mt-auto pb-10 text-lg font-black"></div>
       </div>
       <BottomRibbon />
     </article>
