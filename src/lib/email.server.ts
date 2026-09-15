@@ -1,6 +1,5 @@
 import { formatVikasMitraId } from "@/lib/profile-id";
 import nodemailer from "nodemailer";
-import { generateVikasMitraCard } from "@/lib/vikas-mitra-card.server";
 
 const resendApiKey = process.env["RESEND_API_KEY"];
 const emailFrom = process.env["EMAIL_FROM"] ?? "Bharat Pehchan <bharatpahchan.helpline@gmail.com>";
@@ -232,15 +231,11 @@ export async function buildVikasMitraApprovalEmail(
     <p style="margin-top:18px;color:#5b6376">— भारत पहचान टीम</p>
   </div>`;
 
-  const card = await generateVikasMitraCard(row);
   return {
     to: row.email ?? "",
     subject,
     text,
     html,
-    attachments: [
-      { filename: `Vikas-Mitra-${uniqueId}.png`, content: card, contentType: "image/png" },
-    ],
   };
 }
 

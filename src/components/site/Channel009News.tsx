@@ -13,11 +13,13 @@ type ChannelPost = {
 
 const CHANNEL_URL = "https://channel009.news/";
 const FALLBACK_PRIMARY_POST: ChannelPost = {
-  title: "कोटा में बागी उम्मीदवारों ने बढ़ाई पार्टियों की चिंता, निकाय चुनाव में बदल सकते हैं समीकरण",
+  title:
+    "कोटा में बागी उम्मीदवारों ने बढ़ाई पार्टियों की चिंता, निकाय चुनाव में बदल सकते हैं समीकरण",
   excerpt: "राजनीति, राज्य और देश की जरूरी खबरों के लिए Channel009.news देखें।",
   link: CHANNEL_URL,
   date: "ताजा खबर",
-  image: "https://channel009.news/wp-content/uploads/2026/09/ChatGPT-Image-Sep-8-2026-03_28_27-PM-1.png",
+  image:
+    "https://channel009.news/wp-content/uploads/2026/09/ChatGPT-Image-Sep-8-2026-03_28_27-PM-1.png",
   category: "State News",
 };
 
@@ -28,15 +30,18 @@ const FALLBACK_POSTS: ChannelPost[] = [
     excerpt: "राजस्थान सहित देशभर की लाइव अपडेट और स्थानीय खबरें।",
     link: CHANNEL_URL,
     date: "ताजा खबर",
-    image: "https://channel009.news/wp-content/uploads/2026/09/ChatGPT-Image-Sep-8-2026-03_28_31-PM-1.png",
+    image:
+      "https://channel009.news/wp-content/uploads/2026/09/ChatGPT-Image-Sep-8-2026-03_28_31-PM-1.png",
     category: "State News",
   },
   {
-    title: "बीकानेर में स्थानीय समीकरण महत्वपूर्ण बने, निकाय चुनाव में क्षेत्रीय मुद्दों का बढ़ा प्रभाव",
+    title:
+      "बीकानेर में स्थानीय समीकरण महत्वपूर्ण बने, निकाय चुनाव में क्षेत्रीय मुद्दों का बढ़ा प्रभाव",
     excerpt: "स्थानीय मुद्दों और चुनावी अपडेट की तेज कवरेज।",
     link: CHANNEL_URL,
     date: "ताजा खबर",
-    image: "https://channel009.news/wp-content/uploads/2026/09/ChatGPT-Image-Sep-8-2026-03_28_34-PM-1.png",
+    image:
+      "https://channel009.news/wp-content/uploads/2026/09/ChatGPT-Image-Sep-8-2026-03_28_34-PM-1.png",
     category: "State News",
   },
 ];
@@ -63,9 +68,9 @@ export async function Channel009News() {
       <div>
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-          <div className="text-xs font-bold tracking-[0.22em] text-[#04953f] uppercase">
-            News Channel
-          </div>
+            <div className="text-xs font-bold tracking-[0.22em] text-[#04953f] uppercase">
+              News Channel
+            </div>
             <h2 className="mt-4 font-display text-3xl font-black leading-tight text-[#0e2f6f] sm:text-4xl">
               Channel009 से ताज़ा खबरें
             </h2>
@@ -81,6 +86,23 @@ export async function Channel009News() {
           >
             Channel009 देखें <ArrowUpRight className="h-4 w-4" />
           </Link>
+        </div>
+
+        <div className="mt-7 flex overflow-hidden rounded-lg bg-[#0e2f6f] py-3 text-white shadow-sm">
+          <div className="channel-news-track flex w-max shrink-0 items-center">
+            {[...newsItems, ...newsItems].map((post, index) => (
+              <Link
+                key={`${post.link}-${index}`}
+                href={post.link}
+                target="_blank"
+                rel="noreferrer"
+                className="flex shrink-0 items-center gap-3 px-7 text-sm font-bold hover:text-emerald-200"
+              >
+                <span className="rounded bg-[#ff5b20] px-2 py-0.5 text-xs font-black">LIVE</span>
+                <span className="max-w-[75vw] truncate sm:max-w-md">{post.title}</span>
+              </Link>
+            ))}
+          </div>
         </div>
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">

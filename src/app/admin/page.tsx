@@ -328,6 +328,12 @@ export default function AdminPage() {
   }
 
   async function approve(row: Vikas) {
+    setData((current) => ({
+      ...current,
+      vikas: current.vikas.map((profile) =>
+        profile.id === row.id ? { ...profile, status: "approved" } : profile,
+      ),
+    }));
     const result = await updateRow(
       "vikas",
       row.id,
@@ -336,6 +342,12 @@ export default function AdminPage() {
     );
 
     if (!result?.ok) {
+      setData((current) => ({
+        ...current,
+        vikas: current.vikas.map((profile) =>
+          profile.id === row.id ? { ...profile, status: row.status } : profile,
+        ),
+      }));
       return;
     }
 
@@ -795,9 +807,18 @@ function VikasList({
                 <button onClick={() => onPreview(row)} className="action border bg-white">
                   <Eye className="h-4 w-4" /> Preview
                 </button>
-                <button onClick={() => onApprove(row)} className="action bg-emerald-600 text-white">
-                  <CheckCircle2 className="h-4 w-4" /> Approval
-                </button>
+                {row.status === "approved" ? (
+                  <span className="action cursor-default bg-emerald-100 text-emerald-700">
+                    <CheckCircle2 className="h-4 w-4" /> Approved
+                  </span>
+                ) : (
+                  <button
+                    onClick={() => onApprove(row)}
+                    className="action bg-emerald-600 text-white"
+                  >
+                    <CheckCircle2 className="h-4 w-4" /> Approve
+                  </button>
+                )}
                 <button onClick={() => onReject(row)} className="action bg-red-600 text-white">
                   <XCircle className="h-4 w-4" /> Reject
                 </button>

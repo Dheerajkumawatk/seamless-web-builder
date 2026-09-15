@@ -1,7 +1,7 @@
+import fs from "node:fs";
 import https from "node:https";
 import path from "node:path";
-import sharp, { type OverlayOptions } from "sharp";
-import QRCode from "qrcode";
+import PDFDocument from "pdfkit";
 import { formatVikasMitraId } from "@/lib/profile-id";
 
 type CardProfile = {
@@ -10,19 +10,13 @@ type CardProfile = {
   name: string;
   phone: string;
   district: string;
+  tehsil: string;
   photo?: string | undefined;
 };
+const C = { navy: "#123a72", orange: "#ff720e", green: "#159a56" };
+const asset = (name: string) => path.join(process.cwd(), "src/assets", name);
 
-const templatePath = path.join(process.cwd(), "src/assets/vikas-mitra-id-card.png");
-const fontfile = path.join(process.cwd(), "src/assets/fonts/NotoSansDevanagari-Regular.ttf");
-const xml = (value: string) =>
-  value.replace(
-    /[&<>"']/g,
-    (character) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" })[character]!,
-  );
-
-async function downloadPhoto(source: string): Promise<Buffer> {
+async function photoBuffer(source: string) {
   const url = new URL(source);
   const cloud = process.env["CLOUDINARY_CLOUD_NAME"]?.trim();
   if (
@@ -30,76 +24,139 @@ async function downloadPhoto(source: string): Promise<Buffer> {
     url.hostname !== "res.cloudinary.com" ||
     !cloud ||
     !url.pathname.startsWith(`/${cloud}/image/upload/`)
-  ) {
-    throw new Error("Invalid profile photo URL");
-  }
-  return new Promise((resolve, reject) => {
-    const request = https.get(url, { family: 4 }, (response) => {
-      if (response.statusCode !== 200) {
-        response.resume();
-        reject(new Error("Profile photo download failed"));
-        return;
-      }
-      let size = 0;
+  )
+    throw new Error("Invalid photo URL");
+  return new Promise<Buffer>((resolve, reject) => {
+    const req = https.get(url, { family: 4 }, (res) => {
+      if (res.statusCode !== 200) return reject(new Error("Photo download failed"));
       const chunks: Buffer[] = [];
-      response.on("data", (chunk: Buffer) => {
+      let size = 0;
+      res.on("data", (chunk: Buffer) => {
         size += chunk.length;
-        if (size > 10_000_000) request.destroy(new Error("Profile photo is too large"));
+        if (size > 10_000_000) req.destroy(new Error("Photo is too large"));
         else chunks.push(chunk);
       });
-      response.on("end", () => resolve(Buffer.concat(chunks)));
-      response.on("error", reject);
+      res.on("end", () => resolve(Buffer.concat(chunks)));
+      res.on("error", reject);
     });
-    const timer = setTimeout(() => request.destroy(new Error("Profile photo timeout")), 15_000);
-    request.on("close", () => clearTimeout(timer));
-    request.on("error", reject);
+    req.setTimeout(15_000, () => req.destroy(new Error("Photo timeout")));
+    req.on("error", reject);
   });
 }
 
-export async function generateVikasMitraCard(row: CardProfile): Promise<Buffer> {
-  const memberId = formatVikasMitraId(row.id, row.createdAt);
-  const qr = await QRCode.toBuffer(memberId, { width: 124, margin: 2, errorCorrectionLevel: "H" });
-  const approvedBadge =
-    Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="154" height="45">
-    <rect width="154" height="45" rx="8" fill="#082f61"/>
-    <text x="77" y="30" text-anchor="middle" font-family="sans-serif" font-size="19" fill="white">APPROVED</text>
-  </svg>`);
-  const details = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="390" height="205">
-    <style>@font-face{font-family:noto;src:url('${fontfile}')}text{font-family:noto,sans-serif;fill:#18385d}</style>
-    <rect width="390" height="205" fill="#f4f5f7" fill-opacity=".96"/>
-    <text x="8" y="31" font-size="18">Name</text><text x="115" y="31" font-size="23" font-weight="700">${xml(row.name)}</text>
-    <text x="8" y="70" font-size="18">Role</text><text x="115" y="70" font-size="21">Vikas Mitra</text>
-    <text x="8" y="109" font-size="18">District</text><text x="115" y="109" font-size="21">${xml(row.district)}</text>
-    <text x="8" y="148" font-size="18">Member ID</text><text x="115" y="148" font-size="19">${xml(memberId)}</text>
-    <text x="8" y="187" font-size="18">Mobile</text><text x="115" y="187" font-size="21">${xml(row.phone)}</text>
-  </svg>`);
-  const layers: OverlayOptions[] = [
-    { input: await sharp(qr).resize(118, 118).png().toBuffer(), left: 781, top: 378 },
-    {
-      input: await sharp(approvedBadge)
-        .rotate(7.5, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
-        .png()
-        .toBuffer(),
-      left: 737,
-      top: 500,
-    },
-    {
-      input: await sharp(details)
-        .rotate(7.5, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
-        .png()
-        .toBuffer(),
-      left: 485,
-      top: 529,
-    },
-  ];
-  if (row.photo) {
-    const photo = await sharp(await downloadPhoto(row.photo), { limitInputPixels: 25_000_000 })
-      .rotate()
-      .resize(174, 190, { fit: "cover", position: "attention" })
-      .rotate(7.5, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
-      .png()
-      .toBuffer();
-    layers.push({ input: photo, left: 548, top: 345 });
+function frame(doc: PDFKit.PDFDocument, x: number, y: number, w: number, h: number) {
+  doc.roundedRect(x, y, w, h, 14).fillAndStroke("white", "#dbe3ef");
+  for (const { cx, cy } of [
+    { cx: x + 3, cy: y + 3 },
+    { cx: x + w - 3, cy: y + h - 3 },
+  ]) {
+    doc.lineWidth(12).strokeColor(C.orange).circle(cx, cy, 55).stroke();
+    doc.lineWidth(8).strokeColor(C.green).circle(cx, cy, 44).stroke();
   }
-  return sharp(templatePath).composite(layers).png().toBuffer();
+  doc
+    .rect(x, y + h - 42, w, 42)
+    .fill(C.navy)
+    .fillColor("white")
+    .fontSize(15)
+    .text("www.bharatpahchan.com", x, y + h - 29, { width: w, align: "center" });
+}
+function logo(doc: PDFKit.PDFDocument, x: number, y: number, w: number) {
+  doc.image(asset("bharat-pahchan-logo.jpg"), x + w / 2 - 38, y + 18, { fit: [76, 76] });
+}
+function row(doc: PDFKit.PDFDocument, x: number, y: number, label: string, value: string) {
+  doc
+    .fillColor(C.navy)
+    .fontSize(11)
+    .text(label, x, y, { width: 70 })
+    .text(":", x + 70, y)
+    .text(value, x + 82, y, { width: 205 });
+  doc
+    .moveTo(x + 82, y + 14)
+    .lineTo(x + 285, y + 14)
+    .lineWidth(0.5)
+    .strokeColor(C.navy)
+    .stroke();
+}
+
+export async function generateVikasMitraCardPdf(p: CardProfile): Promise<Buffer> {
+  const doc = new PDFDocument({ size: "A4", layout: "landscape", margin: 0, compress: true });
+  const chunks: Buffer[] = [];
+  doc.on("data", (c: Buffer) => chunks.push(c));
+  const done = new Promise<Buffer>((resolve, reject) => {
+    doc.on("end", () => resolve(Buffer.concat(chunks)));
+    doc.on("error", reject);
+  });
+  doc.registerFont("Hindi", asset("fonts/NotoSansDevanagari-Regular.ttf")).font("Hindi");
+  const y = 31,
+    w = 380,
+    h = 532,
+    fx = 31,
+    bx = 431;
+  frame(doc, fx, y, w, h);
+  frame(doc, bx, y, w, h);
+  logo(doc, fx, y, w);
+  logo(doc, bx, y, w);
+  doc
+    .fillColor(C.navy)
+    .fontSize(27)
+    .text("विकास मित्र", fx, y + 102, { width: w, align: "center" });
+  doc.fontSize(12).text("V I K A S   M I T R A", fx, y + 136, { width: w, align: "center" });
+  let photo: Buffer | undefined;
+  if (p.photo)
+    try {
+      photo = await photoBuffer(p.photo);
+    } catch (e) {
+      console.error("[id-card] photo", e);
+    }
+  if (photo) {
+    doc
+      .save()
+      .roundedRect(fx + 130, y + 158, 120, 130, 8)
+      .clip()
+      .image(photo, fx + 130, y + 158, { fit: [120, 130], align: "center", valign: "center" })
+      .restore();
+  } else
+    doc
+      .roundedRect(fx + 130, y + 158, 120, 130, 8)
+      .fillAndStroke("#f5f7fa", "#cbd5e1")
+      .fillColor("#94a3b8")
+      .fontSize(14)
+      .text("PHOTO", fx + 130, y + 216, { width: 120, align: "center" });
+  doc
+    .fillColor(C.navy)
+    .fontSize(23)
+    .text(p.name, fx + 20, y + 298, { width: w - 40, align: "center" })
+    .fontSize(13)
+    .text("विकास मित्र", fx, y + 328, { width: w, align: "center" });
+  const id = formatVikasMitraId(p.id, p.createdAt);
+  row(doc, fx + 42, y + 362, "Mitra ID", id);
+  row(doc, fx + 42, y + 389, "जिला", p.district);
+  row(doc, fx + 42, y + 416, "ब्लॉक", p.tehsil);
+  row(doc, fx + 42, y + 443, "मोबाइल", p.phone);
+  doc.fontSize(23).text("विकास मित्र पहचान पत्र", bx, y + 115, { width: w, align: "center" });
+  doc
+    .fontSize(13)
+    .text(
+      "यह कार्ड भारत पहचान के विकास मित्र की पहचान हेतु है। खो जाने पर नीचे दिए गए नंबर पर संपर्क करें। यह सरकारी पहचान पत्र नहीं है।",
+      bx + 45,
+      y + 178,
+      { width: w - 90, align: "center", lineGap: 5 },
+    );
+  const issue = new Date(p.createdAt),
+    valid = new Date(issue);
+  valid.setFullYear(valid.getFullYear() + 1);
+  const date = (d: Date) => new Intl.DateTimeFormat("en-GB").format(d);
+  doc.roundedRect(bx + 35, y + 265, w - 70, 78, 8).fillAndStroke("#f8fafc", "#dbe3ef");
+  row(doc, bx + 60, y + 283, "जारी तिथि", date(issue));
+  row(doc, bx + 60, y + 313, "वैधता", date(valid));
+  doc
+    .fillColor(C.navy)
+    .fontSize(18)
+    .text("संपर्क", bx, y + 368, { width: w, align: "center" })
+    .fontSize(12)
+    .text("☎  +91 7891-131-132", bx + 65, y + 405)
+    .text("✉  bharatpahchan.helpline@gmail.com", bx + 65, y + 430)
+    .text("●  जयपुर, राजस्थान", bx + 65, y + 455);
+  doc.end();
+  return done;
 }

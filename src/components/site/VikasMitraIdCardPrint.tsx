@@ -1,6 +1,6 @@
 "use client";
 
-import { Mail, MapPin, Phone, Printer, UserRound } from "lucide-react";
+import { Download, Mail, MapPin, Phone, UserRound } from "lucide-react";
 import logoImage from "@/assets/bharat-pahchan-logo.jpg";
 import { site } from "@/data/site";
 
@@ -15,7 +15,13 @@ type CardProfile = {
   validUntil: string;
 };
 
-export function VikasMitraIdCardPrint({ profile }: { profile: CardProfile }) {
+export function VikasMitraIdCardPrint({
+  profile,
+  downloadUrl,
+}: {
+  profile: CardProfile;
+  downloadUrl: string;
+}) {
   return (
     <main className="id-card-document flex min-h-screen items-start justify-center bg-slate-100 px-4 py-6 text-[#08245a] print:block print:bg-white print:p-0">
       <style
@@ -106,14 +112,13 @@ export function VikasMitraIdCardPrint({ profile }: { profile: CardProfile }) {
       />
 
       <div className="no-print fixed top-4 right-4 z-50">
-        <button
-          type="button"
-          onClick={() => window.print()}
+        <a
+          href={downloadUrl}
           className="inline-flex items-center gap-2 rounded-lg bg-[#123a72] px-5 py-3 text-sm font-black text-white shadow-sm"
         >
-          <Printer className="h-4 w-4" />
-          Save PDF - Page 1
-        </button>
+          <Download className="h-4 w-4" />
+          Colour ID Card PDF डाउनलोड करें
+        </a>
       </div>
 
       <section className="id-card-page flex max-w-7xl flex-col gap-6 rounded-xl bg-white p-4 shadow-xl print:max-w-none print:flex-row print:gap-5 print:rounded-none print:p-0 lg:flex-row">

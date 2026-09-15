@@ -120,23 +120,6 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
             </div>
             <div>
               <label
-                htmlFor="demo-email"
-                className="mb-1.5 block text-sm font-black text-[#232a3c]"
-              >
-                ईमेल *
-              </label>
-              <input
-                id="demo-email"
-                type="email"
-                required
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                className="w-full rounded-lg border border-[#cfe2d5] bg-white px-4 py-3 text-base font-semibold text-[#232a3c] outline-none focus:border-[#159a56] focus:ring-2 focus:ring-[#159a56]/20"
-                placeholder="आपका ईमेल"
-              />
-            </div>
-            <div>
-              <label
                 htmlFor="demo-phone"
                 className="mb-1.5 block text-sm font-black text-[#232a3c]"
               >

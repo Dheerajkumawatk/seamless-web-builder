@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { images } from "@/data/images";
 import { audiences, packages, site, trustCapabilities, websiteSections } from "@/data/site";
-import { rajasthanElectionSummary } from "@/data/election-results";
+import { electionSummary, listElectionResults } from "@/lib/election-results.server";
 import heroBackground from "@/assets/bharatpahchan-hero-background.png";
 import mobileSliderBackground from "@/assets/bharatpahchan-mobile-slider.png";
 import channel009Logo from "@/assets/channel009-logo.png";
@@ -83,7 +83,9 @@ const homepageFaqs = [
   },
 ];
 
-export default function Index() {
+export default async function Index() {
+  const electionResults = await listElectionResults();
+  const resultSummary = electionSummary(electionResults);
   const whatsappHref = getWhatsappHref(enquiryMessage);
 
   return (
@@ -149,41 +151,47 @@ export default function Index() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p className="inline-flex rounded-lg bg-red-50 px-3 py-1 text-sm font-black text-[#df1414]">
-                डिजाइन डेमो • वास्तविक परिणाम नहीं
+                • वास्तविक परिणाम
               </p>
               <h2 className="mt-3 font-display text-3xl font-black leading-tight text-[#0e2f5e] sm:text-4xl">
                 राजस्थान निकाय चुनाव परिणाम
               </h2>
               <p className="mt-1 text-lg font-bold text-[#69748a]">जिला, निकाय और वार्डवार नतीजे</p>
             </div>
-            <p className="text-sm font-bold text-[#5c6880]">
-              अंतिम अपडेट: {rajasthanElectionSummary.lastUpdated}
-            </p>
+            <p className="text-sm font-bold text-[#5c6880]">लाइव अपडेट</p>
           </div>
 
           <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 label: "भाजपा",
-                value: rajasthanElectionSummary.largestPartyBodies.bjp,
+                logo: "🪷",
+                value: resultSummary.bjp,
+                runners: resultSummary.bjpRunners,
                 tone: "border-orange-200 bg-orange-50 text-orange-700",
                 bar: "bg-[#f97316]",
               },
               {
                 label: "कांग्रेस",
-                value: rajasthanElectionSummary.largestPartyBodies.congress,
+                logo: "✋",
+                value: resultSummary.inc,
+                runners: resultSummary.incRunners,
                 tone: "border-blue-200 bg-blue-50 text-blue-700",
                 bar: "bg-[#2f73ff]",
               },
               {
                 label: "अन्य दल",
-                value: rajasthanElectionSummary.largestPartyBodies.ties,
+                logo: "⚑",
+                value: resultSummary.others,
+                runners: resultSummary.otherRunners,
                 tone: "border-violet-200 bg-violet-50 text-violet-700",
                 bar: "bg-[#7c3aed]",
               },
               {
                 label: "निर्दलीय",
-                value: "—",
+                logo: "👤",
+                value: resultSummary.ind,
+                runners: resultSummary.indRunners,
                 tone: "border-slate-200 bg-slate-50 text-slate-700",
                 bar: "bg-[#6b7280]",
               },
@@ -194,11 +202,16 @@ export default function Index() {
               >
                 <div className={`h-1.5 ${item.bar}`} />
                 <div className="p-4 text-center">
-                  <p className="text-xl font-black">{item.label}</p>
+                  <div className="flex items-center justify-center gap-2 text-xl font-black">
+                    <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-lg shadow-sm">
+                      {item.logo}
+                    </span>
+                    {item.label}
+                  </div>
                   <p className="mt-2 text-2xl font-black text-[#0e2f5e]">{item.value}</p>
                   <div className="mt-3 grid grid-cols-2 rounded-lg bg-white/70 text-sm font-bold text-[#526079]">
-                    <span className="px-2 py-2">जीत: —</span>
-                    <span className="px-2 py-2">बढ़त: —</span>
+                    <span className="px-2 py-2">जीत: {item.value}</span>
+                    <span className="px-2 py-2">बढ़त: {item.runners}</span>
                   </div>
                 </div>
               </article>
