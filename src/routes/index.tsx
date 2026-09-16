@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   Building2,
+  CalendarDays,
   Check,
   ClipboardList,
   HelpCircle,
@@ -14,6 +15,7 @@ import {
 import { images } from "@/data/images";
 import { audiences, packages, site, trustCapabilities, websiteSections } from "@/data/site";
 import { electionSummary, listElectionResults } from "@/lib/election-results.server";
+import { listBlogPosts } from "@/lib/blog.server";
 import heroBackground from "@/assets/bharatpahchan-hero-background.png";
 import mobileSliderBackground from "@/assets/bharatpahchan-mobile-slider.png";
 import channel009Logo from "@/assets/channel009-logo.png";
@@ -84,7 +86,10 @@ const homepageFaqs = [
 ];
 
 export default async function Index() {
-  const electionResults = await listElectionResults();
+  const [electionResults, latestBlogPosts] = await Promise.all([
+    listElectionResults(),
+    listBlogPosts(),
+  ]);
   const resultSummary = electionSummary(electionResults);
   const whatsappHref = getWhatsappHref(enquiryMessage);
 
@@ -589,6 +594,58 @@ export default async function Index() {
         </div>
       </Section>
 
+      <Section muted>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-black tracking-[0.18em] text-[#159a56] uppercase">
+              Latest Blog
+            </p>
+            <h2 className="mt-2 font-display text-3xl font-black text-[#0e2f5e] sm:text-4xl">
+              à¤¬à¥à¤²à¥‰à¤— à¤…à¤ªà¤¡à¥‡à¤Ÿ
+            </h2>
+          </div>
+          <Link
+            href="/blog"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#c3d2e6] bg-white px-5 py-3 text-sm font-extrabold text-[#15437f] shadow-sm transition-colors hover:border-saffron hover:text-saffron"
+          >
+            View More <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
+        <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {latestBlogPosts.slice(0, 3).map((post) => (
+            <Link
+              key={post.id}
+              href="/blog"
+              className="group flex min-h-[330px] flex-col overflow-hidden rounded-lg border border-[#dbe3ef] bg-white shadow-card transition-colors hover:border-saffron"
+            >
+              <img
+                src={resolveBlogImage(post.image)}
+                alt={post.imageAltText || post.title}
+                className="aspect-[16/9] w-full bg-[#dbe8f7] object-cover transition duration-300 group-hover:scale-[1.03]"
+              />
+              <div className="flex flex-1 flex-col p-5">
+                <div className="flex flex-wrap items-center gap-3 text-[11px] font-extrabold text-[#7a8496]">
+                  <span className="rounded-sm bg-saffron/12 px-2 py-1 text-saffron">
+                    {post.category}
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <CalendarDays className="h-3.5 w-3.5" />
+                    {post.publishDate || post.date}
+                  </span>
+                </div>
+                <h3 className="mt-3 text-lg leading-snug font-black text-[#15437f]">
+                  {post.title}
+                </h3>
+                <p className="mt-2 line-clamp-2 text-sm leading-relaxed font-semibold text-[#5b6376]">
+                  {post.excerpt}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
       <section className="bg-[#0e2f5e] px-4 py-12 text-white">
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
@@ -629,6 +686,14 @@ export default async function Index() {
 
 function getWhatsappHref(message: string) {
   return `${site.whatsappUrl}?text=${encodeURIComponent(message)}`;
+}
+
+function resolveBlogImage(image: string) {
+  if (image.startsWith("data:") || image.startsWith("http://") || image.startsWith("https://")) {
+    return image;
+  }
+
+  return images[image] ?? images["village"];
 }
 
 function dailyEquivalent(price: string, period: string) {
