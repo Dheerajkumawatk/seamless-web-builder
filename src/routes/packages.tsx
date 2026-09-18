@@ -57,6 +57,7 @@ export default function Packages() {
                   featured={p.featured}
                   tone={p.theme}
                   ctaLabel={p.ctaLabel}
+                  displayPrice={p.price}
                 />
               </div>
             </article>

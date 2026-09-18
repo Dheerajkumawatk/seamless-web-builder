@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   CheckCircle2,
+  CreditCard,
   Download,
   Edit3,
   Eye,
@@ -26,7 +27,7 @@ import {
 import { adminEmail, adminPassword } from "@/lib/admin-auth";
 import { formatVikasMitraId } from "@/lib/profile-id";
 
-type Tab = "vikas" | "contacts" | "demos" | "blogs";
+type Tab = "vikas" | "contacts" | "demos" | "blogs" | "orders";
 
 type Vikas = {
   id: string;
@@ -93,19 +94,45 @@ type BlogPost = {
   createdAt: string;
 };
 
+type PackageOrder = {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  state: string;
+  pincode: string;
+  packageName: string;
+  amountPaise: number;
+  currency: string;
+  status: "created" | "pending" | "paid" | "failed" | "cancelled";
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type AdminData = {
   vikas: Vikas[];
   contacts: ContactLead[];
   demos: DemoLead[];
   blogs: BlogPost[];
+  packageOrders: PackageOrder[];
 };
 
-const emptyData: AdminData = { vikas: [], contacts: [], demos: [], blogs: [] };
+const emptyData: AdminData = {
+  vikas: [],
+  contacts: [],
+  demos: [],
+  blogs: [],
+  packageOrders: [],
+};
 
 const navItems = [
   { key: "vikas" as const, label: "Vikas Mitra", icon: UsersRound },
   { key: "contacts" as const, label: "Contact Details", icon: Mail },
   { key: "demos" as const, label: "Demo Requests", icon: UserRoundPlus },
+  { key: "orders" as const, label: "Package Orders", icon: CreditCard },
   { key: "blogs" as const, label: "Blogs", icon: Newspaper },
 ];
 
@@ -139,6 +166,7 @@ export default function AdminPage() {
   const packageLeadCount = data.contacts.filter(
     (row) => row.source === "Package Form" || row.post === "Package Query",
   ).length;
+  const paidOrderCount = data.packageOrders.filter((row) => row.status === "paid").length;
 
   useEffect(() => {
     const saved = window.localStorage.getItem("bharat-admin-auth");
@@ -162,7 +190,12 @@ export default function AdminPage() {
     try {
       const response = await fetch("/api/admin/data", { headers: authHeaders });
       if (!response.ok) throw new Error("Admin data load failed");
-      setData((await response.json()) as AdminData);
+      const payload = (await response.json()) as Partial<AdminData>;
+      setData({
+        ...emptyData,
+        ...payload,
+        packageOrders: payload.packageOrders ?? [],
+      });
     } catch {
       setMessage(
         "Data load nahi ho paya. Supabase tables, RLS policies, ya service role key check karein.",
@@ -311,7 +344,14 @@ export default function AdminPage() {
           ? filterRows(data.contacts, query, dateFrom, dateTo)
           : tab === "demos"
             ? filterRows(data.demos, query, dateFrom, dateTo)
-            : filterRows(data.blogs, query, dateFrom, dateTo);
+            : tab === "orders"
+              ? filterRows(
+                data.packageOrders as Array<PackageOrder & Record<string, unknown>>,
+                query,
+                dateFrom,
+                dateTo,
+              )
+              : filterRows(data.blogs, query, dateFrom, dateTo);
     if (!rows.length) {
       setMessage("Export ke liye koi record nahi mila.");
       return;
@@ -473,11 +513,10 @@ export default function AdminPage() {
             <button
               key={key}
               onClick={() => setTab(key)}
-              className={`flex min-h-11 shrink-0 items-center gap-2 rounded-md px-3 py-2.5 text-xs font-black whitespace-nowrap transition sm:gap-3 sm:px-4 sm:py-3 sm:text-sm lg:w-full ${
-                tab === key
+              className={`flex min-h-11 shrink-0 items-center gap-2 rounded-md px-3 py-2.5 text-xs font-black whitespace-nowrap transition sm:gap-3 sm:px-4 sm:py-3 sm:text-sm lg:w-full ${tab === key
                   ? "bg-emerald-600 text-white"
                   : "text-slate-300 hover:bg-white/10 hover:text-white"
-              }`}
+                }`}
             >
               <Icon className="h-4 w-4" />
               {label}
@@ -594,6 +633,8 @@ export default function AdminPage() {
             <Stat label="Approved Profiles" value={approvedCount} tone="green" />
             <Stat label="Demo Requests" value={data.demos.length} tone="orange" />
             <Stat label="Package Leads" value={packageLeadCount} tone="blue" />
+            <Stat label="Package Orders" value={data.packageOrders.length} tone="blue" />
+            <Stat label="Paid Orders" value={paidOrderCount} tone="green" />
             <Stat label="Contact Leads" value={data.contacts.length} tone="blue" />
             <Stat label="Blogs" value={data.blogs.length} tone="green" />
           </div>
@@ -637,6 +678,16 @@ export default function AdminPage() {
                 detail={(row) =>
                   `${row.phone}${row.post ? ` | ${row.post}` : ""}${row.village ? ` | ${row.village}` : ""}${row.district ? ` | ${row.district}` : ""}`
                 }
+              />
+            )}
+            {tab === "orders" && (
+              <OrdersList
+                rows={filterRows(
+                  data.packageOrders as Array<PackageOrder & Record<string, unknown>>,
+                  query,
+                  dateFrom,
+                  dateTo,
+                )}
               />
             )}
             {tab === "blogs" && (
@@ -872,6 +923,63 @@ function VikasList({
   );
 }
 
+function OrdersList({ rows }: { rows: PackageOrder[] }) {
+  function formatAmount(paise: number, currency: string) {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: currency || "INR",
+      maximumFractionDigits: 0,
+    }).format(paise / 100);
+  }
+
+  const statusTone: Record<PackageOrder["status"], string> = {
+    created: "bg-slate-100 text-slate-700",
+    pending: "bg-amber-100 text-amber-800",
+    paid: "bg-emerald-100 text-emerald-800",
+    failed: "bg-red-100 text-red-700",
+    cancelled: "bg-slate-100 text-slate-600",
+  };
+
+  return (
+    <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <div className="divide-y divide-slate-200">
+        {rows.length === 0 && (
+          <p className="p-5 text-sm font-bold text-slate-500">Abhi koi package order nahi hai.</p>
+        )}
+        {rows.map((row) => (
+          <section key={row.id} className="p-4 sm:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-lg font-black">
+                    {row.name} — {row.packageName}
+                  </h2>
+                  <span
+                    className={`rounded-full px-2.5 py-0.5 text-xs font-extrabold uppercase ${statusTone[row.status]}`}
+                  >
+                    {row.status}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm font-bold text-slate-600">
+                  {formatAmount(row.amountPaise, row.currency)} | {row.phone} | {row.email}
+                </p>
+                <p className="mt-1 text-sm text-slate-600">
+                  {row.city}, {row.state} — {row.pincode}
+                </p>
+                <p className="mt-1 text-xs font-bold text-slate-500">
+                  Created: {formatAdminDateTime(row.createdAt)}
+                  {row.razorpayOrderId ? ` | RZP: ${row.razorpayOrderId}` : ""}
+                  {row.razorpayPaymentId ? ` | Pay: ${row.razorpayPaymentId}` : ""}
+                </p>
+              </div>
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SimpleList<T extends { id: string; message?: string; createdAt: string }>({
   rows,
   type,
@@ -1013,47 +1121,47 @@ function EditModal({
   const fields =
     type === "vikas"
       ? [
-          "name",
-          "phone",
-          "email",
-          "district",
-          "tehsil",
-          "village",
-          "occupation",
-          "experience",
-          "message",
-          "photo",
-          "panCard",
-          "aadhaarCard",
-        ]
+        "name",
+        "phone",
+        "email",
+        "district",
+        "tehsil",
+        "village",
+        "occupation",
+        "experience",
+        "message",
+        "photo",
+        "panCard",
+        "aadhaarCard",
+      ]
       : type === "contact"
         ? ["name", "phone", "email", "post", "source", "city", "state", "message"]
         : type === "demo"
           ? [
-              "name",
-              "phone",
-              "village",
-              "district",
-              "post",
-              "source",
-              "pageUrl",
-              "utmSource",
-              "utmMedium",
-              "utmCampaign",
-              "status",
-              "notes",
-            ]
+            "name",
+            "phone",
+            "village",
+            "district",
+            "post",
+            "source",
+            "pageUrl",
+            "utmSource",
+            "utmMedium",
+            "utmCampaign",
+            "status",
+            "notes",
+          ]
           : [
-              "title",
-              "slug",
-              "excerpt",
-              "image",
-              "imageAltText",
-              "content",
-              "seoTitle",
-              "metaDescription",
-              "publishDate",
-            ];
+            "title",
+            "slug",
+            "excerpt",
+            "image",
+            "imageAltText",
+            "content",
+            "seoTitle",
+            "metaDescription",
+            "publishDate",
+          ];
   const longFields = [
     "message",
     "notes",
