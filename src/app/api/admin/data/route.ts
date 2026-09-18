@@ -9,6 +9,7 @@ import {
   listVikasMitraProfiles,
   updateVikasMitraProfile,
 } from "@/lib/vikas-mitra.server";
+import { listPackageOrders } from "@/lib/orders.server";
 import {
   buildVikasMitraApprovalEmail,
   buildVikasMitraRejectionEmail,
@@ -114,14 +115,15 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const [vikas, contacts, demos, blogs] = await Promise.all([
+  const [vikas, contacts, demos, blogs, packageOrders] = await Promise.all([
     listVikasMitraProfiles(),
     listLeads(),
     listDemoLeads(),
     listBlogPosts(),
+    listPackageOrders(100),
   ]);
 
-  return NextResponse.json({ vikas, contacts, demos, blogs });
+  return NextResponse.json({ vikas, contacts, demos, blogs, packageOrders });
 }
 
 export async function POST(request: Request) {

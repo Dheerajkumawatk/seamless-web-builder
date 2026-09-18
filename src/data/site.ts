@@ -190,10 +190,12 @@ export const packages = [
   {
     name: "Starter",
     desc: "डिजिटल पहचान की मजबूत शुरुआत",
-    price: "₹49,999",
+    price: "₹1",
+    // TEST: temporary ₹1 charge. Restore: amountInr 49999, price "₹49,999"
+    amountInr: 1,
     period: "/6 माह",
     featured: false,
-    ctaLabel: "इस पैकेज की जानकारी लें",
+    ctaLabel: "इस पैकेज के लिए भुगतान करें",
     theme: "green",
     features: [
       "उम्मीदवार वेबसाइट",
@@ -206,11 +208,13 @@ export const packages = [
   {
     name: "Professional",
     desc: "पूरा Managed Digital Campaign",
-    price: "₹99,999",
+    price: "₹1",
+    // TEST: temporary ₹1 charge. Restore: amountInr 99999, price "₹99,999"
+    amountInr: 1,
     period: "/6 माह",
     featured: true,
     badge: "लोकप्रिय",
-    ctaLabel: "इस पैकेज की जानकारी लें",
+    ctaLabel: "इस पैकेज के लिए भुगतान करें",
     theme: "orange",
     features: [
       "वेबसाइट (प्रीमियम)",
@@ -224,10 +228,12 @@ export const packages = [
   {
     name: "Premium",
     desc: "Advanced Campaign Support",
-    price: "₹149,999",
+    price: "₹1",
+    // TEST: temporary ₹1 charge. Restore: amountInr 149999, price "₹149,999"
+    amountInr: 1,
     period: "/6 माह",
     featured: false,
-    ctaLabel: "इस पैकेज की जानकारी लें",
+    ctaLabel: "इस पैकेज के लिए भुगतान करें",
     theme: "navy",
     features: [
       "सब कुछ प्रोफेशनल पैकेज में शामिल",
