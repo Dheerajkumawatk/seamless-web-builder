@@ -86,7 +86,7 @@ export async function generateVikasMitraCardPdf(p: CardProfile): Promise<Buffer>
     doc.on("end", () => resolve(Buffer.concat(chunks)));
     doc.on("error", reject);
   });
-  doc.registerFont("Hindi", asset("fonts/NotoSansDevanagari-Regular.ttf")).font("Hindi");
+  doc.registerFont("Hindi", asset("fonts/DroidSansDevanagari-Regular.ttf")).font("Hindi");
   const y = 31,
     w = 380,
     h = 532,

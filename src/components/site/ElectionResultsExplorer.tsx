@@ -94,7 +94,7 @@ export function ElectionResultsExplorer({
               राजस्थान निकाय चुनाव परिणाम
             </h1>
             <p className="mt-2 font-bold text-[#69748a]">
-              जिला, निकाय और वार्डवार उम्मीदवारों के नतीजे
+              जिला, निकाय और वार्डवार विजेता उम्मीदवार
             </p>
           </div>
           <div className="text-sm font-bold text-[#5c6880] lg:text-right">
@@ -102,7 +102,7 @@ export function ElectionResultsExplorer({
               {summary.bodies} निकाय · {summary.wards} वार्ड
             </p>
             <p className="mt-1">
-              {results.length.toLocaleString("en-IN")} उम्मीदवार · {summary.winners} विजेता
+              {summary.winners.toLocaleString("en-IN")} विजेता
             </p>
           </div>
         </div>

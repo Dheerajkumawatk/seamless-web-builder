@@ -2,7 +2,9 @@ import { ElectionResultsExplorer } from "@/components/site/ElectionResultsExplor
 import { electionSummary, listElectionResults } from "@/lib/election-results.server";
 
 export default async function ElectionResultsPage() {
-  const results = await listElectionResults();
+  const results = (await listElectionResults()).filter(
+    (row) => row.result.trim().toLowerCase() === "winner",
+  );
   return (
     <main className="bg-[#f5f8fc]">
       <ElectionResultsExplorer results={results} summary={electionSummary(results)} />

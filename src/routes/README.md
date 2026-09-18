@@ -15,3 +15,4 @@ components so the visual UI can stay unchanged while routing stays Next-native.
 | `/packages` | `src/routes/packages.tsx` |
 | `/portfolio` | `src/routes/portfolio.tsx` |
 | `/blog` | `src/routes/blog.tsx` |
+    

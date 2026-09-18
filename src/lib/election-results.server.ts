@@ -57,8 +57,8 @@ export async function listElectionResults(): Promise<ElectionResultRecord[]> {
 }
 
 export function electionSummary(rows: ElectionResultRecord[]) {
-  const winners = rows.filter((row) => row.result.toLowerCase() === "winner");
-  const count = (party: string, source = rows) =>
+  const winners = rows.filter((row) => row.result.trim().toLowerCase() === "winner");
+  const count = (party: string, source = winners) =>
     source.filter((row) => row.partyName === party).length;
   return {
     bjp: count("BJP"),
