@@ -167,6 +167,12 @@ export default function AdminPage() {
     (row) => row.source === "Package Form" || row.post === "Package Query",
   ).length;
   const paidOrderCount = data.packageOrders.filter((row) => row.status === "paid").length;
+  const paidAmountPaise = data.packageOrders
+    .filter((row) => row.status === "paid")
+    .reduce((total, row) => total + row.amountPaise, 0);
+  const pendingAmountPaise = data.packageOrders
+    .filter((row) => row.status === "pending" || row.status === "created")
+    .reduce((total, row) => total + row.amountPaise, 0);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("bharat-admin-auth");
@@ -346,11 +352,11 @@ export default function AdminPage() {
             ? filterRows(data.demos, query, dateFrom, dateTo)
             : tab === "orders"
               ? filterRows(
-                data.packageOrders as Array<PackageOrder & Record<string, unknown>>,
-                query,
-                dateFrom,
-                dateTo,
-              )
+                  data.packageOrders as Array<PackageOrder & Record<string, unknown>>,
+                  query,
+                  dateFrom,
+                  dateTo,
+                )
               : filterRows(data.blogs, query, dateFrom, dateTo);
     if (!rows.length) {
       setMessage("Export ke liye koi record nahi mila.");
@@ -449,7 +455,11 @@ export default function AdminPage() {
   if (!loggedIn) {
     return (
       <main className="grid min-h-screen place-items-center bg-[#0f172a] px-4">
-        <form onSubmit={login} className="w-full max-w-md rounded-lg bg-white p-7 shadow-2xl">
+        <form
+          acceptCharset="UTF-8"
+          onSubmit={login}
+          className="w-full max-w-md rounded-lg bg-white p-7 shadow-2xl"
+        >
           <div className="grid h-12 w-12 place-items-center rounded-lg bg-emerald-600 text-white">
             <ShieldCheck className="h-6 w-6" />
           </div>
@@ -513,10 +523,11 @@ export default function AdminPage() {
             <button
               key={key}
               onClick={() => setTab(key)}
-              className={`flex min-h-11 shrink-0 items-center gap-2 rounded-md px-3 py-2.5 text-xs font-black whitespace-nowrap transition sm:gap-3 sm:px-4 sm:py-3 sm:text-sm lg:w-full ${tab === key
+              className={`flex min-h-11 shrink-0 items-center gap-2 rounded-md px-3 py-2.5 text-xs font-black whitespace-nowrap transition sm:gap-3 sm:px-4 sm:py-3 sm:text-sm lg:w-full ${
+                tab === key
                   ? "bg-emerald-600 text-white"
                   : "text-slate-300 hover:bg-white/10 hover:text-white"
-                }`}
+              }`}
             >
               <Icon className="h-4 w-4" />
               {label}
@@ -635,6 +646,12 @@ export default function AdminPage() {
             <Stat label="Package Leads" value={packageLeadCount} tone="blue" />
             <Stat label="Package Orders" value={data.packageOrders.length} tone="blue" />
             <Stat label="Paid Orders" value={paidOrderCount} tone="green" />
+            <Stat label="Paid Amount" value={formatAdminAmount(paidAmountPaise)} tone="green" />
+            <Stat
+              label="Pending Amount"
+              value={formatAdminAmount(pendingAmountPaise)}
+              tone="orange"
+            />
             <Stat label="Contact Leads" value={data.contacts.length} tone="blue" />
             <Stat label="Blogs" value={data.blogs.length} tone="green" />
           </div>
@@ -767,7 +784,7 @@ function Stat({
   tone = "slate",
 }: {
   label: string;
-  value: number;
+  value: number | string;
   tone?: "slate" | "orange" | "green" | "blue";
 }) {
   const tones = {
@@ -924,14 +941,6 @@ function VikasList({
 }
 
 function OrdersList({ rows }: { rows: PackageOrder[] }) {
-  function formatAmount(paise: number, currency: string) {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: currency || "INR",
-      maximumFractionDigits: 0,
-    }).format(paise / 100);
-  }
-
   const statusTone: Record<PackageOrder["status"], string> = {
     created: "bg-slate-100 text-slate-700",
     pending: "bg-amber-100 text-amber-800",
@@ -939,37 +948,85 @@ function OrdersList({ rows }: { rows: PackageOrder[] }) {
     failed: "bg-red-100 text-red-700",
     cancelled: "bg-slate-100 text-slate-600",
   };
+  const statusLabel: Record<PackageOrder["status"], string> = {
+    created: "Lead saved",
+    pending: "Payment pending",
+    paid: "Paid",
+    failed: "Failed",
+    cancelled: "Cancelled",
+  };
+  const paidRows = rows.filter((row) => row.status === "paid");
+  const paidTotal = paidRows.reduce((total, row) => total + row.amountPaise, 0);
+  const pendingTotal = rows
+    .filter((row) => row.status === "pending" || row.status === "created")
+    .reduce((total, row) => total + row.amountPaise, 0);
 
   return (
     <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <div className="grid gap-3 border-b border-slate-200 p-4 sm:grid-cols-3 sm:p-5">
+        <div>
+          <p className="text-xs font-black tracking-[0.12em] text-slate-500 uppercase">
+            Total Orders
+          </p>
+          <p className="mt-1 text-2xl font-black text-slate-950">{rows.length}</p>
+        </div>
+        <div>
+          <p className="text-xs font-black tracking-[0.12em] text-slate-500 uppercase">
+            Paid Collection
+          </p>
+          <p className="mt-1 text-2xl font-black text-emerald-700">
+            {formatAdminAmount(paidTotal)}
+          </p>
+        </div>
+        <div>
+          <p className="text-xs font-black tracking-[0.12em] text-slate-500 uppercase">
+            Pending Value
+          </p>
+          <p className="mt-1 text-2xl font-black text-amber-700">
+            {formatAdminAmount(pendingTotal)}
+          </p>
+        </div>
+      </div>
       <div className="divide-y divide-slate-200">
         {rows.length === 0 && (
           <p className="p-5 text-sm font-bold text-slate-500">Abhi koi package order nahi hai.</p>
         )}
         {rows.map((row) => (
           <section key={row.id} className="p-4 sm:p-5">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-lg font-black">
-                    {row.name} — {row.packageName}
-                  </h2>
+                  <h2 className="break-words text-lg font-black">{row.name}</h2>
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-extrabold uppercase ${statusTone[row.status]}`}
                   >
-                    {row.status}
+                    {statusLabel[row.status]}
                   </span>
                 </div>
+                <p className="mt-2 text-sm font-black text-slate-900">Package: {row.packageName}</p>
                 <p className="mt-1 text-sm font-bold text-slate-600">
-                  {formatAmount(row.amountPaise, row.currency)} | {row.phone} | {row.email}
+                  Customer: {row.phone} | {row.email}
                 </p>
                 <p className="mt-1 text-sm text-slate-600">
                   {row.city}, {row.state} — {row.pincode}
                 </p>
+                <div className="mt-3 grid gap-2 text-xs font-bold text-slate-500 sm:grid-cols-2">
+                  <p>Order ID: {row.id}</p>
+                  <p>Created: {formatAdminDateTime(row.createdAt)}</p>
+                  <p>Updated: {formatAdminDateTime(row.updatedAt)}</p>
+                  <p>Razorpay Order: {row.razorpayOrderId || "Not created yet"}</p>
+                  <p>Razorpay Payment: {row.razorpayPaymentId || "Not paid yet"}</p>
+                </div>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 xl:min-w-52">
+                <p className="text-xs font-black tracking-[0.12em] text-slate-500 uppercase">
+                  Payment
+                </p>
+                <p className="mt-1 text-2xl font-black text-slate-950">
+                  {formatAdminAmount(row.amountPaise, row.currency)}
+                </p>
                 <p className="mt-1 text-xs font-bold text-slate-500">
-                  Created: {formatAdminDateTime(row.createdAt)}
-                  {row.razorpayOrderId ? ` | RZP: ${row.razorpayOrderId}` : ""}
-                  {row.razorpayPaymentId ? ` | Pay: ${row.razorpayPaymentId}` : ""}
+                  Status: {statusLabel[row.status]}
                 </p>
               </div>
             </div>
@@ -1121,47 +1178,47 @@ function EditModal({
   const fields =
     type === "vikas"
       ? [
-        "name",
-        "phone",
-        "email",
-        "district",
-        "tehsil",
-        "village",
-        "occupation",
-        "experience",
-        "message",
-        "photo",
-        "panCard",
-        "aadhaarCard",
-      ]
+          "name",
+          "phone",
+          "email",
+          "district",
+          "tehsil",
+          "village",
+          "occupation",
+          "experience",
+          "message",
+          "photo",
+          "panCard",
+          "aadhaarCard",
+        ]
       : type === "contact"
         ? ["name", "phone", "email", "post", "source", "city", "state", "message"]
         : type === "demo"
           ? [
-            "name",
-            "phone",
-            "village",
-            "district",
-            "post",
-            "source",
-            "pageUrl",
-            "utmSource",
-            "utmMedium",
-            "utmCampaign",
-            "status",
-            "notes",
-          ]
+              "name",
+              "phone",
+              "village",
+              "district",
+              "post",
+              "source",
+              "pageUrl",
+              "utmSource",
+              "utmMedium",
+              "utmCampaign",
+              "status",
+              "notes",
+            ]
           : [
-            "title",
-            "slug",
-            "excerpt",
-            "image",
-            "imageAltText",
-            "content",
-            "seoTitle",
-            "metaDescription",
-            "publishDate",
-          ];
+              "title",
+              "slug",
+              "excerpt",
+              "image",
+              "imageAltText",
+              "content",
+              "seoTitle",
+              "metaDescription",
+              "publishDate",
+            ];
   const longFields = [
     "message",
     "notes",
@@ -1196,6 +1253,7 @@ function EditModal({
   return (
     <div className="fixed inset-0 z-[90] grid place-items-center bg-slate-950/70 px-3 py-4 sm:px-4">
       <form
+        acceptCharset="UTF-8"
         onSubmit={(event) => {
           event.preventDefault();
           onSave(
@@ -1299,6 +1357,14 @@ function formatAdminDateTime(value: string) {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+function formatAdminAmount(paise: number, currency = "INR") {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency,
+    maximumFractionDigits: 0,
+  }).format(paise / 100);
 }
 
 function leadSourceLabel(row: ContactLead) {

@@ -140,7 +140,7 @@ export function CtaBand() {
               </button>
             </div>
 
-            <form onSubmit={onSubmit} className="grid gap-4 p-5 sm:grid-cols-2">
+            <form acceptCharset="UTF-8" onSubmit={onSubmit} className="grid gap-4 p-5 sm:grid-cols-2">
               <div>
                 <label
                   className="mb-1.5 block text-xs font-extrabold text-[#33384a]"

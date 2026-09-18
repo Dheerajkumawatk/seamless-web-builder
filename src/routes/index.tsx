@@ -602,7 +602,7 @@ export default async function Index() {
               Latest Blog
             </p>
             <h2 className="mt-2 font-display text-3xl font-black text-[#0e2f5e] sm:text-4xl">
-              à¤¬à¥à¤²à¥‰à¤— à¤…à¤ªà¤¡à¥‡à¤Ÿ
+              ब्लॉग अपडेट
             </h2>
           </div>
           <Link

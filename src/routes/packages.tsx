@@ -4,67 +4,32 @@ import { CtaBand } from "@/components/site/CtaBand";
 import { PackageQueryButton } from "@/components/site/PackageQueryButton";
 import { faqs, packages } from "@/data/site";
 
+type PackageItem = (typeof packages)[number];
+
 export default function Packages() {
+  const electionPackages = packages.filter((item) => item.category === "election");
+  const businessPackages = packages.filter((item) => item.category === "business");
+
   return (
     <>
-      <PageHero
-        title="हमारे पैकेज"
-      />
+      <PageHero title="हमारे पैकेज" />
 
       <Section>
-        <div className="grid gap-6 lg:grid-cols-3">
-          {packages.map((p) => (
-            <article
-              key={p.name}
-              className={`relative flex flex-col overflow-hidden rounded-lg border bg-card ${
-                p.featured ? packageTheme(p.theme).borderFeatured : "border-border shadow-card"
-              }`}
-            >
-              {p.featured && (
-                <span className={`absolute top-4 -right-9 rotate-45 px-10 py-1 text-[11px] font-semibold text-white ${packageTheme(p.theme).badge}`}>
-                  {p.badge}
-                </span>
-              )}
-              <div
-                className={`p-6 text-center ${p.featured ? `${packageTheme(p.theme).headBg} text-white` : ""}`}
-              >
-                <h2 className={`text-lg ${p.featured ? "text-white" : packageTheme(p.theme).title}`}>
-                  {p.name}
-                </h2>
-                {p.desc && (
-                  <p
-                    className={`mt-1 text-xs ${p.featured ? "text-white/85" : "text-muted-foreground"}`}
-                  >
-                    {p.desc}
-                  </p>
-                )}
-              </div>
-              <div className="flex flex-1 flex-col px-6 pb-6">
-                <p className={`text-center font-display text-3xl font-bold ${packageTheme(p.theme).price}`}>
-                  {p.price}
-                  <span className="text-sm font-normal text-muted-foreground">{p.period}</span>
-                </p>
-                <ul className="mt-5 flex-1 space-y-2.5">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex gap-2.5 text-sm text-foreground/85">
-                      <Check className={`mt-0.5 h-4 w-4 shrink-0 ${packageTheme(p.theme).check}`} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <PackageQueryButton
-                  packageName={p.name}
-                  featured={p.featured}
-                  tone={p.theme}
-                  ctaLabel={p.ctaLabel}
-                  displayPrice={p.price}
-                />
-              </div>
-            </article>
-          ))}
-        </div>
+        <PackageGrid packages={electionPackages} />
         <p className="mt-6 text-center text-xs text-muted-foreground">
           * सभी कीमतों में GST अलग से लागू होगा। कस्टम पैकेज के लिए संपर्क करें।
+        </p>
+      </Section>
+
+      <Section muted>
+        <SectionHeading
+          title="बिजनेस कंसल्टेंसी और मैनेजमेंट"
+          sub="अपने अगले विकास चरण के लिए सही सपोर्ट चुनें।"
+        />
+        <PackageGrid packages={businessPackages} />
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          6 माह की पूरी पैकेज फीस। लागू GST अतिरिक्त होगा। विज्ञापन, डोमेन, होस्टिंग और थर्ड-पार्टी
+          सब्सक्रिप्शन अलग से चार्ज होंगे।
         </p>
       </Section>
 
@@ -82,6 +47,68 @@ export default function Packages() {
 
       <CtaBand />
     </>
+  );
+}
+
+function PackageGrid({ packages: packageItems }: { packages: PackageItem[] }) {
+  return (
+    <div className="grid gap-6 lg:grid-cols-3">
+      {packageItems.map((p) => (
+        <article
+          key={p.name}
+          className={`relative flex flex-col overflow-hidden rounded-lg border bg-card ${
+            p.featured ? packageTheme(p.theme).borderFeatured : "border-border shadow-card"
+          }`}
+        >
+          {p.featured && (
+            <span
+              className={`absolute top-4 -right-9 rotate-45 px-10 py-1 text-[11px] font-semibold text-white ${packageTheme(p.theme).badge}`}
+            >
+              {p.badge}
+            </span>
+          )}
+          <div
+            className={`p-6 text-center ${
+              p.featured ? `${packageTheme(p.theme).headBg} text-white` : ""
+            }`}
+          >
+            <h2 className={`text-lg ${p.featured ? "text-white" : packageTheme(p.theme).title}`}>
+              {p.name}
+            </h2>
+            {p.desc && (
+              <p
+                className={`mt-1 text-xs ${p.featured ? "text-white/85" : "text-muted-foreground"}`}
+              >
+                {p.desc}
+              </p>
+            )}
+          </div>
+          <div className="flex flex-1 flex-col px-6 pb-6">
+            <p
+              className={`text-center font-display text-3xl font-bold ${packageTheme(p.theme).price}`}
+            >
+              {p.price}
+              <span className="text-sm font-normal text-muted-foreground">{p.period}</span>
+            </p>
+            <ul className="mt-5 flex-1 space-y-2.5">
+              {p.features.map((f) => (
+                <li key={f} className="flex gap-2.5 text-sm text-foreground/85">
+                  <Check className={`mt-0.5 h-4 w-4 shrink-0 ${packageTheme(p.theme).check}`} />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <PackageQueryButton
+              packageName={p.name}
+              featured={p.featured}
+              tone={p.theme}
+              ctaLabel={p.ctaLabel}
+              displayPrice={p.price}
+            />
+          </div>
+        </article>
+      ))}
+    </div>
   );
 }
 

@@ -126,6 +126,7 @@ export function LeadPopup() {
   return (
     <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/82 px-4 py-6 backdrop-blur-sm">
       <form
+        acceptCharset="UTF-8"
         onSubmit={onSubmit}
         className="relative max-h-[calc(100dvh-3rem)] w-full max-w-md overflow-y-auto overscroll-contain rounded-lg bg-white p-5 text-slate-950 shadow-2xl sm:p-6"
       >

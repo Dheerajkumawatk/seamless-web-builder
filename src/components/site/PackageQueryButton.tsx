@@ -93,6 +93,7 @@ export function PackageQueryButton({
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [orderId, setOrderId] = useState<string | null>(null);
+  const [policyAccepted, setPolicyAccepted] = useState(false);
   const [details, setDetails] = useState<CheckoutDetails>({
     name: "",
     phone: "",
@@ -111,6 +112,7 @@ export function PackageQueryButton({
     setErrorMessage("");
     setCheckoutAmountPaise(null);
     setOrderId(null);
+    setPolicyAccepted(false);
     setDetails({
       name: "",
       phone: "",
@@ -161,6 +163,7 @@ export function PackageQueryButton({
 
       setOrderId(draft.orderId);
       setCheckoutAmountPaise(draft.amount ?? null);
+      setPolicyAccepted(false);
       setStatus("idle");
       setStep("payment");
     } catch (error) {
@@ -173,6 +176,11 @@ export function PackageQueryButton({
     if (!orderId) {
       setStatus("error");
       setErrorMessage("Order missing. Details dobara submit karein.");
+      return;
+    }
+    if (!policyAccepted) {
+      setStatus("error");
+      setErrorMessage("Payment se pehle sahmati checkbox tick karein.");
       return;
     }
 
@@ -237,9 +245,7 @@ export function PackageQueryButton({
             setStep("done");
           } catch (error) {
             setStatus("error");
-            setErrorMessage(
-              error instanceof Error ? error.message : "Payment verify nahi ho paya",
-            );
+            setErrorMessage(error instanceof Error ? error.message : "Payment verify nahi ho paya");
           }
         },
         modal: {
@@ -282,8 +288,9 @@ export function PackageQueryButton({
           resetModal();
           setOpen(true);
         }}
-        className={`mt-6 block w-full rounded-md py-3 text-center text-sm font-semibold ${buttonTone[tone as keyof typeof buttonTone] ?? buttonTone.navy
-          }`}
+        className={`mt-6 block w-full rounded-md py-3 text-center text-sm font-semibold ${
+          buttonTone[tone as keyof typeof buttonTone] ?? buttonTone.navy
+        }`}
       >
         {ctaLabel}
       </button>
@@ -315,7 +322,11 @@ export function PackageQueryButton({
             </div>
 
             {step === "details" && (
-              <form onSubmit={(event) => void goToPayment(event)} className="grid gap-4 p-5 sm:grid-cols-2">
+              <form
+                acceptCharset="UTF-8"
+                onSubmit={(event) => void goToPayment(event)}
+                className="grid gap-4 p-5 sm:grid-cols-2"
+              >
                 <input
                   name="name"
                   required
@@ -368,9 +379,7 @@ export function PackageQueryButton({
                     disabled={status === "loading"}
                     className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-maroon px-6 py-3.5 text-sm font-extrabold text-white disabled:opacity-70"
                   >
-                    {status === "loading" ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : null}
+                    {status === "loading" ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                     भुगतान पर जाएँ
                   </button>
                   {errorMessage && (
@@ -402,10 +411,29 @@ export function PackageQueryButton({
                   </p>
                 </div>
 
+                <label className="flex cursor-pointer gap-3 rounded-md border border-emerald-200 bg-white px-4 py-3 text-sm font-semibold leading-relaxed text-[#232a3c]">
+                  <input
+                    type="checkbox"
+                    checked={policyAccepted}
+                    onChange={(event) => {
+                      setPolicyAccepted(event.target.checked);
+                      if (event.target.checked) {
+                        setStatus("idle");
+                        setErrorMessage("");
+                      }
+                    }}
+                    className="mt-1 h-4 w-4 shrink-0 accent-[#102b6f]"
+                  />
+                  <span>
+                    मैं पुष्टि करता/करती हूं कि चयनित पैकेज, उसकी सेवाएं और लागू नीतियां मेरी
+                    जानकारी में हैं, और मैं आगे बढ़ने के लिए सहमत हूं।
+                  </span>
+                </label>
+
                 <button
                   type="button"
                   onClick={() => void startPayment()}
-                  disabled={status === "loading"}
+                  disabled={status === "loading" || !policyAccepted}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-maroon px-6 py-3.5 text-sm font-extrabold text-white disabled:opacity-70"
                 >
                   {status === "loading" ? (
@@ -421,6 +449,7 @@ export function PackageQueryButton({
                   onClick={() => {
                     setStatus("idle");
                     setErrorMessage("");
+                    setPolicyAccepted(false);
                     setStep("details");
                   }}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-emerald-200 bg-white px-6 py-3 text-sm font-bold text-maroon"

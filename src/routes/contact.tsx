@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { MapPin, Phone, Mail, Globe, Send, Loader2, CheckCircle2 } from "lucide-react";
@@ -207,7 +207,7 @@ export default function Contact() {
             ))}
           </div>
 
-          <form onSubmit={onSubmit} className="card-warm p-6">
+          <form acceptCharset="UTF-8" onSubmit={onSubmit} className="card-warm p-6">
             <h2 className="text-lg text-maroon">Enquiry Form</h2>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <div>

@@ -104,7 +104,7 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
             संपर्क करेगी।
           </p>
 
-          <form onSubmit={showPreview} className="mt-7 grid gap-4 sm:grid-cols-2">
+          <form acceptCharset="UTF-8" onSubmit={showPreview} className="mt-7 grid gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="demo-name" className="mb-1.5 block text-sm font-black text-[#232a3c]">
                 नाम *

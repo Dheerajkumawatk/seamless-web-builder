@@ -120,7 +120,7 @@ export async function GET(request: Request) {
     listLeads(),
     listDemoLeads(),
     listBlogPosts(),
-    listPackageOrders(100),
+    listPackageOrders(1000),
   ]);
 
   return NextResponse.json({ vikas, contacts, demos, blogs, packageOrders });
