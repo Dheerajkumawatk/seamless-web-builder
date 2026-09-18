@@ -9,11 +9,10 @@ const smtpUser = process.env["SMTP_USER"];
 const smtpPass = process.env["SMTP_PASS"];
 const smtpSecureValue = process.env["SMTP_SECURE"]?.toLowerCase();
 const smtpSecure =
-  smtpSecureValue === "true" || smtpSecureValue === "1" || smtpSecureValue === "yes"
-    ? true
-    : smtpSecureValue === "false" || smtpSecureValue === "0" || smtpSecureValue === "no"
-      ? false
-      : smtpPort === 465;
+  // Port 465 requires TLS from the start, even if an old env file says false.
+  smtpPort === 465 ||
+  (smtpPort !== 587 &&
+    (smtpSecureValue === "true" || smtpSecureValue === "1" || smtpSecureValue === "yes"));
 
 export type SendEmailInput = {
   to: string;
@@ -61,6 +60,9 @@ export async function sendEmail({
         host: smtpHost,
         port: Number.isFinite(smtpPort) ? smtpPort : 587,
         secure: smtpSecure,
+        connectionTimeout: 15_000,
+        greetingTimeout: 15_000,
+        socketTimeout: 30_000,
         auth: {
           user: smtpUser,
           pass: smtpPass,

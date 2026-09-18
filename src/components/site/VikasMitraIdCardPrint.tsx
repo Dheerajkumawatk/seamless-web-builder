@@ -1,6 +1,7 @@
 "use client";
 
-import { Download, Mail, MapPin, Phone, UserRound } from "lucide-react";
+import { useRef, useState } from "react";
+import { Download, Loader2, Mail, MapPin, Phone, UserRound } from "lucide-react";
 import logoImage from "@/assets/bharat-pahchan-logo.jpg";
 import { site } from "@/data/site";
 
@@ -15,13 +16,57 @@ type CardProfile = {
   validUntil: string;
 };
 
-export function VikasMitraIdCardPrint({
-  profile,
-  downloadUrl,
-}: {
-  profile: CardProfile;
-  downloadUrl: string;
-}) {
+export function VikasMitraIdCardPrint({ profile }: { profile: CardProfile }) {
+  const cardRef = useRef<HTMLElement>(null);
+  const [downloading, setDownloading] = useState<"png" | "pdf" | null>(null);
+  const [downloadError, setDownloadError] = useState("");
+
+  async function downloadCard() {
+    if (!cardRef.current || downloading) return;
+    setDownloading("png");
+    setDownloadError("");
+    try {
+      const { cardImageBlob } = await import("@/lib/card-image.client");
+      const blob = await cardImageBlob(cardRef.current);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `Vikas-Mitra-${profile.idNumber}.png`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch {
+      setDownloadError("Card image download nahi ho payi. Page refresh karke dobara try karein.");
+    } finally {
+      setDownloading(null);
+    }
+  }
+
+  async function downloadPdf() {
+    if (!cardRef.current || downloading) return;
+    setDownloading("pdf");
+    setDownloadError("");
+    try {
+      const { cardPdfBlob } = await import("@/lib/card-image.client");
+      const blob = await cardPdfBlob(cardRef.current);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `Vikas-Mitra-${profile.idNumber}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch {
+      setDownloadError(
+        "PDF download nahi ho payi. Image (PNG) download karein ya dobara try karein.",
+      );
+    } finally {
+      setDownloading(null);
+    }
+  }
+
   return (
     <main className="id-card-document flex min-h-screen items-start justify-center bg-slate-100 px-4 py-6 text-[#08245a] print:block print:bg-white print:p-0">
       <style
@@ -111,17 +156,40 @@ export function VikasMitraIdCardPrint({
         }}
       />
 
-      <div className="no-print fixed top-4 right-4 z-50">
-        <a
-          href={downloadUrl}
-          className="inline-flex items-center gap-2 rounded-lg bg-[#123a72] px-5 py-3 text-sm font-black text-white shadow-sm"
+      <div className="no-print fixed top-4 right-4 z-50 flex max-w-[calc(100%-2rem)] flex-wrap justify-end gap-2">
+        <button
+          type="button"
+          onClick={downloadCard}
+          disabled={Boolean(downloading)}
+          className="inline-flex items-center gap-2 rounded-lg bg-[#123a72] px-5 py-3 text-sm font-black text-white shadow-sm disabled:opacity-60"
+        >
+          {downloading === "png" ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Download className="h-4 w-4" />
+          )}
+          {downloading === "png" ? "Image तैयार हो रही है…" : "ID Card Image (PNG) डाउनलोड करें"}
+        </button>
+        <button
+          type="button"
+          onClick={downloadPdf}
+          disabled={Boolean(downloading)}
+          className="inline-flex items-center gap-2 rounded-lg bg-[#123a72] px-5 py-3 text-sm font-black text-white shadow-sm disabled:opacity-60"
         >
           <Download className="h-4 w-4" />
-          Colour ID Card PDF डाउनलोड करें
-        </a>
+          {downloading === "pdf" ? "PDF तैयार हो रही है…" : "Colour ID Card PDF डाउनलोड करें"}
+        </button>
+        {downloadError && (
+          <p role="alert" className="w-full rounded-lg bg-white p-3 text-sm text-red-700">
+            {downloadError}
+          </p>
+        )}
       </div>
 
-      <section className="id-card-page flex max-w-7xl flex-col gap-6 rounded-xl bg-white p-4 shadow-xl print:max-w-none print:flex-row print:gap-5 print:rounded-none print:p-0 lg:flex-row">
+      <section
+        ref={cardRef}
+        className="id-card-page flex max-w-7xl flex-col gap-6 rounded-xl bg-white p-4 shadow-xl print:max-w-none print:flex-row print:gap-5 print:rounded-none print:p-0 lg:flex-row"
+      >
         <IdCardFront profile={profile} />
         <IdCardBack profile={profile} />
       </section>

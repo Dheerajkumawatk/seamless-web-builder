@@ -22,6 +22,10 @@ await copyIfExists(path.join(root, "public"), path.join(standalone, "public"));
 
 await copyIfExists(path.join(root, "src/assets/fonts"), path.join(standalone, "src/assets/fonts"));
 await copyIfExists(
+  path.join(root, "src/assets/bharat-pahchan-logo.jpg"),
+  path.join(standalone, "src/assets/bharat-pahchan-logo.jpg"),
+);
+await copyIfExists(
   path.join(root, "src/assets/vikas-mitra-id-card.png"),
   path.join(standalone, "src/assets/vikas-mitra-id-card.png"),
 );

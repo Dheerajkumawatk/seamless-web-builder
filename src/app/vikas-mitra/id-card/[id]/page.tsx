@@ -23,7 +23,6 @@ export default async function VikasMitraIdCardPage({ params }: PageProps) {
 
   return (
     <VikasMitraIdCardPrint
-      downloadUrl={`/api/vikas-mitra/id-card/${profile.id}`}
       profile={{
         idNumber: formatVikasMitraId(profile.id, profile.createdAt),
         name: profile.name,

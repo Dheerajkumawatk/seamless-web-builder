@@ -68,9 +68,9 @@ export async function POST(request: Request) {
           : `https://${configuredOrigin}`
         ).replace(/\/$/, "")
       : origin;
-    // The browser must open the same server that saved the record. This matters
-    // in local development, where the production database does not contain it.
-    const demoUrl = `${origin}/demo/${lead.id}`;
+    // Resolve against the browser's origin: request.url can contain the internal
+    // server address behind a reverse proxy (for example, 0.0.0.0:3444).
+    const demoUrl = `/demo/${lead.id}`;
     const emailedDemoUrl = `${siteOrigin}/demo/${lead.id}`;
     const email = await sendEmail(
       buildDemoReadyEmail({
