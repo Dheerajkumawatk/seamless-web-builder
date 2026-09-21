@@ -5,7 +5,7 @@ import {
   type InferAttributes,
   type InferCreationAttributes,
 } from "sequelize";
-import { getSequelize } from "@/lib/sequelize.server";
+import { ensureMysqlUtf8mb4Table, getSequelize } from "@/lib/sequelize.server";
 
 export type PackageOrderStatus = "created" | "pending" | "paid" | "failed" | "cancelled";
 
@@ -149,7 +149,7 @@ export async function getPackageOrderModel(): Promise<typeof PackageOrder> {
   if (!syncPromise) {
     // alter so contact_lead_id is added on existing package_orders tables
     syncPromise = model.sync({ alter: true }).then(
-      () => undefined,
+      () => ensureMysqlUtf8mb4Table("package_orders"),
       (error) => {
         syncPromise = undefined;
         throw error;

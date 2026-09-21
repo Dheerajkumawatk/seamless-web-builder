@@ -140,7 +140,7 @@ export default function Contact() {
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify({
           name: String(fd.get("name") ?? "").trim(),
           phone: String(fd.get("phone") ?? "").trim(),

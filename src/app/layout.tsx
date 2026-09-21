@@ -3,7 +3,11 @@ import Script from "next/script";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { LeadPopup } from "@/components/site/LeadPopup";
+import { getBaseUrl } from "@/lib/site-url";
+import { ogImage } from "@/lib/seo";
 import "../styles.css";
+
+const baseUrl = getBaseUrl();
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -12,28 +16,56 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bharatpahchan.com"),
-  title: "Panchayat Election Digital Campaign Services | BharatPahchan",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "पंचायत एवं स्थानीय चुनाव डिजिटल अभियान सेवाएं | BharatPahchan",
+    template: "%s | BharatPahchan",
+  },
   description:
     "BharatPahchan पंचायत एवं स्थानीय चुनाव उम्मीदवारों के लिए वेबसाइट, सोशल मीडिया, वीडियो, ग्राफिक्स और डिजिटल आउटरीच सेवाएँ प्रदान करता है।",
+  keywords: [
+    "पंचायत चुनाव",
+    "चुनाव वेबसाइट",
+    "उम्मीदवार वेबसाइट",
+    "सरपंच अभियान",
+    "डिजिटल अभियान",
+    "चुनाव कैंपेन",
+    "local election website",
+    "election campaign services",
+    "BharatPahchan",
+  ],
   authors: [{ name: "भारत पहचान" }],
+  creator: "भारत पहचान",
+  publisher: "भारत पहचान",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Panchayat Election Digital Campaign Services | BharatPahchan",
-    description: "उम्मीदवार वेबसाइट, सोशल मीडिया, वीडियो, ग्राफिक्स और डिजिटल आउटरीच सेवाएँ।",
-    url: "https://bharatpahchan.com",
-    siteName: "BharatPahchan",
-    images: [{ url: "/favicon.ico", width: 512, height: 512, alt: "BharatPahchan" }],
     type: "website",
+    locale: "hi_IN",
+    url: baseUrl,
+    siteName: "BharatPahchan",
+    title: "पंचायत एवं स्थानीय चुनाव डिजिटल अभियान सेवाएं | BharatPahchan",
+    description: "उम्मीदवार वेबसाइट, सोशल मीडिया, वीडियो, ग्राफिक्स और डिजिटल आउटरीच सेवाएँ।",
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Panchayat Election Digital Campaign Services | BharatPahchan",
+    title: "पंचायत एवं स्थानीय चुनाव डिजिटल अभियान सेवाएं | BharatPahchan",
     description:
       "पंचायत एवं स्थानीय चुनाव उम्मीदवारों के लिए वेबसाइट, सोशल मीडिया और डिजिटल आउटरीच सेवाएँ।",
-    images: ["/favicon.ico"],
+    images: [ogImage.url],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -41,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="hi">
       <head>
+        <meta charSet="utf-8" />
         <meta
           name="google-site-verification"
           content="92pWEvnsKfa9nMnmWQpH2405sL1TFsc1YGEoxtaQn8s"
@@ -53,6 +86,32 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "भारत पहचान",
+              alternateName: "BharatPahchan",
+              url: baseUrl,
+              logo: `${baseUrl}/favicon.ico`,
+              email: "bharatpahchan.helpline@gmail.com",
+              telephone: "+91-7891-131-132",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Jaipur",
+                addressRegion: "Rajasthan",
+                addressCountry: "IN",
+              },
+              sameAs: [
+                "https://www.instagram.com/bharatpahchan/",
+                "https://www.facebook.com/profile.php?id=61593206296368",
+                "https://www.youtube.com/@bharatpahchan",
+              ],
+            }),
+          }}
+        />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-YZGGSCVZ2D"
           strategy="afterInteractive"

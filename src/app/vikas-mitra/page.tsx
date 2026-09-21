@@ -1,10 +1,20 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { MapPin, Phone, UserRound } from "lucide-react";
 import { listVikasMitraProfiles } from "@/lib/vikas-mitra.server";
 import type { VikasMitraProfile } from "@/lib/vikas-mitra.server";
 import { formatVikasMitraId } from "@/lib/profile-id";
+import { seo } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = seo({
+  title: "Vikas Mitra Program",
+  description:
+    "विकास मित्र के रूप में जुड़ें और अपने क्षेत्र के डिजिटल विकास का हिस्सा बनें। Vikas Mitra profiles और आवेदन की पूरी जानकारी।",
+  canonical: "/vikas-mitra",
+  ogDescription: "अपने क्षेत्र के डिजिटल विकास में भागीदार बनें। Vikas Mitra profiles और आवेदन।",
+});
 
 function demoPhoto(seed: string, kurta: string, bg: string) {
   const svg = `

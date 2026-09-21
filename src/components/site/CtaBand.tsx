@@ -31,7 +31,7 @@ export function CtaBand() {
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify({
           name: String(data.get("name") ?? ""),
           phone: String(data.get("phone") ?? ""),
@@ -140,7 +140,11 @@ export function CtaBand() {
               </button>
             </div>
 
-            <form acceptCharset="UTF-8" onSubmit={onSubmit} className="grid gap-4 p-5 sm:grid-cols-2">
+            <form
+              acceptCharset="UTF-8"
+              onSubmit={onSubmit}
+              className="grid gap-4 p-5 sm:grid-cols-2"
+            >
               <div>
                 <label
                   className="mb-1.5 block text-xs font-extrabold text-[#33384a]"

@@ -95,7 +95,7 @@ export async function sendEmail({
       method: "POST",
       headers: {
         Authorization: `Bearer ${resendApiKey}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json; charset=utf-8",
       },
       body: JSON.stringify({
         from: emailFrom,

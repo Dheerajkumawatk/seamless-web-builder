@@ -1,9 +1,19 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { VikasMitraIdCardPrint } from "@/components/site/VikasMitraIdCardPrint";
 import { formatVikasMitraId } from "@/lib/profile-id";
 import { getVikasMitraProfileById } from "@/lib/vikas-mitra.server";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Vikas Mitra ID Card",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
+};
 
 type PageProps = {
   params: Promise<{ id: string }>;

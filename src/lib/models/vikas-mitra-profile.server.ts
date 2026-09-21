@@ -5,7 +5,7 @@ import {
   type InferAttributes,
   type InferCreationAttributes,
 } from "sequelize";
-import { getSequelize } from "@/lib/sequelize.server";
+import { ensureMysqlUtf8mb4Table, getSequelize } from "@/lib/sequelize.server";
 
 export class VikasMitraProfileModel extends Model<
   InferAttributes<VikasMitraProfileModel>,
@@ -75,6 +75,8 @@ export function initVikasMitraProfileModel(): typeof VikasMitraProfileModel {
         sequelize: getSequelize(),
         modelName: "VikasMitraProfile",
         tableName: "vikas_mitra_profiles",
+        charset: "utf8mb4",
+        collate: "utf8mb4_unicode_ci",
         timestamps: true,
         createdAt: "created_at",
         updatedAt: false,
@@ -88,7 +90,7 @@ export async function getVikasMitraProfileModel(): Promise<typeof VikasMitraProf
   const model = initVikasMitraProfileModel();
   if (!syncPromise) {
     syncPromise = model.sync().then(
-      () => undefined,
+      () => ensureMysqlUtf8mb4Table("vikas_mitra_profiles"),
       (error) => {
         syncPromise = undefined;
         throw error;

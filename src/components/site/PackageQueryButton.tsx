@@ -148,7 +148,7 @@ export function PackageQueryButton({
     try {
       const response = await fetch("/api/orders/draft", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify({
           ...(orderId ? { orderId } : {}),
           packageName,
@@ -190,7 +190,7 @@ export function PackageQueryButton({
     try {
       const createResponse = await fetch("/api/orders/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify({ orderId }),
       });
       const created = (await createResponse.json()) as CreateOrderResponse;
@@ -227,7 +227,7 @@ export function PackageQueryButton({
           try {
             const verifyResponse = await fetch("/api/orders/verify", {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: { "Content-Type": "application/json; charset=utf-8" },
               body: JSON.stringify({
                 razorpayOrderId: response["razorpay_order_id"],
                 razorpayPaymentId: response["razorpay_payment_id"],

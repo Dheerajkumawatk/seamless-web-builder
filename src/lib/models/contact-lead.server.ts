@@ -5,7 +5,7 @@ import {
   type InferCreationAttributes,
   type CreationOptional,
 } from "sequelize";
-import { getSequelize } from "@/lib/sequelize.server";
+import { ensureMysqlUtf8mb4Table, getSequelize } from "@/lib/sequelize.server";
 
 export class ContactLead extends Model<
   InferAttributes<ContactLead>,
@@ -55,6 +55,8 @@ export function initContactLead(): typeof ContactLead {
         sequelize: getSequelize(),
         modelName: "ContactLead",
         tableName: "contact_leads",
+        charset: "utf8mb4",
+        collate: "utf8mb4_unicode_ci",
         timestamps: true,
         createdAt: "created_at",
         updatedAt: false,
@@ -68,7 +70,7 @@ export async function getContactLeadModel(): Promise<typeof ContactLead> {
   const model = initContactLead();
   if (!syncPromise) {
     syncPromise = model.sync().then(
-      () => undefined,
+      () => ensureMysqlUtf8mb4Table("contact_leads"),
       (error) => {
         syncPromise = undefined;
         throw error;

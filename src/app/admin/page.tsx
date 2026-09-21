@@ -246,7 +246,7 @@ export default function AdminPage() {
         method: "PATCH",
         headers: {
           ...authHeaders,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json; charset=utf-8",
         },
         body: JSON.stringify({
           type,
@@ -284,7 +284,7 @@ export default function AdminPage() {
         method: "POST",
         headers: {
           ...authHeaders,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json; charset=utf-8",
         },
         body: JSON.stringify({
           type: "blog",
@@ -328,7 +328,7 @@ export default function AdminPage() {
         method: "DELETE",
         headers: {
           ...authHeaders,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json; charset=utf-8",
         },
         body: JSON.stringify({ type, id }),
       });

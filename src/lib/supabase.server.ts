@@ -1,4 +1,5 @@
-const supabaseUrl = process.env["NEXT_PUBLIC_SUPABASE_URL"] ?? "https://jphtwtafkoowwjkuobqa.supabase.co";
+const supabaseUrl =
+  process.env["NEXT_PUBLIC_SUPABASE_URL"] ?? "https://jphtwtafkoowwjkuobqa.supabase.co";
 const serviceRoleKey = process.env["SUPABASE_SERVICE_ROLE_KEY"];
 const publishableKey =
   process.env["NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY"] ??
@@ -20,13 +21,17 @@ function endpoint(table: string, query?: Record<string, QueryValue | undefined>)
   return url;
 }
 
-async function request<T>(table: string, init: RequestInit, query?: Record<string, QueryValue | undefined>) {
+async function request<T>(
+  table: string,
+  init: RequestInit,
+  query?: Record<string, QueryValue | undefined>,
+) {
   const response = await fetch(endpoint(table, query), {
     ...init,
     headers: {
       apikey: supabaseKey,
       Authorization: `Bearer ${supabaseKey}`,
-      "Content-Type": "application/json",
+      "Content-Type": "application/json; charset=utf-8",
       Prefer: "return=representation",
       ...((init.headers ?? {}) as Record<string, string>),
     },

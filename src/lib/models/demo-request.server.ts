@@ -5,7 +5,7 @@ import {
   type InferAttributes,
   type InferCreationAttributes,
 } from "sequelize";
-import { getSequelize } from "@/lib/sequelize.server";
+import { ensureMysqlUtf8mb4Table, getSequelize } from "@/lib/sequelize.server";
 
 export class DemoRequest extends Model<
   InferAttributes<DemoRequest>,
@@ -85,7 +85,7 @@ export async function getDemoRequestModel(): Promise<typeof DemoRequest> {
   const model = initDemoRequest();
   if (!syncPromise) {
     syncPromise = model.sync().then(
-      () => undefined,
+      () => ensureMysqlUtf8mb4Table("demo_requests"),
       (error) => {
         syncPromise = undefined;
         throw error;
