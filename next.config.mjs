@@ -3,6 +3,9 @@ const nextConfig = {
   distDir: "dist",
   output: "standalone",
   agentRules: false,
+  experimental: {
+    useTypeScriptCli: false,
+  },
   outputFileTracingIncludes: {
     "/api/admin/data": ["./src/assets/fonts/**/*", "./src/assets/vikas-mitra-id-card.png"],
     "/api/vikas-mitra/id-card/*": [

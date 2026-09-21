@@ -29,24 +29,29 @@ function defaultBlogPosts(): BlogPost[] {
   return blogPosts.map((post, index) => ({
     ...post,
     id: `default-${post.slug}`,
-    publishDate: post.date,
-    imageAltText: post.title,
-    content: post.excerpt,
-    seoTitle: post.title,
-    metaDescription: post.excerpt,
-    createdAt: new Date(Date.UTC(2026, 7, 12 - index)).toISOString(),
+    publishDate: post.publishDate ?? post.date,
+    imageAltText: post.imageAltText ?? post.title,
+    content: post.content ?? post.excerpt,
+    seoTitle: post.seoTitle ?? post.title,
+    metaDescription: post.metaDescription ?? post.excerpt,
+    createdAt: new Date(Date.UTC(2026, 8, 21) - index * 3 * 24 * 60 * 60 * 1000).toISOString(),
   }));
 }
 
 export async function listBlogPosts(): Promise<BlogPost[]> {
+  const defaults = defaultBlogPosts();
   const rows = await readLocalRows<BlogPost>(STORE);
-  if (rows.length > 0) {
-    return rows.map(normalizeBlogPost);
+  if (rows.length === 0) {
+    await writeLocalRows(STORE, defaults);
+    return defaults;
   }
 
-  const defaults = defaultBlogPosts();
-  await writeLocalRows(STORE, defaults);
-  return defaults;
+  const customRows = rows.filter((row) => !row.id.startsWith("default-"));
+  const merged = [...customRows, ...defaults].map(normalizeBlogPost);
+  if (merged.length !== rows.length || rows.some((row) => row.id.startsWith("default-"))) {
+    await writeLocalRows(STORE, merged);
+  }
+  return merged;
 }
 
 export async function createBlogPost(
@@ -82,6 +87,13 @@ export async function updateBlogPost(
 
 export async function deleteBlogPost(id: string) {
   await deleteLocalRow<BlogPost>(STORE, id);
+}
+
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  const normalized = slug.trim().toLowerCase();
+  if (!normalized) return null;
+  const posts = await listBlogPosts();
+  return posts.find((post) => post.slug.trim().toLowerCase() === normalized) ?? null;
 }
 
 export function slugify(value: string) {

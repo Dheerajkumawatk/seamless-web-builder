@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/site-url";
+import { listBlogPosts } from "@/lib/blog.server";
 
 // Public crawlable pages. /demo/* pages are noindex (not included),
 // /admin and /api are disallowed in robots.ts (not included).
@@ -24,12 +25,27 @@ const routes: Array<{
   { path: "/disclaimer", changeFrequency: "yearly", priority: 0.3 },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
-  return routes.map((route) => ({
+  const staticUrls = routes.map((route) => ({
     url: absoluteUrl(route.path),
     lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));
+
+  let blogUrls: MetadataRoute.Sitemap = [];
+  try {
+    const posts = await listBlogPosts();
+    blogUrls = posts.map((post) => ({
+      url: absoluteUrl(`/blog/${post.slug}`),
+      lastModified: post.createdAt ? new Date(post.createdAt) : lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
+  } catch {
+    blogUrls = [];
+  }
+
+  return [...staticUrls, ...blogUrls];
 }

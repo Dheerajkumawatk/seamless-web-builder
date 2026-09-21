@@ -68,7 +68,9 @@ function walkFiles(dir) {
 function readCodeCorpus() {
   const files = [
     ...sourceDirs.flatMap((dir) => walkFiles(path.join(projectRoot, dir))),
-    ...sourceFiles.map((file) => path.join(projectRoot, file)).filter((file) => fs.existsSync(file)),
+    ...sourceFiles
+      .map((file) => path.join(projectRoot, file))
+      .filter((file) => fs.existsSync(file)),
   ].filter((file) => !file.includes(`${path.sep}node_modules${path.sep}`));
 
   return files
@@ -121,7 +123,9 @@ async function getCreateTable(connection, tableName) {
 }
 
 async function getExactCount(connection, tableName) {
-  const [rows] = await connection.query(`SELECT COUNT(*) AS row_count FROM ${quoteIdent(tableName)}`);
+  const [rows] = await connection.query(
+    `SELECT COUNT(*) AS row_count FROM ${quoteIdent(tableName)}`,
+  );
   return Number(rows[0].row_count);
 }
 
@@ -185,9 +189,10 @@ async function getDependencies(connection, database, tableName) {
   );
   deps.push(
     ...routines.map(
-      (row) => `${String(row.ROUTINE_TYPE ?? row.routine_type).toLowerCase()} ${
-        row.ROUTINE_NAME ?? row.routine_name
-      }`,
+      (row) =>
+        `${String(row.ROUTINE_TYPE ?? row.routine_type).toLowerCase()} ${
+          row.ROUTINE_NAME ?? row.routine_name
+        }`,
     ),
   );
 
@@ -263,7 +268,9 @@ async function writeReviewScript(database, candidates, startedAt) {
     lines.push(`-- Reason: ${table.reason}`);
     lines.push(`LOCK TABLES ${quoteIdent(table.name)} WRITE;`);
     lines.push(`SELECT COUNT(*) AS row_count FROM ${quoteIdent(table.name)};`);
-    lines.push(`-- If row_count is 0 and you have confirmed no new writes are expected, uncomment:`);
+    lines.push(
+      `-- If row_count is 0 and you have confirmed no new writes are expected, uncomment:`,
+    );
     lines.push(`-- DROP TABLE ${quoteIdent(table.name)};`);
     lines.push("UNLOCK TABLES;");
     lines.push("");
@@ -298,8 +305,7 @@ async function main() {
       const rowCount = await getExactCount(connection, tableName);
       const dependencies = await getDependencies(connection, database, tableName);
       const codeReferences = findCodeReferences(tableName, corpus);
-      const protectedByCode =
-        explicitProtectedTables.has(tableName) || codeReferences.length > 0;
+      const protectedByCode = explicitProtectedTables.has(tableName) || codeReferences.length > 0;
       const reasons = [];
 
       if (rowCount !== 0) reasons.push(`has ${rowCount} row(s)`);

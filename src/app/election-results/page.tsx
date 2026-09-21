@@ -3,6 +3,8 @@ import { seo } from "@/lib/seo";
 
 export { default } from "@/routes/election-results";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = seo({
   title: "राजस्थान निकाय चुनाव परिणाम",
   description:

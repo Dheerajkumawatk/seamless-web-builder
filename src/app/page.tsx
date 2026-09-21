@@ -3,6 +3,8 @@ import { seo } from "@/lib/seo";
 
 export { default } from "@/routes/index";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = seo({
   title: "पंचायत एवं स्थानीय चुनाव डिजिटल अभियान सेवाएं",
   description:

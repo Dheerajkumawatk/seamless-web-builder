@@ -28,7 +28,13 @@ type PageSeoInput = {
  * Builds consistent per-page metadata (OpenGraph + Twitter image cards) so
  * every route shares the same branded preview image and social description.
  */
-export function seo({ title, description, canonical, ogDescription, extra }: PageSeoInput): Metadata {
+export function seo({
+  title,
+  description,
+  canonical,
+  ogDescription,
+  extra,
+}: PageSeoInput): Metadata {
   const socialTitle = `${title} | BharatPahchan`;
   const socialDescription = ogDescription ?? description;
 

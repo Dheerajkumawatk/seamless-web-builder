@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/prepare-dist.mjs",
-    "build:dev": "next build && node scripts/prepare-dist.mjs",
+    "build": "next build --webpack && node scripts/prepare-dist.mjs",
+    "build:dev": "next build --webpack && node scripts/prepare-dist.mjs",
     "import:popup-leads": "node scripts/import-popup-leads.mjs",
     "start": "node dist/standalone/server.js",
     "preview": "node dist/standalone/server.js",

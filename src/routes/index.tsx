@@ -12,7 +12,7 @@ import {
   Phone,
   Share2,
 } from "lucide-react";
-import { images } from "@/data/images";
+import { fallbackImage, images } from "@/data/images";
 import { audiences, packages, site, trustCapabilities, websiteSections } from "@/data/site";
 import { electionSummary, listElectionResults } from "@/lib/election-results.server";
 import { listBlogPosts } from "@/lib/blog.server";
@@ -694,7 +694,7 @@ function resolveBlogImage(image: string) {
     return image;
   }
 
-  return images[image] ?? images["village"];
+  return images[image] ?? fallbackImage;
 }
 
 function dailyEquivalent(price: string, period: string) {

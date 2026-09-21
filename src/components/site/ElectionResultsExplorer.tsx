@@ -101,9 +101,7 @@ export function ElectionResultsExplorer({
             <p>
               {summary.bodies} निकाय · {summary.wards} वार्ड
             </p>
-            <p className="mt-1">
-              {summary.winners.toLocaleString("en-IN")} विजेता
-            </p>
+            <p className="mt-1">{summary.winners.toLocaleString("en-IN")} विजेता</p>
           </div>
         </div>
 

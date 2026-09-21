@@ -7,6 +7,8 @@ import hero from "@/assets/hero-leader.jpg";
 import testimonials2 from "@/assets/testimonials2.png";
 import vikasMitraIdCard from "@/assets/vikas-mitra-id-card.png";
 
+export const fallbackImage = village.src;
+
 export const images: Record<string, string> = {
   village: village.src,
   panchayat: panchayat.src,
