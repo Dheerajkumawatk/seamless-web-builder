@@ -123,8 +123,8 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 shadow-[0_2px_12px_rgba(18,58,114,.18)]">
-        <div className="border-b border-white/10 bg-[#123a72] text-white md:hidden">
+      <header className="sticky top-0 z-50 shadow-[0_8px_30px_rgba(14,47,94,.12)]">
+        <div className="border-b border-white/10 bg-[#0e2f5e] text-white md:hidden">
           <a
             href={`tel:${site.phone}`}
             className="mx-auto flex h-8 max-w-[1720px] items-center justify-center gap-2 px-4 text-xs font-black"
@@ -134,19 +134,19 @@ export function Header() {
           </a>
         </div>
 
-        <div className="hidden border-b border-white/10 bg-[#123a72] text-white md:block">
+        <div className="hidden border-b border-white/10 bg-gradient-to-r from-[#0a2348] via-[#123a72] to-[#0a2348] text-white md:block">
           <div className="mx-auto flex h-[42px] max-w-[1720px] items-center justify-between gap-4 px-8 text-[14px] font-bold xl:px-14">
-            <p className="flex min-w-0 items-center gap-2 truncate">
+            <p className="flex min-w-0 items-center gap-2 truncate text-white/90">
               <MapPin className="h-4 w-4 fill-white/15" />
               {site.topbar}
             </p>
             <div className="flex shrink-0 items-center gap-5 xl:gap-12">
-              <a href={`tel:${site.phone}`} className="flex items-center gap-1.5 hover:text-gold">
+              <a href={`tel:${site.phone}`} className="flex items-center gap-1.5 transition hover:text-[#7dcea0]">
                 <Phone className="h-4 w-4 fill-white/15" /> {site.phone}
               </a>
               <a
                 href={`mailto:${site.email}`}
-                className="flex items-center gap-1.5 hover:text-gold"
+                className="flex items-center gap-1.5 transition hover:text-[#7dcea0]"
               >
                 <Mail className="h-4 w-4 fill-white/15" /> {site.email}
               </a>
@@ -158,7 +158,7 @@ export function Header() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={label}
-                    className="grid h-7 w-7 place-items-center rounded-full border border-[#4a9e72]/65 bg-[#0e2f5e]/30 text-white hover:bg-saffron"
+                    className="grid h-7 w-7 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition hover:border-[#159a56] hover:bg-[#159a56]"
                   >
                     <Icon className="h-3.5 w-3.5" />
                   </a>
@@ -168,7 +168,7 @@ export function Header() {
           </div>
         </div>
 
-        <div className="border-b border-[#dde5f0] bg-white/98 backdrop-blur">
+        <div className="border-b border-[#dde5f0]/80 bg-white/90 backdrop-blur-xl">
           <div className="mx-auto grid h-[76px] max-w-[1720px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 md:h-[104px] md:px-8 xl:flex xl:justify-between xl:px-14">
             <Link
               href="/"
@@ -183,23 +183,26 @@ export function Header() {
                 <Link
                   key={item.label}
                   href={item.to}
-                  className={`whitespace-nowrap text-[15px] font-extrabold transition-colors hover:text-[#0f7a42] ${
+                  className={`relative whitespace-nowrap text-[15px] font-extrabold transition-colors hover:text-[#0f7a42] ${
                     pathname === item.to ? "text-[#0f7a42]" : "text-[#33384a]"
                   }`}
                 >
                   {item.label}
+                  {pathname === item.to ? (
+                    <span className="absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-[#159a56]" />
+                  ) : null}
                 </Link>
               ))}
               <button
                 type="button"
                 onClick={openVikasForm}
-                className="min-h-11 whitespace-nowrap rounded-lg border border-[#123a72] px-4 py-3 text-[15px] font-extrabold text-[#123a72] transition-colors hover:bg-[#123a72] hover:text-white"
+                className="min-h-11 whitespace-nowrap rounded-xl border border-[#123a72] px-4 py-3 text-[15px] font-extrabold text-[#123a72] transition-colors hover:bg-[#123a72] hover:text-white"
               >
                 Vikas Mitra Join
               </button>
               <Link
                 href="/#demo-form"
-                className="ml-1 whitespace-nowrap rounded-lg bg-[#159a56] px-6 py-4 text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(21,154,86,.22)] transition-transform hover:scale-[1.03]"
+                className="premium-btn-green ml-1 whitespace-nowrap rounded-xl bg-[#159a56] px-6 py-4 text-[15px] font-extrabold text-white"
               >
                 मेरे नाम से डेमो बनाइए
               </Link>

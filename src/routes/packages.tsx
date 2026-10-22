@@ -7,21 +7,38 @@ import { faqs, packages } from "@/data/site";
 type PackageItem = (typeof packages)[number];
 
 export default function Packages() {
+  const affordablePackages = packages.filter((item) => item.category === "affordable");
   const electionPackages = packages.filter((item) => item.category === "election");
   const businessPackages = packages.filter((item) => item.category === "business");
 
   return (
     <>
-      <PageHero title="हमारे पैकेज" />
+      <PageHero title="किफायती डिजिटल पैकेज" />
 
       <Section>
+        <SectionHeading
+          title="हर बजट के लिए सही शुरुआत"
+          sub="मैसेजिंग, वीडियो, पोस्ट और वेबसाइट—आपके डिजिटल प्रचार के लिए एक ही पैकेज में।"
+        />
+        <PackageGrid packages={affordablePackages} />
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          * सभी कीमतों में GST अलग से लागू होगा। मैसेजिंग और वेबसाइट का काम ऑर्डर कन्फर्म होने के
+          बाद शुरू होगा।
+        </p>
+      </Section>
+
+      <Section muted>
+        <SectionHeading
+          title="चुनाव अभियान पैकेज"
+          sub="लंबे समय तक चलने वाले डिजिटल चुनाव अभियान के लिए पूरा सपोर्ट।"
+        />
         <PackageGrid packages={electionPackages} />
         <p className="mt-6 text-center text-xs text-muted-foreground">
           * सभी कीमतों में GST अलग से लागू होगा। कस्टम पैकेज के लिए संपर्क करें।
         </p>
       </Section>
 
-      <Section muted>
+      <Section>
         <SectionHeading
           title="बिजनेस कंसल्टेंसी और मैनेजमेंट"
           sub="अपने अगले विकास चरण के लिए सही सपोर्ट चुनें।"
@@ -52,7 +69,11 @@ export default function Packages() {
 
 function PackageGrid({ packages: packageItems }: { packages: PackageItem[] }) {
   return (
-    <div className="grid gap-6 lg:grid-cols-3">
+    <div
+      className={`grid gap-6 md:grid-cols-2 ${
+        packageItems.length === 4 ? "xl:grid-cols-4" : "lg:grid-cols-3"
+      }`}
+    >
       {packageItems.map((p) => (
         <article
           key={p.name}

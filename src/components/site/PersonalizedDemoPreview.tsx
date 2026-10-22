@@ -89,7 +89,7 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
   return (
     <section
       id="demo-form"
-      className="scroll-mt-28 border-b border-[#dbe8dd] bg-white px-4 py-12 sm:py-16"
+      className="scroll-mt-28 border-b border-[#dbe8dd] bg-gradient-to-b from-[#f7faf8] to-white px-4 py-14 sm:py-20"
     >
       <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
         <div>
@@ -97,11 +97,11 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
             Personalised Demo
           </p>
           <h2 className="mt-3 font-display text-3xl font-black leading-tight text-[#0e2f5e] sm:text-4xl">
-            अपने नाम और क्षेत्र के अनुसार customised demo request भेजें
+            अपने नाम और क्षेत्र के अनुसार कस्टमाइज़्ड डेमो रिक्वेस्ट भेजें
           </h2>
           <p className="mt-4 text-base leading-relaxed font-semibold text-[#4b5364]">
-            Form submit होने के बाद हमारी टीम आपके नाम और क्षेत्र के अनुसार डेमो तैयार कर आपसे
-            संपर्क करेगी।
+            फॉर्म सबमिट होने के बाद हमारी टीम आपके नाम और क्षेत्र के अनुसार डेमो तैयार कर आपसे संपर्क
+            करेगी।
           </p>
 
           <form
@@ -259,7 +259,7 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
             <button
               type="submit"
               disabled={status === "loading"}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#0e2f5e] px-6 py-3.5 text-base font-black text-white sm:col-span-2"
+              className="premium-btn inline-flex items-center justify-center gap-2 rounded-xl bg-[#0e2f5e] px-6 py-3.5 text-base font-black text-white sm:col-span-2 disabled:opacity-70"
             >
               {status === "loading" ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
@@ -294,7 +294,7 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
           </form>
         </div>
 
-        <div className="overflow-hidden rounded-lg border border-[#dbe8dd] bg-white shadow-card">
+        <div className="overflow-hidden rounded-2xl border border-[#dbe8dd] bg-white shadow-[var(--shadow-premium)]">
           <img
             src={aiCampaignPreview.src}
             width={2048}
@@ -303,7 +303,7 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
             loading="lazy"
             className="h-[320px] w-full object-cover sm:h-[430px] lg:h-full"
           />
-          <div className="border-t border-[#dbe8dd] p-5">
+          <div className="border-t border-[#dbe8dd] bg-gradient-to-b from-white to-[#f7faf8] p-5 sm:p-6">
             <div className="flex items-center gap-4">
               {photoPreview && (
                 <img
@@ -313,16 +313,16 @@ export function PersonalizedDemoPreview({ whatsappBaseUrl }: { whatsappBaseUrl: 
                 />
               )}
               <div>
-                <p className="text-sm font-black text-[#159a56]">AI Campaign Image</p>
+                <p className="text-sm font-black text-[#159a56]">AI Campaign Preview</p>
                 <h3 className="mt-1 font-display text-2xl font-black text-[#0e2f5e]">
-                  {preview.name} ke liye modern digital campaign look
+                  {preview.name} के लिए आधुनिक डिजिटल कैंपेन लुक
                 </h3>
                 <p className="mt-2 text-sm font-bold text-[#596173]">{preview.location}</p>
               </div>
             </div>
             <a
               href={contactHref}
-              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#159a56] px-5 py-3.5 text-base font-black text-white"
+              className="premium-btn-green mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#159a56] px-5 py-3.5 text-base font-black text-white"
             >
               WhatsApp पर भी पूछें
             </a>

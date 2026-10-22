@@ -25,9 +25,11 @@ export function BlogBackLink({ href, label }: { href: string; label: string }) {
 export function SectionHeading({ title, sub }: { title: string; sub?: string }) {
   return (
     <div className="text-center">
-      <h2 className="section-title text-xl sm:text-2xl md:text-3xl">{title}</h2>
+      <h2 className="section-title text-xl sm:text-2xl md:text-3xl lg:text-[2.15rem]">{title}</h2>
       {sub && (
-        <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">{sub}</p>
+        <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed font-semibold text-[#5b6578] sm:text-base">
+          {sub}
+        </p>
       )}
     </div>
   );
@@ -43,7 +45,7 @@ export function Section({
   muted?: boolean;
 }) {
   return (
-    <section className={`${muted ? "bg-cream" : ""} py-12 sm:py-16 ${className}`}>
+    <section className={`${muted ? "bg-cream" : ""} py-14 sm:py-20 ${className}`}>
       <div className="mx-auto max-w-7xl px-4">{children}</div>
     </section>
   );
