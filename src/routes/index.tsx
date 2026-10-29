@@ -13,7 +13,7 @@ import {
   Share2,
 } from "lucide-react";
 import { fallbackImage, images } from "@/data/images";
-import { audiences, packages, site, trustCapabilities, websiteSections } from "@/data/site";
+import { audiences, site, trustCapabilities, websiteSections } from "@/data/site";
 import { electionSummary, listElectionResults } from "@/lib/election-results.server";
 import { listBlogPosts } from "@/lib/blog.server";
 import heroBackground from "@/assets/bharatpahchan-hero-background.png";
@@ -21,7 +21,8 @@ import mobileSliderBackground from "@/assets/bharatpahchan-mobile-slider.png";
 import channel009Logo from "@/assets/channel009-logo.png";
 import aiCampaignPreview from "@/assets/ai-campaign-preview.png";
 import { MobileContactBar } from "@/components/site/MobileContactBar";
-import { PackageQueryButton } from "@/components/site/PackageQueryButton";
+import { PackageSolutions } from "@/components/site/PackageSolutions";
+
 import { PersonalizedDemoPreview } from "@/components/site/PersonalizedDemoPreview";
 import { InstagramFeedSection } from "@/components/site/InstagramFeedSection";
 import { Section, SectionHeading } from "@/components/site/Section";
@@ -58,11 +59,11 @@ const homepageFaqs = [
   },
   {
     q: "Package कितने समय के लिए है?",
-    a: "मौजूदा पैकेज 6 माह के आधार पर दिखाए गए हैं। किसी custom duration के लिए टीम से बात करें।",
+    a: "अभियान के शुरुआती पैकेज एक बार की फीस पर हैं। क्षेत्र और बिजनेस प्लान 6 माह के लिए हैं। पूरी जानकारी के लिए प्लान का पेज देखें।",
   },
   {
     q: "पेमेंट कैसे करें?",
-    a: "भुगतान और बिलिंग से जुड़ी जानकारी टीम से पुष्टि करके ही करें। वेबसाइट पर दिख रही कीमत पैकेज की मूल जानकारी है।",
+    a: "प्लान पेज पर पैकेज चुनें, View More से पूरी जानकारी देखें और भुगतान के बटन से Razorpay checkout पर आगे बढ़ें। अंतिम राशि checkout में दिखेगी।",
   },
   {
     q: "क्या EMI या किस्तों में भुगतान उपलब्ध है?",
@@ -235,7 +236,9 @@ export default async function Index() {
                     </span>
                     {item.label}
                   </div>
-                  <p className="mt-2 font-display text-3xl font-black text-[#0e2f5e]">{item.value}</p>
+                  <p className="mt-2 font-display text-3xl font-black text-[#0e2f5e]">
+                    {item.value}
+                  </p>
                   <div className="mt-3 grid grid-cols-2 rounded-lg bg-white/80 text-sm font-bold text-[#526079] ring-1 ring-black/5">
                     <span className="px-2 py-2">जीत: {item.value}</span>
                     <span className="px-2 py-2">बढ़त: {item.runners}</span>
@@ -348,7 +351,10 @@ export default async function Index() {
       </Section>
 
       <Section>
-        <SectionHeading title="तीन आसान कदम" sub="शुरू करना आसान है — जानकारी भेजें, सामग्री तैयार हो, अभियान शुरू करें।" />
+        <SectionHeading
+          title="तीन आसान कदम"
+          sub="शुरू करना आसान है — जानकारी भेजें, सामग्री तैयार हो, अभियान शुरू करें।"
+        />
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {simpleProcess.map((item, index) => (
             <article
@@ -411,113 +417,7 @@ export default async function Index() {
         </div>
       </Section>
 
-      <Section className="relative overflow-hidden bg-[#f4f8f6]">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-80"
-          style={{
-            background:
-              "radial-gradient(520px 220px at 12% 0%, rgba(21,154,86,0.1), transparent 55%), radial-gradient(480px 200px at 90% 10%, rgba(14,47,94,0.08), transparent 50%)",
-          }}
-        />
-        <div className="relative text-center">
-          <p className="mb-2 text-xs font-black tracking-[0.22em] text-[#159a56] uppercase">
-            Packages
-          </p>
-          <h2 className="font-display text-2xl font-bold text-[#0e2f5e] sm:text-3xl md:text-4xl">
-            पैकेज और कीमत
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-sm font-semibold text-[#5b6578] sm:text-base">
-            कीमत और अवधि मौजूदा पैकेज डेटा से ली गई है। अंतिम राशि टीम से पुष्टि करें।
-          </p>
-        </div>
-        <div className="relative mt-8 grid gap-5 sm:mt-10 sm:gap-6 lg:grid-cols-3">
-          {packages.map((p) => {
-            const daily = dailyEquivalent(p.price, p.period);
-
-            return (
-              <article
-                key={p.name}
-                className={`relative flex flex-col overflow-hidden rounded-2xl border bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-premium)] ${
-                  p.featured
-                    ? "border-[#159a56]/50 ring-2 ring-[#159a56]/20 lg:scale-[1.02]"
-                    : "border-[#d5e0ec]"
-                }`}
-              >
-                {p.featured && (
-                  <span
-                    className={`absolute top-5 -right-9 rotate-45 px-10 py-1 text-xs font-bold text-white ${homePackageTheme(p.theme).badge}`}
-                  >
-                    {p.badge}
-                  </span>
-                )}
-                <div
-                  className={`px-5 py-6 text-center sm:px-6 ${
-                    p.featured
-                      ? `${homePackageTheme(p.theme).headBg} text-white`
-                      : "bg-gradient-to-b from-[#f7fafc] to-white"
-                  }`}
-                >
-                  <h3
-                    className={`text-xl ${p.featured ? "text-white" : homePackageTheme(p.theme).title}`}
-                  >
-                    {p.name}
-                  </h3>
-                  {p.desc && (
-                    <p
-                      className={`mt-1 text-sm ${p.featured ? "text-white/90" : "text-neutral-600"}`}
-                    >
-                      {p.desc}
-                    </p>
-                  )}
-                </div>
-                <div className="flex flex-1 flex-col px-5 pt-5 pb-6 sm:px-7 sm:pb-7">
-                  <div className="rounded-xl border border-[#dbe8dd] bg-[#f7fbf8] p-5 text-center">
-                    <p className="text-xs font-black tracking-[0.16em] text-[#596173] uppercase">
-                      कुल पैकेज कीमत
-                    </p>
-                    <p
-                      className={`mt-1 font-display text-4xl font-bold ${homePackageTheme(p.theme).price}`}
-                    >
-                      {p.price}
-                    </p>
-
-                    <p className="mt-1 text-sm font-bold text-neutral-700">{p.period}</p>
-
-                    {daily && (
-                      <p className="mt-2 text-xs font-semibold text-neutral-600">
-                        लगभग ₹{daily} प्रतिदिन के बराबर
-                      </p>
-                    )}
-                  </div>
-                  <p className="mt-5 text-sm font-black text-[#0e2f5e]">शामिल सेवाएं</p>
-                  <ul className="mt-3 flex-1 space-y-2.5">
-                    {p.features.map((f) => (
-                      <li key={f} className="flex gap-2.5 text-sm font-semibold text-neutral-800">
-                        <Check
-                          className={`mt-0.5 h-4 w-4 shrink-0 ${homePackageTheme(p.theme).check}`}
-                        />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="mt-5 text-xs font-semibold text-neutral-600">
-                    GST या अन्य कर लागू हों तो टीम से पुष्टि करें।
-                  </p>
-                  <PackageQueryButton
-                    packageName={p.name}
-                    featured={p.featured}
-                    tone={p.theme}
-                    ctaLabel={p.ctaLabel}
-                    displayPrice={p.price}
-                  />
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </Section>
-
+      <PackageSolutions />
       <Section muted>
         <article className="premium-surface rounded-2xl p-6 sm:p-8">
           <div className="grid gap-5 lg:grid-cols-[auto_1fr] lg:items-center">
@@ -724,66 +624,4 @@ function resolveBlogImage(image: string) {
   }
 
   return images[image] ?? fallbackImage;
-}
-
-function dailyEquivalent(price: string, period: string) {
-  if (!period.includes("6")) {
-    return null;
-  }
-
-  const amount = Number(price.replace(/[^\d]/g, ""));
-  if (!Number.isFinite(amount) || amount <= 0) {
-    return null;
-  }
-
-  return Math.round(amount / 180).toLocaleString("en-IN");
-}
-
-function homePackageTheme(theme: string) {
-  const themes = {
-    green: {
-      title: "text-[#0b9b45]",
-      price: "text-[#0b9b45]",
-      check: "text-[#20a34a]",
-      badge: "bg-[#20a34a]",
-      headBg: "bg-[#20a34a]",
-    },
-    blue: {
-      title: "text-[#2867c9]",
-      price: "text-[#2867c9]",
-      check: "text-[#2867c9]",
-      badge: "bg-[#2867c9]",
-      headBg: "bg-[#2867c9]",
-    },
-    purple: {
-      title: "text-[#7f3fbd]",
-      price: "text-[#7f3fbd]",
-      check: "text-[#7f3fbd]",
-      badge: "bg-[#7f3fbd]",
-      headBg: "bg-[#7f3fbd]",
-    },
-    orange: {
-      title: "text-[#ff5b20]",
-      price: "text-[#ff5b20]",
-      check: "text-[#ff5b20]",
-      badge: "bg-[#ff5b20]",
-      headBg: "bg-[#ff5b20]",
-    },
-    navy: {
-      title: "text-[#102b6f]",
-      price: "text-[#102b6f]",
-      check: "text-[#102b6f]",
-      badge: "bg-[#102b6f]",
-      headBg: "bg-[#102b6f]",
-    },
-    red: {
-      title: "text-[#ef3a30]",
-      price: "text-[#ef3a30]",
-      check: "text-[#ef3a30]",
-      badge: "bg-[#ef3a30]",
-      headBg: "bg-[#ef3a30]",
-    },
-  };
-
-  return themes[theme as keyof typeof themes] ?? themes.navy;
 }

@@ -264,7 +264,7 @@ export const packages = [
     ctaLabel: "इस पैकेज के लिए भुगतान करें",
     theme: "green",
     features: [
-      "उम्मीदवार वेबसाइट",
+      "Gram Panchayat Website",
       "सोशल मीडिया सेटअप",
       "15 क्रिएटिव्स/माह",
       "डिजिटल आउटरीच सपोर्ट",
@@ -283,7 +283,7 @@ export const packages = [
     ctaLabel: "इस पैकेज के लिए भुगतान करें",
     theme: "orange",
     features: [
-      "वेबसाइट (प्रीमियम)",
+      "Gram Panchayat Website",
       "सोशल मीडिया मैनेजमेंट",
       "30 क्रिएटिव्स/माह",
       "डिजिटल आउटरीच मैनेजमेंट",
@@ -302,6 +302,7 @@ export const packages = [
     ctaLabel: "इस पैकेज के लिए भुगतान करें",
     theme: "navy",
     features: [
+      "Gram Panchayat Website",
       "सब कुछ प्रोफेशनल पैकेज में शामिल",
       "वीडियो (4/माह)",
       "ड्रोन वीडियो (1/माह)",
