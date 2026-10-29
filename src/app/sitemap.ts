@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/site-url";
 import { listBlogPosts } from "@/lib/blog.server";
+import { packageCatalog, packageCategories } from "@/data/package-catalog";
 
 // Public crawlable pages. /demo/* pages are noindex (not included),
 // /admin and /api are disallowed in robots.ts (not included).
@@ -47,5 +48,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     blogUrls = [];
   }
 
-  return [...staticUrls, ...blogUrls];
+  const packageUrls: MetadataRoute.Sitemap = packageCatalog.map((plan) => ({
+    url: absoluteUrl(`/packages/${plan.slug}`),
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+  const categoryUrls: MetadataRoute.Sitemap = packageCategories.map((category) => ({
+    url: absoluteUrl(`/packages/category/${category.slug}`),
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+  return [...staticUrls, ...categoryUrls, ...packageUrls, ...blogUrls];
 }

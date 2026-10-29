@@ -81,12 +81,14 @@ export function PackageQueryButton({
   ctaLabel = "इस पैकेज के लिए भुगतान करें",
   tone = "navy",
   displayPrice,
+  inline = false,
 }: {
   packageName: string;
   featured?: boolean;
   ctaLabel?: string;
   tone?: string;
   displayPrice?: string;
+  inline?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<Step>("details");
@@ -282,26 +284,44 @@ export function PackageQueryButton({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => {
-          resetModal();
-          setOpen(true);
-        }}
-        className={`mt-6 block w-full rounded-md py-3 text-center text-sm font-semibold ${
-          buttonTone[tone as keyof typeof buttonTone] ?? buttonTone.navy
-        }`}
-      >
-        {ctaLabel}
-      </button>
+      {!inline && (
+        <button
+          type="button"
+          onClick={() => {
+            resetModal();
+            setOpen(true);
+          }}
+          className={`mt-6 block w-full rounded-md py-3 text-center text-sm font-semibold ${
+            buttonTone[tone as keyof typeof buttonTone] ?? buttonTone.navy
+          }`}
+        >
+          {ctaLabel}
+        </button>
+      )}
 
-      {open && (
-        <div className="fixed inset-0 z-[80] grid place-items-center bg-[#0a1526]/70 px-4 py-6 backdrop-blur-sm">
-          <div className="max-h-[calc(100dvh-3rem)] w-full max-w-xl overflow-y-auto overscroll-contain rounded-lg bg-[#f7faff] shadow-[0_24px_70px_rgba(29,9,8,.42)]">
+      {(inline || open) && (
+        <div
+          className={
+            inline
+              ? "w-full"
+              : "fixed inset-0 z-[80] grid place-items-center bg-[#0a1526]/70 px-4 py-6 backdrop-blur-sm"
+          }
+        >
+          <div
+            className={
+              inline
+                ? "w-full overflow-hidden rounded-xl border border-[#dfe8f3] bg-white shadow-[0_8px_28px_-16px_rgba(63,113,164,0.18)]"
+                : "max-h-[calc(100dvh-3rem)] w-full max-w-xl overflow-y-auto overscroll-contain rounded-lg bg-[#f7faff] shadow-[0_24px_70px_rgba(29,9,8,.42)]"
+            }
+          >
             <div className="flex items-center justify-between border-b border-emerald-200 px-5 py-4">
               <div>
                 <p className="text-xs font-extrabold tracking-[0.16em] text-saffron uppercase">
-                  {step === "done" ? "Payment Complete" : "Package Checkout"}
+                  {step === "done"
+                    ? "Payment Complete"
+                    : inline
+                      ? "अपनी जानकारी भरें"
+                      : "Package Checkout"}
                 </p>
                 <h3 className="mt-1 text-2xl font-black text-maroon">{packageName}</h3>
                 {step !== "done" && (
@@ -311,14 +331,16 @@ export function PackageQueryButton({
                   </p>
                 )}
               </div>
-              <button
-                type="button"
-                onClick={closeModal}
-                aria-label="Close package checkout"
-                className="grid h-10 w-10 place-items-center rounded-full border border-emerald-200 text-maroon hover:bg-emerald-50"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              {!inline && (
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  aria-label="Close package checkout"
+                  className="grid h-10 w-10 place-items-center rounded-full border border-emerald-200 text-maroon hover:bg-emerald-50"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              )}
             </div>
 
             {step === "details" && (
@@ -327,51 +349,76 @@ export function PackageQueryButton({
                 onSubmit={(event) => void goToPayment(event)}
                 className="grid gap-4 p-5 sm:grid-cols-2"
               >
-                <input
-                  name="name"
-                  required
-                  defaultValue={details.name}
-                  className={field}
-                  placeholder="Name"
-                />
-                <input
-                  name="phone"
-                  required
-                  inputMode="tel"
-                  defaultValue={details.phone}
-                  className={field}
-                  placeholder="Mobile No"
-                />
-                <input
-                  name="email"
-                  required
-                  type="email"
-                  defaultValue={details.email}
-                  className={field}
-                  placeholder="Email"
-                />
-                <input
-                  name="city"
-                  required
-                  defaultValue={details.city}
-                  className={field}
-                  placeholder="City"
-                />
-                <input
-                  name="state"
-                  required
-                  defaultValue={details.state}
-                  className={field}
-                  placeholder="State"
-                />
-                <input
-                  name="pincode"
-                  required
-                  inputMode="numeric"
-                  defaultValue={details.pincode}
-                  className={field}
-                  placeholder="Pincode"
-                />
+                <label className="grid gap-1.5 text-sm font-semibold text-[#354b70]">
+                  नाम
+                  <input
+                    name="name"
+                    autoComplete="name"
+                    required
+                    defaultValue={details.name}
+                    className={field}
+                    placeholder="Name"
+                  />
+                </label>
+                <label className="grid gap-1.5 text-sm font-semibold text-[#354b70]">
+                  मोबाइल नंबर
+                  <input
+                    name="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    required
+                    inputMode="tel"
+                    defaultValue={details.phone}
+                    className={field}
+                    placeholder="Mobile No"
+                  />
+                </label>
+                <label className="grid gap-1.5 text-sm font-semibold text-[#354b70]">
+                  ईमेल
+                  <input
+                    name="email"
+                    autoComplete="email"
+                    required
+                    type="email"
+                    defaultValue={details.email}
+                    className={field}
+                    placeholder="Email"
+                  />
+                </label>
+                <label className="grid gap-1.5 text-sm font-semibold text-[#354b70]">
+                  शहर
+                  <input
+                    name="city"
+                    autoComplete="address-level2"
+                    required
+                    defaultValue={details.city}
+                    className={field}
+                    placeholder="City"
+                  />
+                </label>
+                <label className="grid gap-1.5 text-sm font-semibold text-[#354b70]">
+                  राज्य
+                  <input
+                    name="state"
+                    autoComplete="address-level1"
+                    required
+                    defaultValue={details.state}
+                    className={field}
+                    placeholder="State"
+                  />
+                </label>
+                <label className="grid gap-1.5 text-sm font-semibold text-[#354b70]">
+                  पिनकोड
+                  <input
+                    name="pincode"
+                    autoComplete="postal-code"
+                    required
+                    inputMode="numeric"
+                    defaultValue={details.pincode}
+                    className={field}
+                    placeholder="Pincode"
+                  />
+                </label>
 
                 <div className="sm:col-span-2">
                   <button
